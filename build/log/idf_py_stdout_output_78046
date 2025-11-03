@@ -1,0 +1,424 @@
+Command: /Users/jinwookshin/anaconda3/envs/cartediem/bin/python /Users/jinwookshin/esp/esp-idf/tools/idf_monitor.py -p /dev/cu.usbmodem2101 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /Users/jinwookshin/Desktop/473/integration/build/barcode_scanner_freertos.elf /Users/jinwookshin/Desktop/473/integration/build/bootloader/bootloader.elf -m '/Users/jinwookshin/anaconda3/envs/cartediem/bin/python' '/Users/jinwookshin/esp/esp-idf/tools/idf.py'
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40048e22
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x159c
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2f48
+entry 0x403c8924
+[0;32mI (24) boot: ESP-IDF v6.0-dev-527-gadcbdd7da4 2nd stage bootloader[0m
+[0;32mI (25) boot: compile time Nov  3 2025 13:26:15[0m
+[0;32mI (25) boot: Multicore bootloader[0m
+[0;32mI (26) boot: chip revision: v0.2[0m
+[0;32mI (29) boot: efuse block revision: v1.3[0m
+[0;32mI (33) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (37) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (40) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (44) boot: Enabling RNG early entropy source...[0m
+[0;32mI (49) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (57) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (70) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (77) boot: End of partition table[0m
+[0;32mI (80) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0c55ch ( 50524) map[0m
+[0;32mI (97) esp_image: segment 1: paddr=0001c584 vaddr=3fc94000 size=02a90h ( 10896) load[0m
+[0;32mI (99) esp_image: segment 2: paddr=0001f01c vaddr=40374000 size=00ffch (  4092) load[0m
+[0;32mI (103) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=1da1ch (121372) map[0m
+[0;32mI (131) esp_image: segment 4: paddr=0003da44 vaddr=40374ffc size=0efach ( 61356) load[0m
+[0;32mI (145) esp_image: segment 5: paddr=0004c9f8 vaddr=600fe000 size=00020h (    32) load[0m
+[0;32mI (152) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (152) boot: Disabling RNG early entropy source...[0m
+[0;32mI (163) cpu_start: Multicore app[0m
+[0;32mI (172) cpu_start: Pro cpu start user code[0m
+[0;32mI (172) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (172) app_init: Application information:[0m
+[0;32mI (172) app_init: Project name:     barcode_scanner_freertos[0m
+[0;32mI (177) app_init: App version:      d8a2934-dirty[0m
+[0;32mI (182) app_init: Compile time:     Nov  3 2025 13:26:11[0m
+[0;32mI (187) app_init: ELF file SHA256:  ce6150303...[0m
+[0;32mI (191) app_init: ESP-IDF:          v6.0-dev-527-gadcbdd7da4[0m
+[0;32mI (197) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (200) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (204) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (208) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (215) heap_init: At 3FC973B8 len 00052358 (328 KiB): RAM[0m
+[0;32mI (220) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (225) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (230) heap_init: At 600FE020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (236) spi_flash: detected chip: boya[0m
+[0;32mI (239) spi_flash: flash io: dio[0m
+[0;33mW (242) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;33mW (254) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (264) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (270) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (277) main_task: Started on CPU0[0m
+[0;32mI (287) main_task: Calling app_main()[0m
+[0;32mI (287) BARCODE: ✓ Barcode scanner initialized (UART1)[0m
+[0;32mI (297) BARCODE: Manual mode ON[0m
+[0;32mI (307) BARCODE: Manual mode ON[0m
+[0;32mI (307) MAIN: Barcode scanner ready in manual mode[0m
+[0;32mI (357) ProximitySensor: Device ID: 0xAB[0m
+[0;32mI (377) ProximitySensor: Interrupt when value < 30[0m
+[0;32mI (377) ProximitySensor: ✓ Proximity sensor ready...[0m
+[0;32mI (377) MAIN: Proximity sensor ready with threshold 30[0m
+[0;32mI (377) MAIN: Ready: press button on GPIO 45 to trigger scan or approach proximity sensor.[0m
+[0;32mI (407) ProximitySensor: Proximity value: 40[0m
+[0;32mI (407) MAIN: Proximity value: 40[0m
+[0;32mI (497) ProximitySensor: Proximity value: 42[0m
+[0;32mI (497) MAIN: Proximity value: 42[0m
+[0;32mI (587) ProximitySensor: Proximity value: 37[0m
+[0;32mI (587) MAIN: Proximity value: 37[0m
+[0;32mI (677) ProximitySensor: Proximity value: 40[0m
+[0;32mI (677) MAIN: Proximity value: 40[0m
+[0;32mI (767) ProximitySensor: Proximity value: 38[0m
+[0;32mI (767) MAIN: Proximity value: 38[0m
+[0;32mI (857) ProximitySensor: Proximity value: 40[0m
+[0;32mI (857) MAIN: Proximity value: 40[0m
+[0;32mI (947) ProximitySensor: Proximity value: 38[0m
+[0;32mI (947) MAIN: Proximity value: 38[0m
+[0;32mI (1037) ProximitySensor: Proximity value: 40[0m
+[0;32mI (1037) MAIN: Proximity value: 40[0m
+[0;32mI (1127) ProximitySensor: Proximity value: 39[0m
+[0;32mI (1127) MAIN: Proximity value: 39[0m
+[0;32mI (1217) ProximitySensor: Proximity value: 41[0m
+[0;32mI (1217) MAIN: Proximity value: 41[0m
+[0;32mI (1307) ProximitySensor: Proximity value: 40[0m
+[0;32mI (1307) MAIN: Proximity value: 40[0m
+[0;32mI (1397) ProximitySensor: Proximity value: 36[0m
+[0;32mI (1397) MAIN: Proximity value: 36[0m
+[0;32mI (1487) ProximitySensor: Proximity value: 34[0m
+[0;32mI (1487) MAIN: Proximity value: 34[0m
+[0;32mI (1577) ProximitySensor: Proximity value: 43[0m
+[0;32mI (1577) MAIN: Proximity value: 43[0m
+[0;32mI (1667) ProximitySensor: Proximity value: 39[0m
+[0;32mI (1667) MAIN: Proximity value: 39[0m
+[0;32mI (1757) ProximitySensor: Proximity value: 37[0m
+[0;32mI (1757) MAIN: Proximity value: 37[0m
+[0;32mI (1847) ProximitySensor: Proximity value: 37[0m
+[0;32mI (1847) MAIN: Proximity value: 37[0m
+[0;32mI (1937) ProximitySensor: Proximity value: 37[0m
+[0;32mI (1937) MAIN: Proximity value: 37[0m
+[0;32mI (2027) ProximitySensor: Proximity value: 37[0m
+[0;32mI (2027) MAIN: Proximity value: 37[0m
+[0;32mI (2117) ProximitySensor: Proximity value: 36[0m
+[0;32mI (2117) MAIN: Proximity value: 36[0m
+[0;32mI (2207) ProximitySensor: Proximity value: 39[0m
+[0;32mI (2207) MAIN: Proximity value: 39[0m
+[0;32mI (2297) ProximitySensor: Proximity value: 40[0m
+[0;32mI (2297) MAIN: Proximity value: 40[0m
+[0;32mI (2387) ProximitySensor: Proximity value: 39[0m
+[0;32mI (2387) MAIN: Proximity value: 39[0m
+[0;32mI (2477) ProximitySensor: Proximity value: 39[0m
+[0;32mI (2477) MAIN: Proximity value: 39[0m
+[0;32mI (2567) ProximitySensor: Proximity value: 40[0m
+[0;32mI (2567) MAIN: Proximity value: 40[0m
+[0;32mI (2657) ProximitySensor: Proximity value: 39[0m
+[0;32mI (2657) MAIN: Proximity value: 39[0m
+[0;32mI (2747) ProximitySensor: Proximity value: 40[0m
+[0;32mI (2747) MAIN: Proximity value: 40[0m
+[0;32mI (2837) ProximitySensor: Proximity value: 42[0m
+[0;32mI (2837) MAIN: Proximity value: 42[0m
+[0;32mI (2927) ProximitySensor: Proximity value: 39[0m
+[0;32mI (2927) MAIN: Proximity value: 39[0m
+[0;32mI (3017) ProximitySensor: Proximity value: 35[0m
+[0;32mI (3017) MAIN: Proximity value: 35[0m
+[0;32mI (3107) ProximitySensor: Proximity value: 41[0m
+[0;32mI (3107) MAIN: Proximity value: 41[0m
+[0;32mI (3197) ProximitySensor: Proximity value: 40[0m
+[0;32mI (3197) MAIN: Proximity value: 40[0m
+[0;32mI (3287) ProximitySensor: Proximity value: 37[0m
+[0;32mI (3287) MAIN: Proximity value: 37[0m
+[0;32mI (3377) ProximitySensor: Proximity value: 40[0m
+[0;32mI (3377) MAIN: Proximity value: 40[0m
+[0;32mI (3467) ProximitySensor: Proximity value: 41[0m
+[0;32mI (3467) MAIN: Proximity value: 41[0m
+[0;32mI (3557) ProximitySensor: Proximity value: 41[0m
+[0;32mI (3557) MAIN: Proximity value: 41[0m
+[0;32mI (3647) ProximitySensor: Proximity value: 37[0m
+[0;32mI (3647) MAIN: Proximity value: 37[0m
+[0;32mI (3737) ProximitySensor: Proximity value: 38[0m
+[0;32mI (3737) MAIN: Proximity value: 38[0m
+[0;32mI (3827) ProximitySensor: Proximity value: 37[0m
+[0;32mI (3827) MAIN: Proximity value: 37[0m
+[0;32mI (3917) ProximitySensor: Proximity value: 37[0m
+[0;32mI (3917) MAIN: Proximity value: 37[0m
+[0;32mI (4007) ProximitySensor: Proximity value: 37[0m
+[0;32mI (4007) MAIN: Proximity value: 37[0m
+[0;32mI (4097) ProximitySensor: Proximity value: 39[0m
+[0;32mI (4097) MAIN: Proximity value: 39[0m
+[0;32mI (4187) ProximitySensor: Proximity value: 42[0m
+[0;32mI (4187) MAIN: Proximity value: 42[0m
+[0;32mI (4277) ProximitySensor: Proximity value: 43[0m
+[0;32mI (4277) MAIN: Proximity value: 43[0m
+[0;32mI (4367) ProximitySensor: Proximity value: 42[0m
+[0;32mI (4367) MAIN: Proximity value: 42[0m
+[0;32mI (4457) ProximitySensor: Proximity value: 41[0m
+[0;32mI (4457) MAIN: Proximity value: 41[0m
+[0;32mI (4547) ProximitySensor: Proximity value: 39[0m
+[0;32mI (4547) MAIN: Proximity value: 39[0m
+[0;32mI (4637) ProximitySensor: Proximity value: 36[0m
+[0;32mI (4637) MAIN: Proximity value: 36[0m
+[0;32mI (4727) ProximitySensor: Proximity value: 37[0m
+[0;32mI (4727) MAIN: Proximity value: 37[0m
+[0;32mI (4817) ProximitySensor: Proximity value: 38[0m
+[0;32mI (4817) MAIN: Proximity value: 38[0m
+[0;32mI (4907) ProximitySensor: Proximity value: 38[0m
+[0;32mI (4907) MAIN: Proximity value: 38[0m
+[0;32mI (4997) ProximitySensor: Proximity value: 36[0m
+[0;32mI (4997) MAIN: Proximity value: 36[0m
+[0;32mI (5087) ProximitySensor: Proximity value: 41[0m
+[0;32mI (5087) MAIN: Proximity value: 41[0m
+[0;32mI (5177) ProximitySensor: Proximity value: 38[0m
+[0;32mI (5177) MAIN: Proximity value: 38[0m
+[0;32mI (5267) ProximitySensor: Proximity value: 38[0m
+[0;32mI (5267) MAIN: Proximity value: 38[0m
+[0;32mI (5357) ProximitySensor: Proximity value: 42[0m
+[0;32mI (5357) MAIN: Proximity value: 42[0m
+[0;32mI (5447) ProximitySensor: Proximity value: 36[0m
+[0;32mI (5447) MAIN: Proximity value: 36[0m
+[0;32mI (5537) ProximitySensor: Proximity value: 35[0m
+[0;32mI (5537) MAIN: Proximity value: 35[0m
+[0;32mI (5627) ProximitySensor: Proximity value: 34[0m
+[0;32mI (5627) MAIN: Proximity value: 34[0m
+[0;32mI (5717) ProximitySensor: Proximity value: 38[0m
+[0;32mI (5717) MAIN: Proximity value: 38[0m
+[0;32mI (5807) ProximitySensor: Proximity value: 37[0m
+[0;32mI (5807) MAIN: Proximity value: 37[0m
+[0;32mI (5897) ProximitySensor: Proximity value: 40[0m
+[0;32mI (5897) MAIN: Proximity value: 40[0m
+[0;32mI (5987) ProximitySensor: Proximity value: 38[0m
+[0;32mI (5987) MAIN: Proximity value: 38[0m
+[0;32mI (6077) ProximitySensor: Proximity value: 35[0m
+[0;32mI (6077) MAIN: Proximity value: 35[0m
+[0;32mI (6167) ProximitySensor: Proximity value: 35[0m
+[0;32mI (6167) MAIN: Proximity value: 35[0m
+[0;32mI (6257) ProximitySensor: Proximity value: 36[0m
+[0;32mI (6257) MAIN: Proximity value: 36[0m
+[0;32mI (6347) ProximitySensor: Proximity value: 39[0m
+[0;32mI (6347) MAIN: Proximity value: 39[0m
+[0;32mI (6437) ProximitySensor: Proximity value: 43[0m
+[0;32mI (6437) MAIN: Proximity value: 43[0m
+[0;32mI (6527) ProximitySensor: Proximity value: 40[0m
+[0;32mI (6527) MAIN: Proximity value: 40[0m
+[0;32mI (6617) ProximitySensor: Proximity value: 41[0m
+[0;32mI (6617) MAIN: Proximity value: 41[0m
+[0;32mI (6707) ProximitySensor: Proximity value: 38[0m
+[0;32mI (6707) MAIN: Proximity value: 38[0m
+[0;32mI (6797) ProximitySensor: Proximity value: 43[0m
+[0;32mI (6797) MAIN: Proximity value: 43[0m
+[0;32mI (6887) ProximitySensor: Proximity value: 44[0m
+[0;32mI (6887) MAIN: Proximity value: 44[0m
+[0;32mI (6977) ProximitySensor: Proximity value: 43[0m
+[0;32mI (6977) MAIN: Proximity value: 43[0m
+[0;32mI (7067) ProximitySensor: Proximity value: 40[0m
+[0;32mI (7067) MAIN: Proximity value: 40[0m
+[0;32mI (7157) ProximitySensor: Proximity value: 43[0m
+[0;32mI (7157) MAIN: Proximity value: 43[0m
+[0;32mI (7247) ProximitySensor: Proximity value: 43[0m
+[0;32mI (7247) MAIN: Proximity value: 43[0m
+[0;32mI (7337) ProximitySensor: Proximity value: 46[0m
+[0;32mI (7337) MAIN: Proximity value: 46[0m
+[0;32mI (7427) ProximitySensor: Proximity value: 46[0m
+[0;32mI (7427) MAIN: Proximity value: 46[0m
+[0;32mI (7517) ProximitySensor: Proximity value: 49[0m
+[0;32mI (7517) MAIN: Proximity value: 49[0m
+[0;32mI (7607) ProximitySensor: Proximity value: 47[0m
+[0;32mI (7607) MAIN: Proximity value: 47[0m
+[0;32mI (7697) ProximitySensor: Proximity value: 51[0m
+[0;32mI (7697) MAIN: Proximity value: 51[0m
+[0;32mI (7787) ProximitySensor: Proximity value: 52[0m
+[0;32mI (7787) MAIN: Proximity value: 52[0m
+[0;32mI (7877) ProximitySensor: Proximity value: 48[0m
+[0;32mI (7877) MAIN: Proximity value: 48[0m
+[0;32mI (7967) ProximitySensor: Proximity value: 56[0m
+[0;32mI (7967) MAIN: Proximity value: 56[0m
+[0;32mI (8057) ProximitySensor: Proximity value: 58[0m
+[0;32mI (8057) MAIN: Proximity value: 58[0m
+[0;32mI (8147) ProximitySensor: Proximity value: 60[0m
+[0;32mI (8147) MAIN: Proximity value: 60[0m
+[0;32mI (8237) ProximitySensor: Proximity value: 63[0m
+[0;32mI (8237) MAIN: Proximity value: 63[0m
+[0;32mI (8327) ProximitySensor: Proximity value: 65[0m
+[0;32mI (8327) MAIN: Proximity value: 65[0m
+[0;32mI (8417) ProximitySensor: Proximity value: 70[0m
+[0;32mI (8417) MAIN: Proximity value: 70[0m
+[0;32mI (8507) ProximitySensor: Proximity value: 76[0m
+[0;32mI (8507) MAIN: Proximity value: 76[0m
+[0;32mI (8597) ProximitySensor: Proximity value: 85[0m
+[0;32mI (8597) MAIN: Proximity value: 85[0m
+[0;32mI (8687) ProximitySensor: Proximity value: 86[0m
+[0;32mI (8687) MAIN: Proximity value: 86[0m
+[0;32mI (8777) ProximitySensor: Proximity value: 95[0m
+[0;32mI (8777) MAIN: Proximity value: 95[0m
+[0;32mI (8867) ProximitySensor: Proximity value: 96[0m
+[0;32mI (8867) MAIN: Proximity value: 96[0m
+[0;32mI (8957) ProximitySensor: Proximity value: 103[0m
+[0;32mI (8957) MAIN: Proximity value: 103[0m
+[0;32mI (9047) ProximitySensor: Proximity value: 111[0m
+[0;32mI (9047) MAIN: Proximity value: 111[0m
+[0;32mI (9137) ProximitySensor: Proximity value: 120[0m
+[0;32mI (9137) MAIN: Proximity value: 120[0m
+[0;32mI (9227) ProximitySensor: Proximity value: 127[0m
+[0;32mI (9227) MAIN: Proximity value: 127[0m
+[0;32mI (9317) ProximitySensor: Proximity value: 134[0m
+[0;32mI (9317) MAIN: Proximity value: 134[0m
+[0;32mI (9407) ProximitySensor: Proximity value: 159[0m
+[0;32mI (9407) MAIN: Proximity value: 159[0m
+[0;32mI (9497) ProximitySensor: Proximity value: 172[0m
+[0;32mI (9497) MAIN: Proximity value: 172[0m
+[0;32mI (9587) ProximitySensor: Proximity value: 195[0m
+[0;32mI (9587) MAIN: Proximity value: 195[0m
+[0;32mI (9677) ProximitySensor: Proximity value: 218[0m
+[0;32mI (9677) MAIN: Proximity value: 218[0m
+[0;32mI (9767) ProximitySensor: Proximity value: 238[0m
+[0;32mI (9767) MAIN: Proximity value: 238[0m
+[0;32mI (9857) ProximitySensor: Proximity value: 253[0m
+[0;32mI (9857) MAIN: Proximity value: 253[0m
+[0;32mI (9947) ProximitySensor: Proximity value: 255[0m
+[0;32mI (9947) MAIN: Proximity value: 255[0m
+[0;32mI (10037) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10037) MAIN: Proximity value: 255[0m
+[0;32mI (10127) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10127) MAIN: Proximity value: 255[0m
+[0;32mI (10217) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10217) MAIN: Proximity value: 255[0m
+[0;32mI (10307) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10307) MAIN: Proximity value: 255[0m
+[0;32mI (10397) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10397) MAIN: Proximity value: 255[0m
+[0;32mI (10487) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10487) MAIN: Proximity value: 255[0m
+[0;32mI (10577) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10577) MAIN: Proximity value: 255[0m
+[0;32mI (10667) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10667) MAIN: Proximity value: 255[0m
+[0;32mI (10757) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10757) MAIN: Proximity value: 255[0m
+[0;32mI (10847) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10847) MAIN: Proximity value: 255[0m
+[0;32mI (10937) ProximitySensor: Proximity value: 255[0m
+[0;32mI (10937) MAIN: Proximity value: 255[0m
+[0;32mI (11027) ProximitySensor: Proximity value: 255[0m
+[0;32mI (11027) MAIN: Proximity value: 255[0m
+[0;32mI (11117) ProximitySensor: Proximity value: 255[0m
+[0;32mI (11117) MAIN: Proximity value: 255[0m
+[0;32mI (11207) ProximitySensor: Proximity value: 255[0m
+[0;32mI (11207) MAIN: Proximity value: 255[0m
+[0;32mI (11297) ProximitySensor: Proximity value: 203[0m
+[0;32mI (11297) MAIN: Proximity value: 203[0m
+[0;32mI (11387) ProximitySensor: Proximity value: 158[0m
+[0;32mI (11387) MAIN: Proximity value: 158[0m
+[0;32mI (11477) ProximitySensor: Proximity value: 117[0m
+[0;32mI (11477) MAIN: Proximity value: 117[0m
+[0;32mI (11567) ProximitySensor: Proximity value: 92[0m
+[0;32mI (11567) MAIN: Proximity value: 92[0m
+[0;32mI (11657) ProximitySensor: Proximity value: 78[0m
+[0;32mI (11657) MAIN: Proximity value: 78[0m
+[0;32mI (11747) ProximitySensor: Proximity value: 71[0m
+[0;32mI (11747) MAIN: Proximity value: 71[0m
+[0;32mI (11837) ProximitySensor: Proximity value: 61[0m
+[0;32mI (11837) MAIN: Proximity value: 61[0m
+[0;32mI (11927) ProximitySensor: Proximity value: 54[0m
+[0;32mI (11927) MAIN: Proximity value: 54[0m
+[0;32mI (12017) ProximitySensor: Proximity value: 49[0m
+[0;32mI (12017) MAIN: Proximity value: 49[0m
+[0;32mI (12107) ProximitySensor: Proximity value: 46[0m
+[0;32mI (12107) MAIN: Proximity value: 46[0m
+[0;32mI (12197) ProximitySensor: Proximity value: 45[0m
+[0;32mI (12197) MAIN: Proximity value: 45[0m
+[0;32mI (12287) ProximitySensor: Proximity value: 40[0m
+[0;32mI (12287) MAIN: Proximity value: 40[0m
+[0;32mI (12377) ProximitySensor: Proximity value: 37[0m
+[0;32mI (12377) MAIN: Proximity value: 37[0m
+[0;32mI (12467) ProximitySensor: Proximity value: 41[0m
+[0;32mI (12467) MAIN: Proximity value: 41[0m
+[0;32mI (12557) ProximitySensor: Proximity value: 37[0m
+[0;32mI (12557) MAIN: Proximity value: 37[0m
+[0;32mI (12647) ProximitySensor: Proximity value: 40[0m
+[0;32mI (12647) MAIN: Proximity value: 40[0m
+[0;32mI (12737) ProximitySensor: Proximity value: 39[0m
+[0;32mI (12737) MAIN: Proximity value: 39[0m
+[0;32mI (12827) ProximitySensor: Proximity value: 38[0m
+[0;32mI (12827) MAIN: Proximity value: 38[0m
+[0;32mI (12917) ProximitySensor: Proximity value: 37[0m
+[0;32mI (12917) MAIN: Proximity value: 37[0m
+[0;32mI (13007) ProximitySensor: Proximity value: 39[0m
+[0;32mI (13007) MAIN: Proximity value: 39[0m
+[0;32mI (13097) ProximitySensor: Proximity value: 42[0m
+[0;32mI (13097) MAIN: Proximity value: 42[0m
+[0;32mI (13187) ProximitySensor: Proximity value: 38[0m
+[0;32mI (13187) MAIN: Proximity value: 38[0m
+[0;32mI (13277) ProximitySensor: Proximity value: 39[0m
+[0;32mI (13277) MAIN: Proximity value: 39[0m
+[0;32mI (13367) ProximitySensor: Proximity value: 38[0m
+[0;32mI (13367) MAIN: Proximity value: 38[0m
+[0;32mI (13457) ProximitySensor: Proximity value: 40[0m
+[0;32mI (13457) MAIN: Proximity value: 40[0m
+[0;32mI (13547) ProximitySensor: Proximity value: 42[0m
+[0;32mI (13547) MAIN: Proximity value: 42[0m
+[0;32mI (13637) ProximitySensor: Proximity value: 39[0m
+[0;32mI (13637) MAIN: Proximity value: 39[0m
+[0;32mI (13727) ProximitySensor: Proximity value: 39[0m
+[0;32mI (13727) MAIN: Proximity value: 39[0m
+[0;32mI (13817) ProximitySensor: Proximity value: 40[0m
+[0;32mI (13817) MAIN: Proximity value: 40[0m
+[0;32mI (13907) ProximitySensor: Proximity value: 39[0m
+[0;32mI (13907) MAIN: Proximity value: 39[0m
+[0;32mI (13997) ProximitySensor: Proximity value: 40[0m
+[0;32mI (13997) MAIN: Proximity value: 40[0m
+[0;32mI (14087) ProximitySensor: Proximity value: 38[0m
+[0;32mI (14087) MAIN: Proximity value: 38[0m
+[0;32mI (14177) ProximitySensor: Proximity value: 38[0m
+[0;32mI (14177) MAIN: Proximity value: 38[0m
+[0;32mI (14267) ProximitySensor: Proximity value: 40[0m
+[0;32mI (14267) MAIN: Proximity value: 40[0m
+[0;32mI (14357) ProximitySensor: Proximity value: 42[0m
+[0;32mI (14357) MAIN: Proximity value: 42[0m
+[0;32mI (14447) ProximitySensor: Proximity value: 42[0m
+[0;32mI (14447) MAIN: Proximity value: 42[0m
+[0;32mI (14537) ProximitySensor: Proximity value: 40[0m
+[0;32mI (14537) MAIN: Proximity value: 40[0m
+[0;32mI (14627) ProximitySensor: Proximity value: 41[0m
+[0;32mI (14627) MAIN: Proximity value: 41[0m
+[0;32mI (14717) ProximitySensor: Proximity value: 41[0m
+[0;32mI (14717) MAIN: Proximity value: 41[0m
+[0;32mI (14807) ProximitySensor: Proximity value: 36[0m
+[0;32mI (14807) MAIN: Proximity value: 36[0m
+[0;32mI (14897) ProximitySensor: Proximity value: 37[0m
+[0;32mI (14897) MAIN: Proximity value: 37[0m
+[0;32mI (14987) ProximitySensor: Proximity value: 41[0m
+[0;32mI (14987) MAIN: Proximity value: 41[0m
+[0;32mI (15077) ProximitySensor: Proximity value: 42[0m
+[0;32mI (15077) MAIN: Proximity value: 42[0m
+[0;32mI (15167) ProximitySensor: Proximity value: 39[0m
+[0;32mI (15167) MAIN: Proximity value: 39[0m
+[0;32mI (15257) ProximitySensor: Proximity value: 38[0m
+[0;32mI (15257) MAIN: Proximity value: 38[0m
+[0;32mI (15347) ProximitySensor: Proximity value: 39[0m
+[0;32mI (15347) MAIN: Proximity value: 39[0m
+[0;32mI (15437) ProximitySensor: Proximity value: 37[0m
+[0;32mI (15437) MAIN: Proximity value: 37[0m
+[0;32mI (15527) ProximitySensor: Proximity value: 40[0m
+[0;32mI (15527) MAIN: Proximity value: 40[0m
+[0;32mI (15617) ProximitySensor: Proximity value: 38[0m
+[0;32mI (15617) MAIN: Proximity value: 38[0m
+[0;32mI (15707) ProximitySensor: Proximity value: 33[0m
+[0;32mI (15707) MAIN: Proximity value: 33[0m
+[0;32mI (15797) ProximitySensor: Proximity value: 41[0m
+[0;32mI (15797) MAIN: Proximity value: 41[0m
+[0;32mI (15887) ProximitySensor: Proximity value: 44[0m
+[0;32mI (15887) MAIN: Proximity value: 44[0m
+[0;32mI (15977) ProximitySensor: Proximity value: 41[0m
+[0;32mI (15977) MAIN: Proximity value: 41[0m
+[0;32mI (16067) ProximitySensor: Proximity value: 41[0m
+[0;32mI (16067) MAIN: Proximity value: 41[0m
+[0;32mI (16157) ProximitySensor: Proximity value: 41[0m
+[0;32mI (16157) MAIN: Proximity value: 41[0m
+[0;32mI (16247) ProximitySensor: Proximity value: 36[0m
+[0;32mI (16247) MAIN: Proximity value: 36[0m
+[0;32mI (16337) ProximitySensor: Proximity value: 41[0m
+[0;32mI (16337) MAIN: Proximity value: 41[0m

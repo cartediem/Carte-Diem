@@ -1,0 +1,66 @@
+Command: /Users/jinwookshin/anaconda3/envs/cartediem/bin/python /Users/jinwookshin/esp/esp-idf/tools/idf_monitor.py -p /dev/cu.usbmodem2101 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /Users/jinwookshin/Desktop/473/integration/build/barcode_scanner_freertos.elf /Users/jinwookshin/Desktop/473/integration/build/bootloader/bootloader.elf -m '/Users/jinwookshin/anaconda3/envs/cartediem/bin/python' '/Users/jinwookshin/esp/esp-idf/tools/idf.py'
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40048d1a
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x159c
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2f48
+entry 0x403c8924
+[0;32mI (24) boot: ESP-IDF v6.0-dev-527-gadcbdd7da4 2nd stage bootloader[0m
+[0;32mI (25) boot: compile time Nov  3 2025 13:26:15[0m
+[0;32mI (25) boot: Multicore bootloader[0m
+[0;32mI (26) boot: chip revision: v0.2[0m
+[0;32mI (29) boot: efuse block revision: v1.3[0m
+[0;32mI (33) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (37) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (40) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (44) boot: Enabling RNG early entropy source...[0m
+[0;32mI (49) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (57) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (70) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (77) boot: End of partition table[0m
+[0;32mI (80) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0c55ch ( 50524) map[0m
+[0;32mI (97) esp_image: segment 1: paddr=0001c584 vaddr=3fc94000 size=02a90h ( 10896) load[0m
+[0;32mI (99) esp_image: segment 2: paddr=0001f01c vaddr=40374000 size=00ffch (  4092) load[0m
+[0;32mI (103) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=1da6ch (121452) map[0m
+[0;32mI (131) esp_image: segment 4: paddr=0003da94 vaddr=40374ffc size=0efcch ( 61388) load[0m
+[0;32mI (145) esp_image: segment 5: paddr=0004ca68 vaddr=600fe000 size=00020h (    32) load[0m
+[0;32mI (152) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (152) boot: Disabling RNG early entropy source...[0m
+[0;32mI (163) cpu_start: Multicore app[0m
+[0;32mI (172) cpu_start: Pro cpu start user code[0m
+[0;32mI (172) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (172) app_init: Application information:[0m
+[0;32mI (172) app_init: Project name:     barcode_scanner_freertos[0m
+[0;32mI (177) app_init: App version:      d8a2934-dirty[0m
+[0;32mI (182) app_init: Compile time:     Nov  3 2025 13:26:11[0m
+[0;32mI (187) app_init: ELF file SHA256:  6e145decb...[0m
+[0;32mI (191) app_init: ESP-IDF:          v6.0-dev-527-gadcbdd7da4[0m
+[0;32mI (197) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (200) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (204) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (208) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (215) heap_init: At 3FC973B8 len 00052358 (328 KiB): RAM[0m
+[0;32mI (220) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (225) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (230) heap_init: At 600FE020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (236) spi_flash: detected chip: boya[0m
+[0;32mI (239) spi_flash: flash io: dio[0m
+[0;33mW (242) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;33mW (254) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (264) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (270) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (277) main_task: Started on CPU0[0m
+[0;32mI (287) main_task: Calling app_main()[0m
+[0;32mI (287) BARCODE: ✓ Barcode scanner initialized (UART1)[0m
+[0;32mI (297) BARCODE: Manual mode ON[0m
+[0;32mI (307) BARCODE: Manual mode ON[0m
+[0;32mI (307) MAIN: Barcode scanner ready in manual mode[0m
+[0;32mI (377) ProximitySensor: Proximity threshold set to 20[0m
+[0;32mI (377) MAIN: Proximity sensor ready with threshold 30[0m
+[0;32mI (377) MAIN: Ready: press button on GPIO 45 to trigger scan or approach proximity sensor.[0m

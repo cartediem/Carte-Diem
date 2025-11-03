@@ -1,0 +1,7 @@
+Command: /Users/jinwookshin/anaconda3/envs/cartediem/bin/python /Users/jinwookshin/esp/esp-idf/tools/idf_monitor.py -p /dev/cu.usbmodem2101 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /Users/jinwookshin/Desktop/473/integration/build/barcode_scanner_freertos.elf /Users/jinwookshin/Desktop/473/integration/build/bootloader/bootloader.elf -m '/Users/jinwookshin/anaconda3/envs/cartediem/bin/python' '/Users/jinwookshin/esp/esp-idf/tools/idf.py'
+[0;33m--- esp-idf-monitor 1.8.0 on /dev/cu.usbmodem2101 115200[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
+[0m--- 0x40048de8: [0;33muart_rx_readbuff[0m[0m in [0;32mROM[0m
+[0m--- 0x403c8700: [0;33m_stext[0m[0m at [0;32m??[0m[0m:[1;31m?[0m
+[0m--- 0x403c8924: [0;33mcall_start_cpu0[0m[0m at [0;32m/Users/jinwookshin/esp/esp-idf/components/bootloader/subproject/main/bootloader_start.c[0m[0m:[1;31m25[0m
+[0m

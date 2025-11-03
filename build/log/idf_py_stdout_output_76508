@@ -1,0 +1,2510 @@
+Command: /Users/jinwookshin/anaconda3/envs/cartediem/bin/python /Users/jinwookshin/esp/esp-idf/tools/idf_monitor.py -p /dev/cu.usbmodem2101 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 /Users/jinwookshin/Desktop/473/integration/build/barcode_scanner_freertos.elf /Users/jinwookshin/Desktop/473/integration/build/bootloader/bootloader.elf -m '/Users/jinwookshin/anaconda3/envs/cartediem/bin/python' '/Users/jinwookshin/esp/esp-idf/tools/idf.py'
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40048d00
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x159c
+load:0x403c8700,len:0xd24
+load:0x403cb700,len:0x2f48
+entry 0x403c8924
+[0;32mI (24) boot: ESP-IDF v6.0-dev-527-gadcbdd7da4 2nd stage bootloader[0m
+[0;32mI (25) boot: compile time Nov  3 2025 13:26:15[0m
+[0;32mI (25) boot: Multicore bootloader[0m
+[0;32mI (26) boot: chip revision: v0.2[0m
+[0;32mI (29) boot: efuse block revision: v1.3[0m
+[0;32mI (33) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (37) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (40) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (44) boot: Enabling RNG early entropy source...[0m
+[0;32mI (49) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (57) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (70) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (77) boot: End of partition table[0m
+[0;32mI (80) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0c58ch ( 50572) map[0m
+[0;32mI (97) esp_image: segment 1: paddr=0001c5b4 vaddr=3fc94000 size=02a90h ( 10896) load[0m
+[0;32mI (99) esp_image: segment 2: paddr=0001f04c vaddr=40374000 size=00fcch (  4044) load[0m
+[0;32mI (103) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=1da10h (121360) map[0m
+[0;32mI (131) esp_image: segment 4: paddr=0003da38 vaddr=40374fcc size=0f018h ( 61464) load[0m
+[0;32mI (145) esp_image: segment 5: paddr=0004ca58 vaddr=600fe000 size=00020h (    32) load[0m
+[0;32mI (152) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (152) boot: Disabling RNG early entropy source...[0m
+[0;32mI (163) cpu_start: Multicore app[0m
+[0;32mI (172) cpu_start: Pro cpu start user code[0m
+[0;32mI (172) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (172) app_init: Application information:[0m
+[0;32mI (172) app_init: Project name:     barcode_scanner_freertos[0m
+[0;32mI (177) app_init: App version:      d8a2934-dirty[0m
+[0;32mI (182) app_init: Compile time:     Nov  3 2025 13:26:11[0m
+[0;32mI (187) app_init: ELF file SHA256:  65992a760...[0m
+[0;32mI (191) app_init: ESP-IDF:          v6.0-dev-527-gadcbdd7da4[0m
+[0;32mI (197) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (200) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (204) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (208) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (215) heap_init: At 3FC973B8 len 00052358 (328 KiB): RAM[0m
+[0;32mI (220) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (225) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (230) heap_init: At 600FE020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (236) spi_flash: detected chip: boya[0m
+[0;32mI (239) spi_flash: flash io: dio[0m
+[0;33mW (242) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;33mW (254) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (264) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (270) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (277) main_task: Started on CPU0[0m
+[0;32mI (287) main_task: Calling app_main()[0m
+[0;32mI (287) BARCODE: ✓ Barcode scanner initialized (UART1)[0m
+[0;32mI (297) BARCODE: Manual mode ON[0m
+[0;32mI (307) BARCODE: Manual mode ON[0m
+[0;32mI (307) MAIN: Barcode scanner ready in manual mode[0m
+[0;32mI (357) ProximitySensor: Device ID: 0xAB[0m
+[0;32mI (377) ProximitySensor: Interrupt when value > 30[0m
+[0;32mI (377) ProximitySensor: ✓ Proximity sensor ready...[0m
+[0;32mI (377) MAIN: Proximity sensor ready with threshold 30[0m
+[0;32mI (387) MAIN: Proximity interrupt triggered[0m
+[0;32mI (377) MAIN: Ready: press button on GPIO 45 to trigger scan or approach proximity sensor.[0m
+[0;32mI (407) ProximitySensor: Proximity value: 19[0m
+[0;32mI (407) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (407) MAIN: Proximity interrupt triggered[0m
+[0;32mI (487) ProximitySensor: Proximity value: 19[0m
+[0;32mI (487) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (487) MAIN: Proximity interrupt triggered[0m
+[0;32mI (567) ProximitySensor: Proximity value: 24[0m
+[0;32mI (567) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (567) MAIN: Proximity interrupt triggered[0m
+[0;32mI (647) ProximitySensor: Proximity value: 21[0m
+[0;32mI (647) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (647) MAIN: Proximity interrupt triggered[0m
+[0;32mI (727) ProximitySensor: Proximity value: 22[0m
+[0;32mI (727) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (727) MAIN: Proximity interrupt triggered[0m
+[0;32mI (807) ProximitySensor: Proximity value: 21[0m
+[0;32mI (807) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (807) MAIN: Proximity interrupt triggered[0m
+[0;32mI (887) ProximitySensor: Proximity value: 19[0m
+[0;32mI (887) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (887) MAIN: Proximity interrupt triggered[0m
+[0;32mI (967) ProximitySensor: Proximity value: 22[0m
+[0;32mI (967) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (967) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1047) ProximitySensor: Proximity value: 21[0m
+[0;32mI (1047) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (1047) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1127) ProximitySensor: Proximity value: 21[0m
+[0;32mI (1127) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (1127) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1207) ProximitySensor: Proximity value: 20[0m
+[0;32mI (1207) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (1207) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1287) ProximitySensor: Proximity value: 22[0m
+[0;32mI (1287) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (1287) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1367) ProximitySensor: Proximity value: 21[0m
+[0;32mI (1367) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (1367) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1447) ProximitySensor: Proximity value: 21[0m
+[0;32mI (1447) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (1447) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1527) ProximitySensor: Proximity value: 21[0m
+[0;32mI (1527) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (1527) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1607) ProximitySensor: Proximity value: 23[0m
+[0;32mI (1607) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (1607) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1687) ProximitySensor: Proximity value: 22[0m
+[0;32mI (1687) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (1687) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1767) ProximitySensor: Proximity value: 20[0m
+[0;32mI (1767) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (1767) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1847) ProximitySensor: Proximity value: 20[0m
+[0;32mI (1847) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (1847) MAIN: Proximity interrupt triggered[0m
+[0;32mI (1927) ProximitySensor: Proximity value: 22[0m
+[0;32mI (1927) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (1927) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2007) ProximitySensor: Proximity value: 21[0m
+[0;32mI (2007) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (2007) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2087) ProximitySensor: Proximity value: 24[0m
+[0;32mI (2087) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (2087) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2167) ProximitySensor: Proximity value: 21[0m
+[0;32mI (2167) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (2167) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2247) ProximitySensor: Proximity value: 23[0m
+[0;32mI (2247) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (2247) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2327) ProximitySensor: Proximity value: 22[0m
+[0;32mI (2327) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (2327) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2407) ProximitySensor: Proximity value: 21[0m
+[0;32mI (2407) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (2407) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2487) ProximitySensor: Proximity value: 23[0m
+[0;32mI (2487) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (2487) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2567) ProximitySensor: Proximity value: 40[0m
+[0;32mI (2567) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (2567) MAIN: Proximity threshold exceeded → switching to continuous scan mode[0m
+[0;32mI (2577) BARCODE: Continuous mode ON[0m
+[0;32mI (2577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2657) ProximitySensor: Proximity value: 56[0m
+[0;32mI (2657) MAIN: Proximity interrupt → value: 56[0m
+[0;32mI (2657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2737) ProximitySensor: Proximity value: 88[0m
+[0;32mI (2737) MAIN: Proximity interrupt → value: 88[0m
+[0;32mI (2737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2817) ProximitySensor: Proximity value: 142[0m
+[0;32mI (2817) MAIN: Proximity interrupt → value: 142[0m
+[0;32mI (2817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2897) ProximitySensor: Proximity value: 255[0m
+[0;32mI (2897) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (2897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (2977) ProximitySensor: Proximity value: 255[0m
+[0;32mI (2977) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (2977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3057) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3057) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3137) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3137) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3217) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3217) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3297) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3297) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3377) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3377) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3457) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3457) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3537) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3537) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3617) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3617) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3697) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3697) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3777) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3777) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3857) ProximitySensor: Proximity value: 255[0m
+[0;32mI (3857) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (3857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (3937) ProximitySensor: Proximity value: 160[0m
+[0;32mI (3937) MAIN: Proximity interrupt → value: 160[0m
+[0;32mI (3937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4017) ProximitySensor: Proximity value: 59[0m
+[0;32mI (4017) MAIN: Proximity interrupt → value: 59[0m
+[0;32mI (4017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4097) ProximitySensor: Proximity value: 48[0m
+[0;32mI (4097) MAIN: Proximity interrupt → value: 48[0m
+[0;32mI (4097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4177) ProximitySensor: Proximity value: 46[0m
+[0;32mI (4177) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (4177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4257) ProximitySensor: Proximity value: 39[0m
+[0;32mI (4257) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (4257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4337) ProximitySensor: Proximity value: 38[0m
+[0;32mI (4337) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (4337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4417) ProximitySensor: Proximity value: 37[0m
+[0;32mI (4417) MAIN: Proximity interrupt → value: 37[0m
+[0;32mI (4417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4497) ProximitySensor: Proximity value: 40[0m
+[0;32mI (4497) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (4497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4577) ProximitySensor: Proximity value: 55[0m
+[0;32mI (4577) MAIN: Proximity interrupt → value: 55[0m
+[0;32mI (4577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4657) ProximitySensor: Proximity value: 82[0m
+[0;32mI (4657) MAIN: Proximity interrupt → value: 82[0m
+[0;32mI (4657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4737) ProximitySensor: Proximity value: 104[0m
+[0;32mI (4737) MAIN: Proximity interrupt → value: 104[0m
+[0;32mI (4737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4817) ProximitySensor: Proximity value: 111[0m
+[0;32mI (4817) MAIN: Proximity interrupt → value: 111[0m
+[0;32mI (4817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4897) ProximitySensor: Proximity value: 122[0m
+[0;32mI (4897) MAIN: Proximity interrupt → value: 122[0m
+[0;32mI (4897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (4977) ProximitySensor: Proximity value: 138[0m
+[0;32mI (4977) MAIN: Proximity interrupt → value: 138[0m
+[0;32mI (4977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5057) ProximitySensor: Proximity value: 159[0m
+[0;32mI (5057) MAIN: Proximity interrupt → value: 159[0m
+[0;32mI (5057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5137) ProximitySensor: Proximity value: 177[0m
+[0;32mI (5137) MAIN: Proximity interrupt → value: 177[0m
+[0;32mI (5137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5217) ProximitySensor: Proximity value: 200[0m
+[0;32mI (5217) MAIN: Proximity interrupt → value: 200[0m
+[0;32mI (5217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5297) ProximitySensor: Proximity value: 216[0m
+[0;32mI (5297) MAIN: Proximity interrupt → value: 216[0m
+[0;32mI (5297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5377) ProximitySensor: Proximity value: 229[0m
+[0;32mI (5377) MAIN: Proximity interrupt → value: 229[0m
+[0;32mI (5377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5457) ProximitySensor: Proximity value: 228[0m
+[0;32mI (5457) MAIN: Proximity interrupt → value: 228[0m
+[0;32mI (5457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5537) ProximitySensor: Proximity value: 235[0m
+[0;32mI (5537) MAIN: Proximity interrupt → value: 235[0m
+[0;32mI (5537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5617) ProximitySensor: Proximity value: 231[0m
+[0;32mI (5617) MAIN: Proximity interrupt → value: 231[0m
+[0;32mI (5617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5697) ProximitySensor: Proximity value: 239[0m
+[0;32mI (5697) MAIN: Proximity interrupt → value: 239[0m
+[0;32mI (5697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5777) ProximitySensor: Proximity value: 252[0m
+[0;32mI (5777) MAIN: Proximity interrupt → value: 252[0m
+[0;32mI (5777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5857) ProximitySensor: Proximity value: 255[0m
+[0;32mI (5857) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (5857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (5937) ProximitySensor: Proximity value: 255[0m
+[0;32mI (5937) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (5937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6017) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6017) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6097) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6097) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6177) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6177) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6257) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6257) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6337) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6337) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6417) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6417) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6497) ProximitySensor: Proximity value: 255[0m
+[0;32mI (6497) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (6497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6577) ProximitySensor: Proximity value: 219[0m
+[0;32mI (6577) MAIN: Proximity interrupt → value: 219[0m
+[0;32mI (6577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6657) ProximitySensor: Proximity value: 198[0m
+[0;32mI (6657) MAIN: Proximity interrupt → value: 198[0m
+[0;32mI (6657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6737) ProximitySensor: Proximity value: 181[0m
+[0;32mI (6737) MAIN: Proximity interrupt → value: 181[0m
+[0;32mI (6737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6817) ProximitySensor: Proximity value: 176[0m
+[0;32mI (6817) MAIN: Proximity interrupt → value: 176[0m
+[0;32mI (6817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6897) ProximitySensor: Proximity value: 166[0m
+[0;32mI (6897) MAIN: Proximity interrupt → value: 166[0m
+[0;32mI (6897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (6977) ProximitySensor: Proximity value: 156[0m
+[0;32mI (6977) MAIN: Proximity interrupt → value: 156[0m
+[0;32mI (6977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7057) ProximitySensor: Proximity value: 149[0m
+[0;32mI (7057) MAIN: Proximity interrupt → value: 149[0m
+[0;32mI (7057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7137) ProximitySensor: Proximity value: 138[0m
+[0;32mI (7137) MAIN: Proximity interrupt → value: 138[0m
+[0;32mI (7137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7217) ProximitySensor: Proximity value: 131[0m
+[0;32mI (7217) MAIN: Proximity interrupt → value: 131[0m
+[0;32mI (7217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7297) ProximitySensor: Proximity value: 119[0m
+[0;32mI (7297) MAIN: Proximity interrupt → value: 119[0m
+[0;32mI (7297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7377) ProximitySensor: Proximity value: 114[0m
+[0;32mI (7377) MAIN: Proximity interrupt → value: 114[0m
+[0;32mI (7377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7457) ProximitySensor: Proximity value: 109[0m
+[0;32mI (7457) MAIN: Proximity interrupt → value: 109[0m
+[0;32mI (7457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7537) ProximitySensor: Proximity value: 102[0m
+[0;32mI (7537) MAIN: Proximity interrupt → value: 102[0m
+[0;32mI (7537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7617) ProximitySensor: Proximity value: 101[0m
+[0;32mI (7617) MAIN: Proximity interrupt → value: 101[0m
+[0;32mI (7617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7697) ProximitySensor: Proximity value: 93[0m
+[0;32mI (7697) MAIN: Proximity interrupt → value: 93[0m
+[0;32mI (7697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7777) ProximitySensor: Proximity value: 93[0m
+[0;32mI (7777) MAIN: Proximity interrupt → value: 93[0m
+[0;32mI (7777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7857) ProximitySensor: Proximity value: 88[0m
+[0;32mI (7857) MAIN: Proximity interrupt → value: 88[0m
+[0;32mI (7857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (7937) ProximitySensor: Proximity value: 83[0m
+[0;32mI (7937) MAIN: Proximity interrupt → value: 83[0m
+[0;32mI (7937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8017) ProximitySensor: Proximity value: 82[0m
+[0;32mI (8017) MAIN: Proximity interrupt → value: 82[0m
+[0;32mI (8017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8097) ProximitySensor: Proximity value: 79[0m
+[0;32mI (8097) MAIN: Proximity interrupt → value: 79[0m
+[0;32mI (8097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8177) ProximitySensor: Proximity value: 76[0m
+[0;32mI (8177) MAIN: Proximity interrupt → value: 76[0m
+[0;32mI (8177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8257) ProximitySensor: Proximity value: 74[0m
+[0;32mI (8257) MAIN: Proximity interrupt → value: 74[0m
+[0;32mI (8257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8337) ProximitySensor: Proximity value: 71[0m
+[0;32mI (8337) MAIN: Proximity interrupt → value: 71[0m
+[0;32mI (8337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8417) ProximitySensor: Proximity value: 69[0m
+[0;32mI (8417) MAIN: Proximity interrupt → value: 69[0m
+[0;32mI (8417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8497) ProximitySensor: Proximity value: 69[0m
+[0;32mI (8497) MAIN: Proximity interrupt → value: 69[0m
+[0;32mI (8497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8577) ProximitySensor: Proximity value: 67[0m
+[0;32mI (8577) MAIN: Proximity interrupt → value: 67[0m
+[0;32mI (8577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8657) ProximitySensor: Proximity value: 65[0m
+[0;32mI (8657) MAIN: Proximity interrupt → value: 65[0m
+[0;32mI (8657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8737) ProximitySensor: Proximity value: 61[0m
+[0;32mI (8737) MAIN: Proximity interrupt → value: 61[0m
+[0;32mI (8737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8817) ProximitySensor: Proximity value: 60[0m
+[0;32mI (8817) MAIN: Proximity interrupt → value: 60[0m
+[0;32mI (8817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8897) ProximitySensor: Proximity value: 59[0m
+[0;32mI (8897) MAIN: Proximity interrupt → value: 59[0m
+[0;32mI (8897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (8977) ProximitySensor: Proximity value: 59[0m
+[0;32mI (8977) MAIN: Proximity interrupt → value: 59[0m
+[0;32mI (8977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9057) ProximitySensor: Proximity value: 52[0m
+[0;32mI (9057) MAIN: Proximity interrupt → value: 52[0m
+[0;32mI (9057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9137) ProximitySensor: Proximity value: 53[0m
+[0;32mI (9137) MAIN: Proximity interrupt → value: 53[0m
+[0;32mI (9137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9217) ProximitySensor: Proximity value: 54[0m
+[0;32mI (9217) MAIN: Proximity interrupt → value: 54[0m
+[0;32mI (9217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9297) ProximitySensor: Proximity value: 52[0m
+[0;32mI (9297) MAIN: Proximity interrupt → value: 52[0m
+[0;32mI (9297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9377) ProximitySensor: Proximity value: 51[0m
+[0;32mI (9377) MAIN: Proximity interrupt → value: 51[0m
+[0;32mI (9377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9457) ProximitySensor: Proximity value: 48[0m
+[0;32mI (9457) MAIN: Proximity interrupt → value: 48[0m
+[0;32mI (9457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9537) ProximitySensor: Proximity value: 46[0m
+[0;32mI (9537) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (9537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9617) ProximitySensor: Proximity value: 48[0m
+[0;32mI (9617) MAIN: Proximity interrupt → value: 48[0m
+[0;32mI (9617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9697) ProximitySensor: Proximity value: 44[0m
+[0;32mI (9697) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (9697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9777) ProximitySensor: Proximity value: 45[0m
+[0;32mI (9777) MAIN: Proximity interrupt → value: 45[0m
+[0;32mI (9777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9857) ProximitySensor: Proximity value: 44[0m
+[0;32mI (9857) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (9857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (9937) ProximitySensor: Proximity value: 44[0m
+[0;32mI (9937) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (9937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10017) ProximitySensor: Proximity value: 44[0m
+[0;32mI (10017) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (10017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10097) ProximitySensor: Proximity value: 40[0m
+[0;32mI (10097) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (10097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10177) ProximitySensor: Proximity value: 43[0m
+[0;32mI (10177) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (10177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10257) ProximitySensor: Proximity value: 40[0m
+[0;32mI (10257) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (10257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10337) ProximitySensor: Proximity value: 41[0m
+[0;32mI (10337) MAIN: Proximity interrupt → value: 41[0m
+[0;32mI (10337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10417) ProximitySensor: Proximity value: 40[0m
+[0;32mI (10417) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (10417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10497) ProximitySensor: Proximity value: 40[0m
+[0;32mI (10497) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (10497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10577) ProximitySensor: Proximity value: 39[0m
+[0;32mI (10577) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (10577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10657) ProximitySensor: Proximity value: 35[0m
+[0;32mI (10657) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (10657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10737) ProximitySensor: Proximity value: 36[0m
+[0;32mI (10737) MAIN: Proximity interrupt → value: 36[0m
+[0;32mI (10737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10817) ProximitySensor: Proximity value: 38[0m
+[0;32mI (10817) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (10817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10897) ProximitySensor: Proximity value: 35[0m
+[0;32mI (10897) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (10897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (10977) ProximitySensor: Proximity value: 35[0m
+[0;32mI (10977) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (10977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11057) ProximitySensor: Proximity value: 36[0m
+[0;32mI (11057) MAIN: Proximity interrupt → value: 36[0m
+[0;32mI (11057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11137) ProximitySensor: Proximity value: 34[0m
+[0;32mI (11137) MAIN: Proximity interrupt → value: 34[0m
+[0;32mI (11137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11217) ProximitySensor: Proximity value: 33[0m
+[0;32mI (11217) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (11217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11297) ProximitySensor: Proximity value: 35[0m
+[0;32mI (11297) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (11297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11377) ProximitySensor: Proximity value: 31[0m
+[0;32mI (11377) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (11377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11457) ProximitySensor: Proximity value: 31[0m
+[0;32mI (11457) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (11457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11537) ProximitySensor: Proximity value: 34[0m
+[0;32mI (11537) MAIN: Proximity interrupt → value: 34[0m
+[0;32mI (11537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11617) ProximitySensor: Proximity value: 33[0m
+[0;32mI (11617) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (11617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11697) ProximitySensor: Proximity value: 31[0m
+[0;32mI (11697) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (11697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11777) ProximitySensor: Proximity value: 29[0m
+[0;32mI (11777) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (11777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11857) ProximitySensor: Proximity value: 29[0m
+[0;32mI (11857) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (11857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (11937) ProximitySensor: Proximity value: 31[0m
+[0;32mI (11937) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (11937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12017) ProximitySensor: Proximity value: 29[0m
+[0;32mI (12017) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (12017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12097) ProximitySensor: Proximity value: 31[0m
+[0;32mI (12097) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (12097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12177) ProximitySensor: Proximity value: 28[0m
+[0;32mI (12177) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (12177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12257) ProximitySensor: Proximity value: 28[0m
+[0;32mI (12257) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (12257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12337) ProximitySensor: Proximity value: 29[0m
+[0;32mI (12337) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (12337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12417) ProximitySensor: Proximity value: 28[0m
+[0;32mI (12417) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (12417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12497) ProximitySensor: Proximity value: 27[0m
+[0;32mI (12497) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (12497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12577) ProximitySensor: Proximity value: 29[0m
+[0;32mI (12577) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (12577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12657) ProximitySensor: Proximity value: 28[0m
+[0;32mI (12657) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (12657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12737) ProximitySensor: Proximity value: 29[0m
+[0;32mI (12737) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (12737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12817) ProximitySensor: Proximity value: 30[0m
+[0;32mI (12817) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (12817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12897) ProximitySensor: Proximity value: 27[0m
+[0;32mI (12897) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (12897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (12977) ProximitySensor: Proximity value: 28[0m
+[0;32mI (12977) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (12977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13057) ProximitySensor: Proximity value: 25[0m
+[0;32mI (13057) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (13057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13137) ProximitySensor: Proximity value: 28[0m
+[0;32mI (13137) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (13137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13217) ProximitySensor: Proximity value: 28[0m
+[0;32mI (13217) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (13217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13297) ProximitySensor: Proximity value: 25[0m
+[0;32mI (13297) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (13297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13377) ProximitySensor: Proximity value: 27[0m
+[0;32mI (13377) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (13377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13457) ProximitySensor: Proximity value: 26[0m
+[0;32mI (13457) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (13457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13537) ProximitySensor: Proximity value: 25[0m
+[0;32mI (13537) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (13537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13617) ProximitySensor: Proximity value: 27[0m
+[0;32mI (13617) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (13617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (13697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (13697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13777) ProximitySensor: Proximity value: 24[0m
+[0;32mI (13777) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (13777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13857) ProximitySensor: Proximity value: 25[0m
+[0;32mI (13857) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (13857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (13937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (13937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (13937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14017) ProximitySensor: Proximity value: 25[0m
+[0;32mI (14017) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (14017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14097) ProximitySensor: Proximity value: 23[0m
+[0;32mI (14097) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (14097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (14177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (14177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14257) ProximitySensor: Proximity value: 25[0m
+[0;32mI (14257) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (14257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14337) ProximitySensor: Proximity value: 22[0m
+[0;32mI (14337) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (14337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14417) ProximitySensor: Proximity value: 23[0m
+[0;32mI (14417) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (14417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14497) ProximitySensor: Proximity value: 22[0m
+[0;32mI (14497) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (14497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14577) ProximitySensor: Proximity value: 26[0m
+[0;32mI (14577) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (14577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14657) ProximitySensor: Proximity value: 22[0m
+[0;32mI (14657) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (14657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (14737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (14737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14817) ProximitySensor: Proximity value: 22[0m
+[0;32mI (14817) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (14817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14897) ProximitySensor: Proximity value: 26[0m
+[0;32mI (14897) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (14897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (14977) ProximitySensor: Proximity value: 24[0m
+[0;32mI (14977) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (14977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15057) ProximitySensor: Proximity value: 23[0m
+[0;32mI (15057) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (15057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15137) ProximitySensor: Proximity value: 20[0m
+[0;32mI (15137) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (15137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (15217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (15217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15297) ProximitySensor: Proximity value: 22[0m
+[0;32mI (15297) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (15297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (15377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (15377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15457) ProximitySensor: Proximity value: 24[0m
+[0;32mI (15457) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (15457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15537) ProximitySensor: Proximity value: 19[0m
+[0;32mI (15537) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (15537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (15617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (15617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15697) ProximitySensor: Proximity value: 20[0m
+[0;32mI (15697) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (15697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15777) ProximitySensor: Proximity value: 20[0m
+[0;32mI (15777) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (15777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (15857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (15857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (15937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (15937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (15937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16017) ProximitySensor: Proximity value: 18[0m
+[0;32mI (16017) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (16017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (16177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (16177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (16337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (16337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16417) ProximitySensor: Proximity value: 21[0m
+[0;32mI (16417) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (16417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16497) ProximitySensor: Proximity value: 25[0m
+[0;32mI (16497) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (16497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16577) ProximitySensor: Proximity value: 23[0m
+[0;32mI (16577) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (16577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16657) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16657) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (16737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (16737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16817) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16817) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16897) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16897) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (16977) ProximitySensor: Proximity value: 22[0m
+[0;32mI (16977) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (16977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17057) ProximitySensor: Proximity value: 22[0m
+[0;32mI (17057) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (17057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17297) ProximitySensor: Proximity value: 20[0m
+[0;32mI (17297) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (17297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17377) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17377) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17457) ProximitySensor: Proximity value: 22[0m
+[0;32mI (17457) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (17457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17537) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17537) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17617) ProximitySensor: Proximity value: 19[0m
+[0;32mI (17617) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (17617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17697) ProximitySensor: Proximity value: 20[0m
+[0;32mI (17697) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (17697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (17857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (17857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (17937) ProximitySensor: Proximity value: 20[0m
+[0;32mI (17937) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (17937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18017) ProximitySensor: Proximity value: 21[0m
+[0;32mI (18017) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (18017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18097) ProximitySensor: Proximity value: 21[0m
+[0;32mI (18097) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (18097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18177) ProximitySensor: Proximity value: 23[0m
+[0;32mI (18177) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (18177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18257) ProximitySensor: Proximity value: 21[0m
+[0;32mI (18257) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (18257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18337) ProximitySensor: Proximity value: 23[0m
+[0;32mI (18337) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (18337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18417) ProximitySensor: Proximity value: 21[0m
+[0;32mI (18417) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (18417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (18497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (18497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18577) ProximitySensor: Proximity value: 21[0m
+[0;32mI (18577) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (18577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18657) ProximitySensor: Proximity value: 19[0m
+[0;32mI (18657) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (18657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (18737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (18737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18817) ProximitySensor: Proximity value: 23[0m
+[0;32mI (18817) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (18817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18897) ProximitySensor: Proximity value: 23[0m
+[0;32mI (18897) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (18897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (18977) ProximitySensor: Proximity value: 22[0m
+[0;32mI (18977) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (18977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19057) ProximitySensor: Proximity value: 24[0m
+[0;32mI (19057) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (19057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19137) ProximitySensor: Proximity value: 20[0m
+[0;32mI (19137) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (19137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19217) ProximitySensor: Proximity value: 23[0m
+[0;32mI (19217) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (19217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19297) ProximitySensor: Proximity value: 23[0m
+[0;32mI (19297) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (19297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19377) ProximitySensor: Proximity value: 24[0m
+[0;32mI (19377) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (19377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19457) ProximitySensor: Proximity value: 23[0m
+[0;32mI (19457) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (19457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19537) ProximitySensor: Proximity value: 23[0m
+[0;32mI (19537) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (19537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19617) ProximitySensor: Proximity value: 25[0m
+[0;32mI (19617) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (19617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19697) ProximitySensor: Proximity value: 23[0m
+[0;32mI (19697) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (19697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19777) ProximitySensor: Proximity value: 26[0m
+[0;32mI (19777) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (19777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19857) ProximitySensor: Proximity value: 27[0m
+[0;32mI (19857) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (19857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (19937) ProximitySensor: Proximity value: 29[0m
+[0;32mI (19937) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (19937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20017) ProximitySensor: Proximity value: 27[0m
+[0;32mI (20017) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (20017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20097) ProximitySensor: Proximity value: 28[0m
+[0;32mI (20097) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (20097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20177) ProximitySensor: Proximity value: 26[0m
+[0;32mI (20177) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (20177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20257) ProximitySensor: Proximity value: 25[0m
+[0;32mI (20257) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (20257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20337) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20337) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20417) ProximitySensor: Proximity value: 27[0m
+[0;32mI (20417) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (20417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20497) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20497) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20577) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20577) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20657) ProximitySensor: Proximity value: 30[0m
+[0;32mI (20657) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (20657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20737) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20737) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20817) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20817) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20897) ProximitySensor: Proximity value: 29[0m
+[0;32mI (20897) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (20897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (20977) ProximitySensor: Proximity value: 30[0m
+[0;32mI (20977) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (20977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21057) ProximitySensor: Proximity value: 29[0m
+[0;32mI (21057) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (21057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21137) ProximitySensor: Proximity value: 28[0m
+[0;32mI (21137) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (21137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21217) ProximitySensor: Proximity value: 30[0m
+[0;32mI (21217) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (21217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21297) ProximitySensor: Proximity value: 29[0m
+[0;32mI (21297) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (21297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21377) ProximitySensor: Proximity value: 30[0m
+[0;32mI (21377) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (21377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21457) ProximitySensor: Proximity value: 33[0m
+[0;32mI (21457) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (21457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21537) ProximitySensor: Proximity value: 31[0m
+[0;32mI (21537) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (21537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21617) ProximitySensor: Proximity value: 30[0m
+[0;32mI (21617) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (21617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21697) ProximitySensor: Proximity value: 30[0m
+[0;32mI (21697) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (21697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21777) ProximitySensor: Proximity value: 32[0m
+[0;32mI (21777) MAIN: Proximity interrupt → value: 32[0m
+[0;32mI (21777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21857) ProximitySensor: Proximity value: 31[0m
+[0;32mI (21857) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (21857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (21937) ProximitySensor: Proximity value: 31[0m
+[0;32mI (21937) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (21937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22017) ProximitySensor: Proximity value: 31[0m
+[0;32mI (22017) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (22017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22097) ProximitySensor: Proximity value: 31[0m
+[0;32mI (22097) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (22097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22177) ProximitySensor: Proximity value: 29[0m
+[0;32mI (22177) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (22177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22257) ProximitySensor: Proximity value: 29[0m
+[0;32mI (22257) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (22257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22337) ProximitySensor: Proximity value: 32[0m
+[0;32mI (22337) MAIN: Proximity interrupt → value: 32[0m
+[0;32mI (22337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22417) ProximitySensor: Proximity value: 30[0m
+[0;32mI (22417) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (22417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22497) ProximitySensor: Proximity value: 30[0m
+[0;32mI (22497) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (22497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22577) ProximitySensor: Proximity value: 33[0m
+[0;32mI (22577) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (22577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22657) ProximitySensor: Proximity value: 31[0m
+[0;32mI (22657) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (22657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22737) ProximitySensor: Proximity value: 33[0m
+[0;32mI (22737) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (22737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22817) ProximitySensor: Proximity value: 30[0m
+[0;32mI (22817) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (22817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22897) ProximitySensor: Proximity value: 30[0m
+[0;32mI (22897) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (22897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (22977) ProximitySensor: Proximity value: 33[0m
+[0;32mI (22977) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (22977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23057) ProximitySensor: Proximity value: 31[0m
+[0;32mI (23057) MAIN: Proximity interrupt → value: 31[0m
+[0;32mI (23057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23137) ProximitySensor: Proximity value: 29[0m
+[0;32mI (23137) MAIN: Proximity interrupt → value: 29[0m
+[0;32mI (23137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23217) ProximitySensor: Proximity value: 27[0m
+[0;32mI (23217) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (23217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23297) ProximitySensor: Proximity value: 27[0m
+[0;32mI (23297) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (23297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23377) ProximitySensor: Proximity value: 25[0m
+[0;32mI (23377) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (23377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23457) ProximitySensor: Proximity value: 23[0m
+[0;32mI (23457) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (23457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23537) ProximitySensor: Proximity value: 26[0m
+[0;32mI (23537) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (23537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23617) ProximitySensor: Proximity value: 24[0m
+[0;32mI (23617) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (23617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23697) ProximitySensor: Proximity value: 25[0m
+[0;32mI (23697) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (23697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23777) ProximitySensor: Proximity value: 25[0m
+[0;32mI (23777) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (23777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23857) ProximitySensor: Proximity value: 27[0m
+[0;32mI (23857) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (23857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (23937) ProximitySensor: Proximity value: 25[0m
+[0;32mI (23937) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (23937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24017) ProximitySensor: Proximity value: 26[0m
+[0;32mI (24017) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (24017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24097) ProximitySensor: Proximity value: 27[0m
+[0;32mI (24097) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (24097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24177) ProximitySensor: Proximity value: 33[0m
+[0;32mI (24177) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (24177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24257) ProximitySensor: Proximity value: 33[0m
+[0;32mI (24257) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (24257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24337) ProximitySensor: Proximity value: 32[0m
+[0;32mI (24337) MAIN: Proximity interrupt → value: 32[0m
+[0;32mI (24337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24417) ProximitySensor: Proximity value: 40[0m
+[0;32mI (24417) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (24417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24497) ProximitySensor: Proximity value: 40[0m
+[0;32mI (24497) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (24497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24577) ProximitySensor: Proximity value: 43[0m
+[0;32mI (24577) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (24577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24657) ProximitySensor: Proximity value: 43[0m
+[0;32mI (24657) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (24657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24737) ProximitySensor: Proximity value: 45[0m
+[0;32mI (24737) MAIN: Proximity interrupt → value: 45[0m
+[0;32mI (24737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24817) ProximitySensor: Proximity value: 45[0m
+[0;32mI (24817) MAIN: Proximity interrupt → value: 45[0m
+[0;32mI (24817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24897) ProximitySensor: Proximity value: 47[0m
+[0;32mI (24897) MAIN: Proximity interrupt → value: 47[0m
+[0;32mI (24897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (24977) ProximitySensor: Proximity value: 46[0m
+[0;32mI (24977) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (24977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25057) ProximitySensor: Proximity value: 46[0m
+[0;32mI (25057) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (25057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25137) ProximitySensor: Proximity value: 46[0m
+[0;32mI (25137) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (25137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25217) ProximitySensor: Proximity value: 47[0m
+[0;32mI (25217) MAIN: Proximity interrupt → value: 47[0m
+[0;32mI (25217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25297) ProximitySensor: Proximity value: 44[0m
+[0;32mI (25297) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (25297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25377) ProximitySensor: Proximity value: 42[0m
+[0;32mI (25377) MAIN: Proximity interrupt → value: 42[0m
+[0;32mI (25377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25457) ProximitySensor: Proximity value: 43[0m
+[0;32mI (25457) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (25457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25537) ProximitySensor: Proximity value: 42[0m
+[0;32mI (25537) MAIN: Proximity interrupt → value: 42[0m
+[0;32mI (25537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25617) ProximitySensor: Proximity value: 39[0m
+[0;32mI (25617) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (25617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25697) ProximitySensor: Proximity value: 38[0m
+[0;32mI (25697) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (25697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25777) ProximitySensor: Proximity value: 34[0m
+[0;32mI (25777) MAIN: Proximity interrupt → value: 34[0m
+[0;32mI (25777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25857) ProximitySensor: Proximity value: 39[0m
+[0;32mI (25857) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (25857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (25937) ProximitySensor: Proximity value: 38[0m
+[0;32mI (25937) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (25937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26017) ProximitySensor: Proximity value: 36[0m
+[0;32mI (26017) MAIN: Proximity interrupt → value: 36[0m
+[0;32mI (26017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26097) ProximitySensor: Proximity value: 35[0m
+[0;32mI (26097) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (26097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26177) ProximitySensor: Proximity value: 33[0m
+[0;32mI (26177) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (26177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26257) ProximitySensor: Proximity value: 34[0m
+[0;32mI (26257) MAIN: Proximity interrupt → value: 34[0m
+[0;32mI (26257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26337) ProximitySensor: Proximity value: 37[0m
+[0;32mI (26337) MAIN: Proximity interrupt → value: 37[0m
+[0;32mI (26337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26417) ProximitySensor: Proximity value: 35[0m
+[0;32mI (26417) MAIN: Proximity interrupt → value: 35[0m
+[0;32mI (26417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26497) ProximitySensor: Proximity value: 37[0m
+[0;32mI (26497) MAIN: Proximity interrupt → value: 37[0m
+[0;32mI (26497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26577) ProximitySensor: Proximity value: 37[0m
+[0;32mI (26577) MAIN: Proximity interrupt → value: 37[0m
+[0;32mI (26577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26657) ProximitySensor: Proximity value: 39[0m
+[0;32mI (26657) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (26657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26737) ProximitySensor: Proximity value: 38[0m
+[0;32mI (26737) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (26737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26817) ProximitySensor: Proximity value: 40[0m
+[0;32mI (26817) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (26817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26897) ProximitySensor: Proximity value: 38[0m
+[0;32mI (26897) MAIN: Proximity interrupt → value: 38[0m
+[0;32mI (26897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (26977) ProximitySensor: Proximity value: 40[0m
+[0;32mI (26977) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (26977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27057) ProximitySensor: Proximity value: 41[0m
+[0;32mI (27057) MAIN: Proximity interrupt → value: 41[0m
+[0;32mI (27057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27137) ProximitySensor: Proximity value: 40[0m
+[0;32mI (27137) MAIN: Proximity interrupt → value: 40[0m
+[0;32mI (27137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27217) ProximitySensor: Proximity value: 44[0m
+[0;32mI (27217) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (27217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27297) ProximitySensor: Proximity value: 43[0m
+[0;32mI (27297) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (27297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27377) ProximitySensor: Proximity value: 43[0m
+[0;32mI (27377) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (27377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27457) ProximitySensor: Proximity value: 44[0m
+[0;32mI (27457) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (27457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27537) ProximitySensor: Proximity value: 46[0m
+[0;32mI (27537) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (27537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27617) ProximitySensor: Proximity value: 44[0m
+[0;32mI (27617) MAIN: Proximity interrupt → value: 44[0m
+[0;32mI (27617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27697) ProximitySensor: Proximity value: 43[0m
+[0;32mI (27697) MAIN: Proximity interrupt → value: 43[0m
+[0;32mI (27697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27777) ProximitySensor: Proximity value: 46[0m
+[0;32mI (27777) MAIN: Proximity interrupt → value: 46[0m
+[0;32mI (27777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27857) ProximitySensor: Proximity value: 47[0m
+[0;32mI (27857) MAIN: Proximity interrupt → value: 47[0m
+[0;32mI (27857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (27937) ProximitySensor: Proximity value: 50[0m
+[0;32mI (27937) MAIN: Proximity interrupt → value: 50[0m
+[0;32mI (27937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28017) ProximitySensor: Proximity value: 53[0m
+[0;32mI (28017) MAIN: Proximity interrupt → value: 53[0m
+[0;32mI (28017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28097) ProximitySensor: Proximity value: 53[0m
+[0;32mI (28097) MAIN: Proximity interrupt → value: 53[0m
+[0;32mI (28097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28177) ProximitySensor: Proximity value: 58[0m
+[0;32mI (28177) MAIN: Proximity interrupt → value: 58[0m
+[0;32mI (28177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28257) ProximitySensor: Proximity value: 57[0m
+[0;32mI (28257) MAIN: Proximity interrupt → value: 57[0m
+[0;32mI (28257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28337) ProximitySensor: Proximity value: 60[0m
+[0;32mI (28337) MAIN: Proximity interrupt → value: 60[0m
+[0;32mI (28337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28417) ProximitySensor: Proximity value: 64[0m
+[0;32mI (28417) MAIN: Proximity interrupt → value: 64[0m
+[0;32mI (28417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28497) ProximitySensor: Proximity value: 68[0m
+[0;32mI (28497) MAIN: Proximity interrupt → value: 68[0m
+[0;32mI (28497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28577) ProximitySensor: Proximity value: 74[0m
+[0;32mI (28577) MAIN: Proximity interrupt → value: 74[0m
+[0;32mI (28577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28657) ProximitySensor: Proximity value: 76[0m
+[0;32mI (28657) MAIN: Proximity interrupt → value: 76[0m
+[0;32mI (28657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28737) ProximitySensor: Proximity value: 76[0m
+[0;32mI (28737) MAIN: Proximity interrupt → value: 76[0m
+[0;32mI (28737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28817) ProximitySensor: Proximity value: 83[0m
+[0;32mI (28817) MAIN: Proximity interrupt → value: 83[0m
+[0;32mI (28817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28897) ProximitySensor: Proximity value: 90[0m
+[0;32mI (28897) MAIN: Proximity interrupt → value: 90[0m
+[0;32mI (28897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (28977) ProximitySensor: Proximity value: 102[0m
+[0;32mI (28977) MAIN: Proximity interrupt → value: 102[0m
+[0;32mI (28977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29057) ProximitySensor: Proximity value: 114[0m
+[0;32mI (29057) MAIN: Proximity interrupt → value: 114[0m
+[0;32mI (29057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29137) ProximitySensor: Proximity value: 125[0m
+[0;32mI (29137) MAIN: Proximity interrupt → value: 125[0m
+[0;32mI (29137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29217) ProximitySensor: Proximity value: 132[0m
+[0;32mI (29217) MAIN: Proximity interrupt → value: 132[0m
+[0;32mI (29217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29297) ProximitySensor: Proximity value: 134[0m
+[0;32mI (29297) MAIN: Proximity interrupt → value: 134[0m
+[0;32mI (29297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29377) ProximitySensor: Proximity value: 141[0m
+[0;32mI (29377) MAIN: Proximity interrupt → value: 141[0m
+[0;32mI (29377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29457) ProximitySensor: Proximity value: 163[0m
+[0;32mI (29457) MAIN: Proximity interrupt → value: 163[0m
+[0;32mI (29457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29537) ProximitySensor: Proximity value: 189[0m
+[0;32mI (29537) MAIN: Proximity interrupt → value: 189[0m
+[0;32mI (29537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29617) ProximitySensor: Proximity value: 224[0m
+[0;32mI (29617) MAIN: Proximity interrupt → value: 224[0m
+[0;32mI (29617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29697) ProximitySensor: Proximity value: 232[0m
+[0;32mI (29697) MAIN: Proximity interrupt → value: 232[0m
+[0;32mI (29697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29777) ProximitySensor: Proximity value: 214[0m
+[0;32mI (29777) MAIN: Proximity interrupt → value: 214[0m
+[0;32mI (29777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29857) ProximitySensor: Proximity value: 223[0m
+[0;32mI (29857) MAIN: Proximity interrupt → value: 223[0m
+[0;32mI (29857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (29937) ProximitySensor: Proximity value: 240[0m
+[0;32mI (29937) MAIN: Proximity interrupt → value: 240[0m
+[0;32mI (29937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30017) ProximitySensor: Proximity value: 255[0m
+[0;32mI (30017) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (30017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30097) ProximitySensor: Proximity value: 255[0m
+[0;32mI (30097) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (30097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30177) ProximitySensor: Proximity value: 255[0m
+[0;32mI (30177) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (30177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30257) ProximitySensor: Proximity value: 214[0m
+[0;32mI (30257) MAIN: Proximity interrupt → value: 214[0m
+[0;32mI (30257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30337) ProximitySensor: Proximity value: 123[0m
+[0;32mI (30337) MAIN: Proximity interrupt → value: 123[0m
+[0;32mI (30337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30417) ProximitySensor: Proximity value: 79[0m
+[0;32mI (30417) MAIN: Proximity interrupt → value: 79[0m
+[0;32mI (30417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30497) ProximitySensor: Proximity value: 54[0m
+[0;32mI (30497) MAIN: Proximity interrupt → value: 54[0m
+[0;32mI (30497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30577) ProximitySensor: Proximity value: 42[0m
+[0;32mI (30577) MAIN: Proximity interrupt → value: 42[0m
+[0;32mI (30577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30657) ProximitySensor: Proximity value: 36[0m
+[0;32mI (30657) MAIN: Proximity interrupt → value: 36[0m
+[0;32mI (30657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30737) ProximitySensor: Proximity value: 33[0m
+[0;32mI (30737) MAIN: Proximity interrupt → value: 33[0m
+[0;32mI (30737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30817) ProximitySensor: Proximity value: 28[0m
+[0;32mI (30817) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (30817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30897) ProximitySensor: Proximity value: 28[0m
+[0;32mI (30897) MAIN: Proximity interrupt → value: 28[0m
+[0;32mI (30897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (30977) ProximitySensor: Proximity value: 25[0m
+[0;32mI (30977) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (30977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31057) ProximitySensor: Proximity value: 27[0m
+[0;32mI (31057) MAIN: Proximity interrupt → value: 27[0m
+[0;32mI (31057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31137) ProximitySensor: Proximity value: 22[0m
+[0;32mI (31137) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (31137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31217) ProximitySensor: Proximity value: 22[0m
+[0;32mI (31217) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (31217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31297) ProximitySensor: Proximity value: 25[0m
+[0;32mI (31297) MAIN: Proximity interrupt → value: 25[0m
+[0;32mI (31297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31377) ProximitySensor: Proximity value: 22[0m
+[0;32mI (31377) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (31377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31457) ProximitySensor: Proximity value: 22[0m
+[0;32mI (31457) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (31457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31537) ProximitySensor: Proximity value: 21[0m
+[0;32mI (31537) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (31537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (31617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (31617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31697) ProximitySensor: Proximity value: 26[0m
+[0;32mI (31697) MAIN: Proximity interrupt → value: 26[0m
+[0;32mI (31697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31777) ProximitySensor: Proximity value: 30[0m
+[0;32mI (31777) MAIN: Proximity interrupt → value: 30[0m
+[0;32mI (31777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31857) ProximitySensor: Proximity value: 39[0m
+[0;32mI (31857) MAIN: Proximity interrupt → value: 39[0m
+[0;32mI (31857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (31937) ProximitySensor: Proximity value: 59[0m
+[0;32mI (31937) MAIN: Proximity interrupt → value: 59[0m
+[0;32mI (31937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32017) ProximitySensor: Proximity value: 82[0m
+[0;32mI (32017) MAIN: Proximity interrupt → value: 82[0m
+[0;32mI (32017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32097) ProximitySensor: Proximity value: 113[0m
+[0;32mI (32097) MAIN: Proximity interrupt → value: 113[0m
+[0;32mI (32097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32177) ProximitySensor: Proximity value: 145[0m
+[0;32mI (32177) MAIN: Proximity interrupt → value: 145[0m
+[0;32mI (32177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32257) ProximitySensor: Proximity value: 180[0m
+[0;32mI (32257) MAIN: Proximity interrupt → value: 180[0m
+[0;32mI (32257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32337) ProximitySensor: Proximity value: 210[0m
+[0;32mI (32337) MAIN: Proximity interrupt → value: 210[0m
+[0;32mI (32337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32417) ProximitySensor: Proximity value: 230[0m
+[0;32mI (32417) MAIN: Proximity interrupt → value: 230[0m
+[0;32mI (32417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32497) ProximitySensor: Proximity value: 229[0m
+[0;32mI (32497) MAIN: Proximity interrupt → value: 229[0m
+[0;32mI (32497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32577) ProximitySensor: Proximity value: 213[0m
+[0;32mI (32577) MAIN: Proximity interrupt → value: 213[0m
+[0;32mI (32577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32657) ProximitySensor: Proximity value: 195[0m
+[0;32mI (32657) MAIN: Proximity interrupt → value: 195[0m
+[0;32mI (32657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32737) ProximitySensor: Proximity value: 202[0m
+[0;32mI (32737) MAIN: Proximity interrupt → value: 202[0m
+[0;32mI (32737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32817) ProximitySensor: Proximity value: 218[0m
+[0;32mI (32817) MAIN: Proximity interrupt → value: 218[0m
+[0;32mI (32817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32897) ProximitySensor: Proximity value: 240[0m
+[0;32mI (32897) MAIN: Proximity interrupt → value: 240[0m
+[0;32mI (32897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (32977) ProximitySensor: Proximity value: 248[0m
+[0;32mI (32977) MAIN: Proximity interrupt → value: 248[0m
+[0;32mI (32977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33057) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33057) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33137) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33137) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33217) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33217) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33297) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33297) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33377) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33377) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33457) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33457) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33537) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33537) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33617) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33617) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33697) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33697) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33777) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33777) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33857) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33857) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (33937) ProximitySensor: Proximity value: 255[0m
+[0;32mI (33937) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (33937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34017) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34017) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34097) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34097) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34177) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34177) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34257) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34257) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34337) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34337) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34417) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34417) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34497) ProximitySensor: Proximity value: 255[0m
+[0;32mI (34497) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (34497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34577) ProximitySensor: Proximity value: 254[0m
+[0;32mI (34577) MAIN: Proximity interrupt → value: 254[0m
+[0;32mI (34577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34657) ProximitySensor: Proximity value: 242[0m
+[0;32mI (34657) MAIN: Proximity interrupt → value: 242[0m
+[0;32mI (34657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34737) ProximitySensor: Proximity value: 222[0m
+[0;32mI (34737) MAIN: Proximity interrupt → value: 222[0m
+[0;32mI (34737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34817) ProximitySensor: Proximity value: 205[0m
+[0;32mI (34817) MAIN: Proximity interrupt → value: 205[0m
+[0;32mI (34817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34897) ProximitySensor: Proximity value: 192[0m
+[0;32mI (34897) MAIN: Proximity interrupt → value: 192[0m
+[0;32mI (34897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (34977) ProximitySensor: Proximity value: 194[0m
+[0;32mI (34977) MAIN: Proximity interrupt → value: 194[0m
+[0;32mI (34977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35057) ProximitySensor: Proximity value: 206[0m
+[0;32mI (35057) MAIN: Proximity interrupt → value: 206[0m
+[0;32mI (35057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35137) ProximitySensor: Proximity value: 234[0m
+[0;32mI (35137) MAIN: Proximity interrupt → value: 234[0m
+[0;32mI (35137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35217) ProximitySensor: Proximity value: 252[0m
+[0;32mI (35217) MAIN: Proximity interrupt → value: 252[0m
+[0;32mI (35217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35297) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35297) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35377) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35377) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35457) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35457) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35537) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35537) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35617) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35617) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35697) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35697) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35777) ProximitySensor: Proximity value: 255[0m
+[0;32mI (35777) MAIN: Proximity interrupt → value: 255[0m
+[0;32mI (35777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35857) ProximitySensor: Proximity value: 237[0m
+[0;32mI (35857) MAIN: Proximity interrupt → value: 237[0m
+[0;32mI (35857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (35937) ProximitySensor: Proximity value: 201[0m
+[0;32mI (35937) MAIN: Proximity interrupt → value: 201[0m
+[0;32mI (35937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36017) ProximitySensor: Proximity value: 174[0m
+[0;32mI (36017) MAIN: Proximity interrupt → value: 174[0m
+[0;32mI (36017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36097) ProximitySensor: Proximity value: 160[0m
+[0;32mI (36097) MAIN: Proximity interrupt → value: 160[0m
+[0;32mI (36097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36177) ProximitySensor: Proximity value: 147[0m
+[0;32mI (36177) MAIN: Proximity interrupt → value: 147[0m
+[0;32mI (36177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36257) ProximitySensor: Proximity value: 130[0m
+[0;32mI (36257) MAIN: Proximity interrupt → value: 130[0m
+[0;32mI (36257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36337) ProximitySensor: Proximity value: 117[0m
+[0;32mI (36337) MAIN: Proximity interrupt → value: 117[0m
+[0;32mI (36337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36417) ProximitySensor: Proximity value: 107[0m
+[0;32mI (36417) MAIN: Proximity interrupt → value: 107[0m
+[0;32mI (36417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36497) ProximitySensor: Proximity value: 96[0m
+[0;32mI (36497) MAIN: Proximity interrupt → value: 96[0m
+[0;32mI (36497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36577) ProximitySensor: Proximity value: 83[0m
+[0;32mI (36577) MAIN: Proximity interrupt → value: 83[0m
+[0;32mI (36577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36657) ProximitySensor: Proximity value: 67[0m
+[0;32mI (36657) MAIN: Proximity interrupt → value: 67[0m
+[0;32mI (36657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36737) ProximitySensor: Proximity value: 54[0m
+[0;32mI (36737) MAIN: Proximity interrupt → value: 54[0m
+[0;32mI (36737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36817) ProximitySensor: Proximity value: 42[0m
+[0;32mI (36817) MAIN: Proximity interrupt → value: 42[0m
+[0;32mI (36817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36897) ProximitySensor: Proximity value: 24[0m
+[0;32mI (36897) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (36897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (36977) ProximitySensor: Proximity value: 18[0m
+[0;32mI (36977) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (36977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37057) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37057) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37297) ProximitySensor: Proximity value: 20[0m
+[0;32mI (37297) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (37297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (37377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (37377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37537) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37537) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (37617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (37617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (37697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (37697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37857) ProximitySensor: Proximity value: 23[0m
+[0;32mI (37857) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (37857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (37937) ProximitySensor: Proximity value: 21[0m
+[0;32mI (37937) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (37937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38017) ProximitySensor: Proximity value: 20[0m
+[0;32mI (38017) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (38017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38097) ProximitySensor: Proximity value: 21[0m
+[0;32mI (38097) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (38097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38177) ProximitySensor: Proximity value: 20[0m
+[0;32mI (38177) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (38177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (38257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (38257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38337) ProximitySensor: Proximity value: 18[0m
+[0;32mI (38337) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (38337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38417) ProximitySensor: Proximity value: 20[0m
+[0;32mI (38417) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (38417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38497) ProximitySensor: Proximity value: 23[0m
+[0;32mI (38497) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (38497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38577) ProximitySensor: Proximity value: 22[0m
+[0;32mI (38577) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (38577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38657) ProximitySensor: Proximity value: 21[0m
+[0;32mI (38657) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (38657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (38737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (38737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38817) ProximitySensor: Proximity value: 19[0m
+[0;32mI (38817) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (38817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38897) ProximitySensor: Proximity value: 20[0m
+[0;32mI (38897) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (38897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (38977) ProximitySensor: Proximity value: 24[0m
+[0;32mI (38977) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (38977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39057) ProximitySensor: Proximity value: 21[0m
+[0;32mI (39057) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (39057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39137) ProximitySensor: Proximity value: 22[0m
+[0;32mI (39137) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (39137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39217) ProximitySensor: Proximity value: 20[0m
+[0;32mI (39217) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (39217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39297) ProximitySensor: Proximity value: 22[0m
+[0;32mI (39297) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (39297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39377) ProximitySensor: Proximity value: 22[0m
+[0;32mI (39377) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (39377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39457) ProximitySensor: Proximity value: 23[0m
+[0;32mI (39457) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (39457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39537) ProximitySensor: Proximity value: 22[0m
+[0;32mI (39537) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (39537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39617) ProximitySensor: Proximity value: 20[0m
+[0;32mI (39617) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (39617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39697) ProximitySensor: Proximity value: 20[0m
+[0;32mI (39697) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (39697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39777) ProximitySensor: Proximity value: 24[0m
+[0;32mI (39777) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (39777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39857) ProximitySensor: Proximity value: 19[0m
+[0;32mI (39857) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (39857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (39937) ProximitySensor: Proximity value: 20[0m
+[0;32mI (39937) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (39937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40017) ProximitySensor: Proximity value: 21[0m
+[0;32mI (40017) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (40017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40097) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40097) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40177) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40177) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40257) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40257) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (40337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (40337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40417) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40417) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40577) ProximitySensor: Proximity value: 21[0m
+[0;32mI (40577) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (40577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40657) ProximitySensor: Proximity value: 19[0m
+[0;32mI (40657) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (40657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40737) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40737) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40817) ProximitySensor: Proximity value: 20[0m
+[0;32mI (40817) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (40817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40897) ProximitySensor: Proximity value: 22[0m
+[0;32mI (40897) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (40897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (40977) ProximitySensor: Proximity value: 21[0m
+[0;32mI (40977) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (40977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (41057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (41057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41137) ProximitySensor: Proximity value: 22[0m
+[0;32mI (41137) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (41137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41217) ProximitySensor: Proximity value: 22[0m
+[0;32mI (41217) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (41217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41297) ProximitySensor: Proximity value: 19[0m
+[0;32mI (41297) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (41297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (41377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (41377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (41457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (41457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41537) ProximitySensor: Proximity value: 19[0m
+[0;32mI (41537) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (41537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41617) ProximitySensor: Proximity value: 19[0m
+[0;32mI (41617) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (41617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41697) ProximitySensor: Proximity value: 19[0m
+[0;32mI (41697) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (41697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (41777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (41777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41857) ProximitySensor: Proximity value: 20[0m
+[0;32mI (41857) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (41857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (41937) ProximitySensor: Proximity value: 21[0m
+[0;32mI (41937) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (41937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42017) ProximitySensor: Proximity value: 23[0m
+[0;32mI (42017) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (42017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42097) ProximitySensor: Proximity value: 23[0m
+[0;32mI (42097) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (42097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (42177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (42177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42257) ProximitySensor: Proximity value: 21[0m
+[0;32mI (42257) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (42257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (42337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (42337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42417) ProximitySensor: Proximity value: 22[0m
+[0;32mI (42417) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (42417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42497) ProximitySensor: Proximity value: 19[0m
+[0;32mI (42497) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (42497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42577) ProximitySensor: Proximity value: 20[0m
+[0;32mI (42577) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (42577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42657) ProximitySensor: Proximity value: 21[0m
+[0;32mI (42657) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (42657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (42737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (42737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (42817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (42817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42897) ProximitySensor: Proximity value: 22[0m
+[0;32mI (42897) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (42897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (42977) ProximitySensor: Proximity value: 20[0m
+[0;32mI (42977) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (42977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43057) ProximitySensor: Proximity value: 19[0m
+[0;32mI (43057) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (43057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43137) ProximitySensor: Proximity value: 18[0m
+[0;32mI (43137) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (43137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43217) ProximitySensor: Proximity value: 19[0m
+[0;32mI (43217) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (43217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43297) ProximitySensor: Proximity value: 21[0m
+[0;32mI (43297) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (43297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (43377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (43377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43457) ProximitySensor: Proximity value: 22[0m
+[0;32mI (43457) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (43457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (43537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (43537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43617) ProximitySensor: Proximity value: 21[0m
+[0;32mI (43617) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (43617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (43697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (43697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43777) ProximitySensor: Proximity value: 20[0m
+[0;32mI (43777) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (43777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (43857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (43857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (43937) ProximitySensor: Proximity value: 21[0m
+[0;32mI (43937) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (43937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44017) ProximitySensor: Proximity value: 20[0m
+[0;32mI (44017) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (44017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44097) ProximitySensor: Proximity value: 20[0m
+[0;32mI (44097) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (44097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44177) ProximitySensor: Proximity value: 22[0m
+[0;32mI (44177) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (44177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44257) ProximitySensor: Proximity value: 23[0m
+[0;32mI (44257) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (44257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44337) ProximitySensor: Proximity value: 23[0m
+[0;32mI (44337) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (44337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44417) ProximitySensor: Proximity value: 21[0m
+[0;32mI (44417) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (44417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (44497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (44497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44577) ProximitySensor: Proximity value: 22[0m
+[0;32mI (44577) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (44577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44657) ProximitySensor: Proximity value: 23[0m
+[0;32mI (44657) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (44657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44737) ProximitySensor: Proximity value: 24[0m
+[0;32mI (44737) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (44737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44817) ProximitySensor: Proximity value: 22[0m
+[0;32mI (44817) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (44817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44897) ProximitySensor: Proximity value: 22[0m
+[0;32mI (44897) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (44897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (44977) ProximitySensor: Proximity value: 21[0m
+[0;32mI (44977) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (44977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45057) ProximitySensor: Proximity value: 18[0m
+[0;32mI (45057) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (45057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45137) ProximitySensor: Proximity value: 24[0m
+[0;32mI (45137) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (45137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45217) ProximitySensor: Proximity value: 19[0m
+[0;32mI (45217) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (45217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45297) ProximitySensor: Proximity value: 21[0m
+[0;32mI (45297) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (45297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45377) ProximitySensor: Proximity value: 21[0m
+[0;32mI (45377) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (45377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (45457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (45457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (45537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (45537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45617) ProximitySensor: Proximity value: 21[0m
+[0;32mI (45617) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (45617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (45697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (45697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45777) ProximitySensor: Proximity value: 19[0m
+[0;32mI (45777) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (45777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (45857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (45857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (45937) ProximitySensor: Proximity value: 23[0m
+[0;32mI (45937) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (45937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46017) ProximitySensor: Proximity value: 22[0m
+[0;32mI (46017) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (46017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (46097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (46097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (46177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (46177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (46257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (46257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46337) ProximitySensor: Proximity value: 22[0m
+[0;32mI (46337) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (46337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46417) ProximitySensor: Proximity value: 21[0m
+[0;32mI (46417) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (46417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46497) ProximitySensor: Proximity value: 21[0m
+[0;32mI (46497) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (46497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46577) ProximitySensor: Proximity value: 20[0m
+[0;32mI (46577) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (46577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46657) ProximitySensor: Proximity value: 21[0m
+[0;32mI (46657) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (46657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (46737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (46737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46817) ProximitySensor: Proximity value: 19[0m
+[0;32mI (46817) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (46817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46897) ProximitySensor: Proximity value: 20[0m
+[0;32mI (46897) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (46897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (46977) ProximitySensor: Proximity value: 19[0m
+[0;32mI (46977) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (46977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47057) ProximitySensor: Proximity value: 22[0m
+[0;32mI (47057) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (47057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47137) ProximitySensor: Proximity value: 20[0m
+[0;32mI (47137) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (47137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47217) ProximitySensor: Proximity value: 23[0m
+[0;32mI (47217) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (47217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47297) ProximitySensor: Proximity value: 22[0m
+[0;32mI (47297) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (47297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47377) ProximitySensor: Proximity value: 22[0m
+[0;32mI (47377) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (47377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47457) ProximitySensor: Proximity value: 19[0m
+[0;32mI (47457) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (47457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47537) ProximitySensor: Proximity value: 18[0m
+[0;32mI (47537) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (47537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47617) ProximitySensor: Proximity value: 20[0m
+[0;32mI (47617) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (47617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47697) ProximitySensor: Proximity value: 19[0m
+[0;32mI (47697) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (47697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (47777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (47777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (47857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (47857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (47937) ProximitySensor: Proximity value: 20[0m
+[0;32mI (47937) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (47937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48017) ProximitySensor: Proximity value: 21[0m
+[0;32mI (48017) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (48017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (48097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (48097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48177) ProximitySensor: Proximity value: 22[0m
+[0;32mI (48177) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (48177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48257) ProximitySensor: Proximity value: 21[0m
+[0;32mI (48257) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (48257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48337) ProximitySensor: Proximity value: 20[0m
+[0;32mI (48337) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (48337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48417) ProximitySensor: Proximity value: 22[0m
+[0;32mI (48417) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (48417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48497) ProximitySensor: Proximity value: 21[0m
+[0;32mI (48497) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (48497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48577) ProximitySensor: Proximity value: 21[0m
+[0;32mI (48577) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (48577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48657) ProximitySensor: Proximity value: 20[0m
+[0;32mI (48657) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (48657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (48737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (48737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48817) ProximitySensor: Proximity value: 20[0m
+[0;32mI (48817) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (48817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (48897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (48897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (48977) ProximitySensor: Proximity value: 22[0m
+[0;32mI (48977) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (48977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49057) ProximitySensor: Proximity value: 19[0m
+[0;32mI (49057) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (49057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49137) ProximitySensor: Proximity value: 22[0m
+[0;32mI (49137) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (49137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49217) ProximitySensor: Proximity value: 22[0m
+[0;32mI (49217) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (49217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49297) ProximitySensor: Proximity value: 21[0m
+[0;32mI (49297) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (49297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (49377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (49377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49457) ProximitySensor: Proximity value: 20[0m
+[0;32mI (49457) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (49457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (49537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (49537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (49617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (49617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49697) ProximitySensor: Proximity value: 21[0m
+[0;32mI (49697) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (49697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (49777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (49777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49857) ProximitySensor: Proximity value: 23[0m
+[0;32mI (49857) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (49857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (49937) ProximitySensor: Proximity value: 21[0m
+[0;32mI (49937) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (49937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50017) ProximitySensor: Proximity value: 20[0m
+[0;32mI (50017) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (50017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50097) ProximitySensor: Proximity value: 21[0m
+[0;32mI (50097) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (50097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50177) ProximitySensor: Proximity value: 20[0m
+[0;32mI (50177) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (50177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (50257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (50257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50337) ProximitySensor: Proximity value: 19[0m
+[0;32mI (50337) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (50337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50417) ProximitySensor: Proximity value: 22[0m
+[0;32mI (50417) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (50417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (50497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (50497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50577) ProximitySensor: Proximity value: 19[0m
+[0;32mI (50577) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (50577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50657) ProximitySensor: Proximity value: 23[0m
+[0;32mI (50657) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (50657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (50737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (50737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50817) ProximitySensor: Proximity value: 23[0m
+[0;32mI (50817) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (50817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (50897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (50897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (50977) ProximitySensor: Proximity value: 19[0m
+[0;32mI (50977) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (50977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51057) ProximitySensor: Proximity value: 21[0m
+[0;32mI (51057) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (51057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (51137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (51137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51217) ProximitySensor: Proximity value: 18[0m
+[0;32mI (51217) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (51217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51297) ProximitySensor: Proximity value: 19[0m
+[0;32mI (51297) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (51297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (51377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (51377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (51457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (51457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (51537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (51537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51617) ProximitySensor: Proximity value: 20[0m
+[0;32mI (51617) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (51617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (51697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (51697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51777) ProximitySensor: Proximity value: 23[0m
+[0;32mI (51777) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (51777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51857) ProximitySensor: Proximity value: 22[0m
+[0;32mI (51857) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (51857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (51937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (51937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (51937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52017) ProximitySensor: Proximity value: 20[0m
+[0;32mI (52017) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (52017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52097) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52097) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52257) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52257) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52417) ProximitySensor: Proximity value: 22[0m
+[0;32mI (52417) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (52417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52497) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52497) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52577) ProximitySensor: Proximity value: 20[0m
+[0;32mI (52577) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (52577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52657) ProximitySensor: Proximity value: 19[0m
+[0;32mI (52657) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (52657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (52977) ProximitySensor: Proximity value: 21[0m
+[0;32mI (52977) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (52977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (53057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (53057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (53137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (53137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (53217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (53217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53297) ProximitySensor: Proximity value: 20[0m
+[0;32mI (53297) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (53297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53377) ProximitySensor: Proximity value: 21[0m
+[0;32mI (53377) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (53377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (53457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (53457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53537) ProximitySensor: Proximity value: 22[0m
+[0;32mI (53537) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (53537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (53617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (53617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (53697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (53697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53777) ProximitySensor: Proximity value: 23[0m
+[0;32mI (53777) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (53777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53857) ProximitySensor: Proximity value: 20[0m
+[0;32mI (53857) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (53857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (53937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (53937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (53937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54017) ProximitySensor: Proximity value: 21[0m
+[0;32mI (54017) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (54017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (54097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (54097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54177) ProximitySensor: Proximity value: 19[0m
+[0;32mI (54177) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (54177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (54257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (54257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (54337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (54337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54417) ProximitySensor: Proximity value: 21[0m
+[0;32mI (54417) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (54417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (54497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (54497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54577) ProximitySensor: Proximity value: 19[0m
+[0;32mI (54577) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (54577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54657) ProximitySensor: Proximity value: 22[0m
+[0;32mI (54657) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (54657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54737) ProximitySensor: Proximity value: 23[0m
+[0;32mI (54737) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (54737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54817) ProximitySensor: Proximity value: 22[0m
+[0;32mI (54817) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (54817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54897) ProximitySensor: Proximity value: 18[0m
+[0;32mI (54897) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (54897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (54977) ProximitySensor: Proximity value: 23[0m
+[0;32mI (54977) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (54977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55057) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55057) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55217) ProximitySensor: Proximity value: 20[0m
+[0;32mI (55217) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (55217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55297) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55297) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55377) ProximitySensor: Proximity value: 22[0m
+[0;32mI (55377) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (55377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55457) ProximitySensor: Proximity value: 23[0m
+[0;32mI (55457) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (55457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (55537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (55537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (55617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (55617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55697) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55697) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (55857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (55857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (55937) ProximitySensor: Proximity value: 18[0m
+[0;32mI (55937) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (55937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56017) ProximitySensor: Proximity value: 21[0m
+[0;32mI (56017) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (56017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (56097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (56097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56177) ProximitySensor: Proximity value: 18[0m
+[0;32mI (56177) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (56177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56257) ProximitySensor: Proximity value: 23[0m
+[0;32mI (56257) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (56257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56337) ProximitySensor: Proximity value: 18[0m
+[0;32mI (56337) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (56337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56417) ProximitySensor: Proximity value: 19[0m
+[0;32mI (56417) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (56417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56497) ProximitySensor: Proximity value: 21[0m
+[0;32mI (56497) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (56497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56577) ProximitySensor: Proximity value: 22[0m
+[0;32mI (56577) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (56577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56657) ProximitySensor: Proximity value: 19[0m
+[0;32mI (56657) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (56657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56737) ProximitySensor: Proximity value: 22[0m
+[0;32mI (56737) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (56737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (56817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (56817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (56897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (56897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (56977) ProximitySensor: Proximity value: 22[0m
+[0;32mI (56977) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (56977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57137) ProximitySensor: Proximity value: 22[0m
+[0;32mI (57137) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (57137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (57217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (57217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57297) ProximitySensor: Proximity value: 19[0m
+[0;32mI (57297) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (57297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57457) ProximitySensor: Proximity value: 22[0m
+[0;32mI (57457) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (57457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57537) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57537) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57617) ProximitySensor: Proximity value: 22[0m
+[0;32mI (57617) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (57617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57697) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57697) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57777) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57777) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57857) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57857) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (57937) ProximitySensor: Proximity value: 20[0m
+[0;32mI (57937) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (57937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58017) ProximitySensor: Proximity value: 22[0m
+[0;32mI (58017) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (58017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (58097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (58097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58177) ProximitySensor: Proximity value: 21[0m
+[0;32mI (58177) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (58177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58257) ProximitySensor: Proximity value: 20[0m
+[0;32mI (58257) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (58257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58337) ProximitySensor: Proximity value: 22[0m
+[0;32mI (58337) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (58337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58417) ProximitySensor: Proximity value: 22[0m
+[0;32mI (58417) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (58417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58497) ProximitySensor: Proximity value: 21[0m
+[0;32mI (58497) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (58497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58577) ProximitySensor: Proximity value: 20[0m
+[0;32mI (58577) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (58577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58657) ProximitySensor: Proximity value: 20[0m
+[0;32mI (58657) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (58657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58737) ProximitySensor: Proximity value: 18[0m
+[0;32mI (58737) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (58737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58817) ProximitySensor: Proximity value: 20[0m
+[0;32mI (58817) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (58817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (58897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (58897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (58977) ProximitySensor: Proximity value: 21[0m
+[0;32mI (58977) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (58977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59057) ProximitySensor: Proximity value: 23[0m
+[0;32mI (59057) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (59057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (59137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (59137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59217) ProximitySensor: Proximity value: 24[0m
+[0;32mI (59217) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (59217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59297) ProximitySensor: Proximity value: 20[0m
+[0;32mI (59297) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (59297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (59377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (59377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (59457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (59457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59537) ProximitySensor: Proximity value: 23[0m
+[0;32mI (59537) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (59537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59617) ProximitySensor: Proximity value: 21[0m
+[0;32mI (59617) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (59617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59697) ProximitySensor: Proximity value: 21[0m
+[0;32mI (59697) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (59697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (59777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (59777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59857) ProximitySensor: Proximity value: 20[0m
+[0;32mI (59857) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (59857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (59937) ProximitySensor: Proximity value: 23[0m
+[0;32mI (59937) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (59937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60017) ProximitySensor: Proximity value: 22[0m
+[0;32mI (60017) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (60017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60097) ProximitySensor: Proximity value: 21[0m
+[0;32mI (60097) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (60097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60177) ProximitySensor: Proximity value: 22[0m
+[0;32mI (60177) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (60177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (60257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (60257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (60337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (60337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60417) ProximitySensor: Proximity value: 20[0m
+[0;32mI (60417) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (60417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60497) ProximitySensor: Proximity value: 22[0m
+[0;32mI (60497) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (60497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60577) ProximitySensor: Proximity value: 21[0m
+[0;32mI (60577) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (60577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60657) ProximitySensor: Proximity value: 20[0m
+[0;32mI (60657) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (60657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60737) ProximitySensor: Proximity value: 23[0m
+[0;32mI (60737) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (60737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (60817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (60817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60897) ProximitySensor: Proximity value: 21[0m
+[0;32mI (60897) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (60897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (60977) ProximitySensor: Proximity value: 22[0m
+[0;32mI (60977) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (60977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (61057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (61057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61137) ProximitySensor: Proximity value: 19[0m
+[0;32mI (61137) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (61137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61217) ProximitySensor: Proximity value: 22[0m
+[0;32mI (61217) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (61217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61297) ProximitySensor: Proximity value: 20[0m
+[0;32mI (61297) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (61297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61377) ProximitySensor: Proximity value: 24[0m
+[0;32mI (61377) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (61377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61457) ProximitySensor: Proximity value: 20[0m
+[0;32mI (61457) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (61457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61537) ProximitySensor: Proximity value: 19[0m
+[0;32mI (61537) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (61537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61617) ProximitySensor: Proximity value: 19[0m
+[0;32mI (61617) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (61617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61697) ProximitySensor: Proximity value: 22[0m
+[0;32mI (61697) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (61697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61777) ProximitySensor: Proximity value: 18[0m
+[0;32mI (61777) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (61777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61857) ProximitySensor: Proximity value: 21[0m
+[0;32mI (61857) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (61857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (61937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (61937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (61937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62017) ProximitySensor: Proximity value: 22[0m
+[0;32mI (62017) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (62017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62097) ProximitySensor: Proximity value: 22[0m
+[0;32mI (62097) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (62097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62177) ProximitySensor: Proximity value: 19[0m
+[0;32mI (62177) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (62177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (62257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (62257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62337) ProximitySensor: Proximity value: 20[0m
+[0;32mI (62337) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (62337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62417) ProximitySensor: Proximity value: 20[0m
+[0;32mI (62417) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (62417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62497) ProximitySensor: Proximity value: 22[0m
+[0;32mI (62497) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (62497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62577) ProximitySensor: Proximity value: 22[0m
+[0;32mI (62577) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (62577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62657) ProximitySensor: Proximity value: 23[0m
+[0;32mI (62657) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (62657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (62737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (62737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (62817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (62817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62897) ProximitySensor: Proximity value: 18[0m
+[0;32mI (62897) MAIN: Proximity interrupt → value: 18[0m
+[0;32mI (62897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (62977) ProximitySensor: Proximity value: 20[0m
+[0;32mI (62977) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (62977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (63057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (63057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63217) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63217) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63297) ProximitySensor: Proximity value: 23[0m
+[0;32mI (63297) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (63297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63377) ProximitySensor: Proximity value: 22[0m
+[0;32mI (63377) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (63377) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63457) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63457) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63457) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63537) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63537) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63537) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63617) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63617) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63617) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63697) ProximitySensor: Proximity value: 19[0m
+[0;32mI (63697) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (63697) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63777) ProximitySensor: Proximity value: 21[0m
+[0;32mI (63777) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (63777) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63857) ProximitySensor: Proximity value: 24[0m
+[0;32mI (63857) MAIN: Proximity interrupt → value: 24[0m
+[0;32mI (63857) MAIN: Proximity interrupt triggered[0m
+[0;32mI (63937) ProximitySensor: Proximity value: 22[0m
+[0;32mI (63937) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (63937) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64017) ProximitySensor: Proximity value: 22[0m
+[0;32mI (64017) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (64017) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64097) ProximitySensor: Proximity value: 19[0m
+[0;32mI (64097) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (64097) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64177) ProximitySensor: Proximity value: 23[0m
+[0;32mI (64177) MAIN: Proximity interrupt → value: 23[0m
+[0;32mI (64177) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64257) ProximitySensor: Proximity value: 22[0m
+[0;32mI (64257) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (64257) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64337) ProximitySensor: Proximity value: 21[0m
+[0;32mI (64337) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (64337) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64417) ProximitySensor: Proximity value: 19[0m
+[0;32mI (64417) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (64417) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64497) ProximitySensor: Proximity value: 20[0m
+[0;32mI (64497) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (64497) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64577) ProximitySensor: Proximity value: 17[0m
+[0;32mI (64577) MAIN: Proximity interrupt → value: 17[0m
+[0;32mI (64577) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64657) ProximitySensor: Proximity value: 22[0m
+[0;32mI (64657) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (64657) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64737) ProximitySensor: Proximity value: 21[0m
+[0;32mI (64737) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (64737) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64817) ProximitySensor: Proximity value: 21[0m
+[0;32mI (64817) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (64817) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64897) ProximitySensor: Proximity value: 19[0m
+[0;32mI (64897) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (64897) MAIN: Proximity interrupt triggered[0m
+[0;32mI (64977) ProximitySensor: Proximity value: 20[0m
+[0;32mI (64977) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (64977) MAIN: Proximity interrupt triggered[0m
+[0;32mI (65057) ProximitySensor: Proximity value: 20[0m
+[0;32mI (65057) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (65057) MAIN: Proximity interrupt triggered[0m
+[0;32mI (65137) ProximitySensor: Proximity value: 21[0m
+[0;32mI (65137) MAIN: Proximity interrupt → value: 21[0m
+[0;32mI (65137) MAIN: Proximity interrupt triggered[0m
+[0;32mI (65217) ProximitySensor: Proximity value: 19[0m
+[0;32mI (65217) MAIN: Proximity interrupt → value: 19[0m
+[0;32mI (65217) MAIN: Proximity interrupt triggered[0m
+[0;32mI (65297) ProximitySensor: Proximity value: 22[0m
+[0;32mI (65297) MAIN: Proximity interrupt → value: 22[0m
+[0;32mI (65297) MAIN: Proximity interrupt triggered[0m
+[0;32mI (65377) ProximitySensor: Proximity value: 20[0m
+[0;32mI (65377) MAIN: Proximity interrupt → value: 20[0m
+[0;32mI (65377) MAIN: Proximity interrupt triggered[0m
