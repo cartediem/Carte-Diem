@@ -353,7 +353,7 @@ Mbed TLS_IS_TOP_LEVEL:STATIC=OFF
 Mbed TLS_SOURCE_DIR:STATIC=/Users/jinwookshin/esp/esp-idf/components/mbedtls/mbedtls
 
 //No help, variable specified on the command line.
-PYTHON:UNINITIALIZED=/Users/jinwookshin/anaconda3/envs/cartediem/bin/python
+PYTHON:UNINITIALIZED=/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/bin/python
 
 //No help, variable specified on the command line.
 PYTHON_DEPS_CHECKED:UNINITIALIZED=1
@@ -602,7 +602,7 @@ C_COMPILER_SUPPORTS_WFORMAT_SIGNEDNESS:INTERNAL=1
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[/opt/homebrew/bin/git][v2.49.0()]
 //Details about finding Python3
-FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/Users/jinwookshin/anaconda3/envs/cartediem/bin/python][found components: Interpreter ][v3.11.14()]
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/bin/python][found components: Interpreter ][v3.11.14()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
@@ -613,10 +613,10 @@ _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 _Python3_Compiler_REASON_FAILURE:INTERNAL=
 //Development reason failure
 _Python3_Development_REASON_FAILURE:INTERNAL=
-_Python3_EXECUTABLE:INTERNAL=/Users/jinwookshin/anaconda3/envs/cartediem/bin/python
+_Python3_EXECUTABLE:INTERNAL=/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/bin/python
 //Python3 Properties
-_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;14;32;64;;;abi3;/Users/jinwookshin/anaconda3/envs/cartediem/lib/python3.11;/Users/jinwookshin/anaconda3/envs/cartediem/lib/python3.11;/Users/jinwookshin/anaconda3/envs/cartediem/lib/python3.11/site-packages;/Users/jinwookshin/anaconda3/envs/cartediem/lib/python3.11/site-packages
-_Python3_INTERPRETER_SIGNATURE:INTERNAL=005213192570f5d9bbd2fc5c423a0b34
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;14;32;64;;;abi3;/Users/jinwookshin/anaconda3/envs/cartediem/lib/python3.11;/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/lib/python3.11;/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/lib/python3.11/site-packages;/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/lib/python3.11/site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=efa6430ec7716760d2326df3aaeabc8e
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
 

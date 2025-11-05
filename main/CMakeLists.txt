@@ -3,6 +3,7 @@ idf_component_register(
         "main.c"
         "interfaces/barcode.c"
         "interfaces/proximity_sensor.c"
+        "interfaces/mfrc522.c"
     INCLUDE_DIRS
         "."
 )

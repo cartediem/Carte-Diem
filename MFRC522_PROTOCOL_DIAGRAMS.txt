@@ -1,0 +1,275 @@
+================================================================================
+                    MFRC522 SPI PROTOCOL - TIMING DIAGRAMS
+================================================================================
+
+LEGEND:
+  CS ----    Chip Select (LOW = active)
+  CLK /\/    Serial Clock
+  MOSI ===   Master Out, Slave In
+  MISO ===   Master In, Slave Out
+  [A]        Address byte
+  [D]        Dummy byte (0x00)
+  [X]        Register value (data returned)
+
+================================================================================
+1. ARDUINO IMPLEMENTATION (WORKS)
+================================================================================
+
+Timeline:
+         |<---- Byte 1 ---->|<---- Byte 2 ---->|
+         |   (Address)      |    (Dummy+Data)  |
+CS ------+                  |                  |
+         |__________________                  __
+         
+CLK /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+   
+MOSI ====+[A[A[A[A[A[A[A[A+[D[D[D[D[D[D[D[D+
+         |0x80|reg address |0x00 (dummy byte) |
+         
+MISO ====+[garbage[garbage+[X[X[X[X[X[X[X[X+
+         |       (junk)    |RegisterValue(8b) |
+
+Key Points:
+- CS goes LOW once, stays LOW for entire message (both bytes)
+- Clock runs continuously through both bytes
+- MISO changes only during dummy byte phase (data phase)
+- No CS toggling = MFRC522 maintains state throughout
+- Result: Correct register value captured
+
+================================================================================
+2. ESP-IDF CURRENT IMPLEMENTATION (BROKEN)
+================================================================================
+
+Timeline:
+         |<---- Byte 1 ---->|  ??? STATE ???  |<---- Byte 2 ---->|
+         |   (Address)      |   CRITICAL!     |    (Dummy+Data)  |
+CS ------+                  |                 |                  
+         |__________________                 _|__________________|__
+             (Transaction 1)   (Gap/Change)   (Transaction 2)
+         
+CLK /\/\/\/\/\/\/\/\/\/\/  [MIGHT STOP]  /\/\/\/\/\/\/\/\/\/\/
+   
+MOSI ====+[A[A[A[A[A[A[A[A  [???]  +[D[D[D[D[D[D[D[D+
+         |0x80|reg address |        |0x00 (dummy)     |
+         
+MISO ====+[garbage[garbage  [???]  +[0x00/garbage+
+         |       (junk)    |        |(WRONG STATE!) |
+
+MFRC522 Internal State:
+Time 1: Receives address byte -> Decodes -> Prepares data
+Time 2: TRANSACTION ENDS -> MFRC522 Thinks chip was deselected!
+        - Output drivers release MISO
+        - State machine resets
+Time 3: NEW TRANSACTION STARTS -> MFRC522 is confused
+        - Doesn't remember the address from Time 1
+        - Sends 0x00 or garbage instead of register value
+
+Key Problems:
+- CS toggling between bytes confuses MFRC522
+- MISO tri-states when CS goes HIGH
+- MFRC522 loses state between transactions
+- Result: Consistent 0x00 or garbage reads
+
+================================================================================
+3. ESP-IDF FIXED v1: COMBINED TRANSACTION (WORKS)
+================================================================================
+
+Timeline:
+         |<---- Byte 1 ---->|<---- Byte 2 ---->|
+         |   (Address)      |    (Dummy+Data)  |
+         |<---- SINGLE 16-BIT TRANSACTION --->|
+CS ------+                                     
+         |__________________________________________
+         
+CLK /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+   
+MOSI ====+[A[A[A[A[A[A[A[A+[D[D[D[D[D[D[D[D+
+         |0x80|reg address |0x00 (dummy byte) |
+         
+MISO ====+[garbage[garbage+[X[X[X[X[X[X[X[X+
+         |       (junk)    |RegisterValue(8b) |
+
+Key Points:
+- Single transaction = single CS assertion period
+- CS goes LOW once, stays LOW for both bytes
+- Clock runs continuously without interruption
+- SPI peripheral doesn't interfere with state
+- MFRC522 sees proper SPI frame
+- Result: Correct register value captured
+
+Advantages:
+- Simplest solution
+- Most reliable
+- Matches MFRC522 protocol perfectly
+- No SPI_TRANS_CS_KEEP_ACTIVE complexity needed
+
+Implementation:
+  uint8_t tx_buf[2] = {addr_byte, 0x00};
+  uint8_t rx_buf[2];
+  spi_transaction_t t = {
+    .length = 16,        // 16 bits = 2 bytes
+    .tx_buffer = tx_buf,
+    .rx_buffer = rx_buf
+  };
+  spi_device_transmit(dev->spi, &t);
+  return rx_buf[1];  // Data in second byte
+
+================================================================================
+4. ESP-IDF FIXED v2: SPI_TRANS_CS_KEEP_ACTIVE (WORKS)
+================================================================================
+
+Timeline:
+         |<---- Byte 1 ---->|<---- Byte 2 ---->|
+         |   (Address)      |    (Dummy+Data)  |
+         |<-- Trans 1 -->|<-- Trans 2 -->|
+CS ------+               |                |
+         |_______________|__________________|__
+            CS HELD LOW   (NO TOGGLE!)
+         
+CLK /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+   
+MOSI ====+[A[A[A[A[A[A[A[A+[D[D[D[D[D[D[D[D+
+         |0x80|reg address |0x00 (dummy byte) |
+         
+MISO ====+[garbage[garbage+[X[X[X[X[X[X[X[X+
+         |       (junk)    |RegisterValue(8b) |
+
+Key Points:
+- Two transactions with SPI_TRANS_CS_KEEP_ACTIVE on first
+- CS doesn't toggle between transactions
+- SPI peripheral keeps CS LOW for both
+- MFRC522 maintains state throughout
+- Result: Correct register value captured
+
+Implementation:
+  spi_device_acquire_bus(dev->spi, portMAX_DELAY);
+  
+  spi_transaction_t t1 = {
+    .length = 8,
+    .tx_buffer = &addr_byte,
+    .rx_buffer = &rx_dummy,
+    .flags = SPI_TRANS_CS_KEEP_ACTIVE  // KEY!
+  };
+  spi_device_transmit(dev->spi, &t1);
+  
+  spi_transaction_t t2 = {
+    .length = 8,
+    .tx_buffer = (uint8_t[]){0x00},
+    .rx_buffer = &rx_data
+  };
+  spi_device_transmit(dev->spi, &t2);
+  
+  spi_device_release_bus(dev->spi);
+  return rx_data;
+
+Advantages:
+- Documented ESP-IDF pattern
+- Keeps existing two-phase structure visible in code
+- Flexible for different transaction patterns
+
+Disadvantages:
+- More complex than combined transaction
+- Requires bus acquisition/release
+- More function calls
+
+================================================================================
+5. COMPARISON TABLE
+================================================================================
+
+Aspect                  | Arduino    | ESP-IDF(old)  | Combined Trans | Keep Active
+------------------------+------------+---------------+----------------+----------
+CS Behavior             | LOW->stays | LOW->toggle?  | LOW->stays     | LOW->stays
+                        |            |               |                |
+Transaction Count       | 1 (manual) | 2 separate    | 1 atomic       | 2 linked
+                        |            |               |                |
+SPI State Mgmt          | Minimal    | Interferes    | None           | Linked
+                        |            |               |                |
+MFRC522 State           | Maintained | LOST          | Maintained     | Maintained
+                        |            |               |                |
+Result                  | Works      | FAILS (0x00)  | Works          | Works
+                        |            |               |                |
+Code Complexity         | Simple     | Simple        | Simplest       | Medium
+                        |            |               |                |
+Buffer Handling         | Independent| Independent   | Combined x2    | Independent
+                        |            |               |                |
+Debugging Difficulty    | Easy       | Hard          | Easy           | Medium
+                        |            |               |                |
+
+================================================================================
+6. WRITE OPERATION (For reference)
+================================================================================
+
+Timeline:
+         |<---- Byte 1 ---->|<---- Byte 2 ---->|
+         |   (Address+Write)|      (Data)      |
+CS ------+                  |                  
+         |__________________________________________
+         
+CLK /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+   
+MOSI ====+[A[A[A[A[A[A[A[A+[D[D[D[D[D[D[D[D+
+         |0x00|reg address |    Data value    |
+         
+MISO ====+[junk[junk[junk +[junk[junk[junk +
+         |   (ignored)     |   (ignored)      |
+
+Write Protocol:
+- Address byte: bit 7 = 0 (write flag)
+- Data byte: actual value to write
+- CS stays LOW for both bytes
+- MISO is ignored (or reads garbage)
+- No dummy byte needed for writes
+
+Implementation (same as read - combine into one transaction):
+  uint8_t tx_buf[2] = {write_addr_byte, data_value};
+  uint8_t rx_buf[2];
+  spi_transaction_t t = {
+    .length = 16,
+    .tx_buffer = tx_buf,
+    .rx_buffer = rx_buf
+  };
+  spi_device_transmit(dev->spi, &t);
+  // rx_buf contents ignored
+
+================================================================================
+7. CLOCK SPEED IMPACT
+================================================================================
+
+The problem is NOT a clock speed issue:
+
+Current: 1 MHz
+- Bit time: 1 microsecond
+- Byte time: 8 microseconds  
+- Two-byte read: 16 microseconds
+- MFRC522 max: 10 MHz (100x faster)
+
+Even at 1 MHz, MFRC522 can handle continuous transmission without issues.
+
+The REAL problem is CS toggling:
+- CS state change happens instantly (no delay needed)
+- MFRC522 tri-states MISO immediately
+- Clock speed doesn't matter - MISO is already gone
+- Adding delays won't help (problem is state, not timing)
+
+Reducing clock further (e.g., to 500 kHz) will NOT fix this issue.
+
+================================================================================
+8. TIMING REQUIREMENTS (From Datasheet)
+================================================================================
+
+MFRC522 Timing Specifications:
+
+- Setup time (tsu): Time between CS LOW and first clock edge
+  Typical: <200ns (well satisfied by 1 MHz clock)
+
+- Hold time (th): Time between last clock edge and CS HIGH
+  Typical: <100ns (well satisfied by 1 MHz clock)
+
+- Data valid time (tdata): Time MISO data is valid after clock edge
+  Typical: <100ns (well satisfied by 1 MHz clock)
+
+1 MHz clock period = 1000ns, so all timing margins are huge.
+
+Conclusion: Timing is NOT the problem.
+
+================================================================================

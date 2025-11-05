@@ -257,7 +257,7 @@ IGNORE_EXTRA_COMPONENT:UNINITIALIZED=
 PROJECT_SOURCE_DIR:UNINITIALIZED=/Users/jinwookshin/Desktop/473/integration
 
 //No help, variable specified on the command line.
-PYTHON:UNINITIALIZED=/Users/jinwookshin/anaconda3/envs/cartediem/bin/python
+PYTHON:UNINITIALIZED=/Users/jinwookshin/.espressif/python_env/idf6.0_py3.11_env/bin/python
 
 //No help, variable specified on the command line.
 PYTHON_DEPS_CHECKED:UNINITIALIZED=1

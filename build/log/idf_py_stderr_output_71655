@@ -1,9 +1,0 @@
-Command: cmake -G Ninja -DPYTHON_DEPS_CHECKED=1 -DPYTHON=/Users/jinwookshin/anaconda3/envs/cartediem/bin/python -DESP_PLATFORM=1 -DCCACHE_ENABLE=0 /Users/jinwookshin/Desktop/473/integration
-Configuration Report               
- ───────────────────────────────── 
-   Parser Version: 1               
-   Verbosity: default              
-   Defaults policy: sdkconfig      
-   Status: Finished successfully   
-                                   
- ───────────────────────────────── 
