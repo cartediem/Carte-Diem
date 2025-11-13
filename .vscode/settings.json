@@ -4,6 +4,10 @@
         "ble_barcode_nimble.h": "c",
         "proximity_sensor.h": "c",
         "mfrc522.h": "c",
-        "cart_rfid.h": "c"
+        "cart_rfid.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "vector": "c"
     }
 }

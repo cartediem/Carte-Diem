@@ -45,7 +45,12 @@ static const ble_uuid128_t gatt_svr_chr_item_verification_uuid =
     BLE_UUID128_INIT(0xce, 0x1d, 0x17, 0x0d, 0x8f, 0xaf, 0x43, 0xbd,
                      0x60, 0x4a, 0xdd, 0x7a, 0x53, 0x20, 0xa1, 0xc7);
 
-// Optional RX characteristic (for receiving data from client if needed)
+// Misc. UUID: b8ce8946-c4d4-486a-91fe-9fea2a670262
+static const ble_uuid128_t gatt_svr_chr_misc_uuid =
+    BLE_UUID128_INIT(0x62, 0x02, 0x67, 0x2a, 0xea, 0x9f, 0xfe, 0x91,
+                     0x6a, 0x48, 0xd4, 0xc4, 0x46, 0x89, 0xce, 0xb8);
+
+// RX characteristic
 // UUID: e36b6c82-1d7e-4589-b289-794fb676b14f
 static const ble_uuid128_t gatt_svr_chr_rx_uuid =
     BLE_UUID128_INIT(0x4f, 0xb1, 0x76, 0xb6, 0x4f, 0x79, 0x89, 0xb2,
@@ -59,6 +64,7 @@ static uint16_t rfid_char_handle;
 static uint16_t payment_char_handle;
 static uint16_t produce_weight_char_handle;
 static uint16_t item_verification_char_handle;
+static uint16_t misc_char_handle;
 static uint16_t rx_char_handle;
 static char device_name[32] = "ESP32_Barcode";
 
@@ -113,6 +119,13 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
                 .flags = BLE_GATT_CHR_F_NOTIFY,
                 .val_handle = &item_verification_char_handle,
             },
+            {
+                // Misc. Characteristic
+                .uuid = &gatt_svr_chr_misc_uuid.u,
+                .access_cb = gatt_svr_chr_access_barcode,
+                .flags = BLE_GATT_CHR_F_NOTIFY,
+                .val_handle = &misc_char_handle,
+            }
             {
                 // RX Characteristic (optional - device receives data from client)
                 .uuid = &gatt_svr_chr_rx_uuid.u,
@@ -458,6 +471,11 @@ esp_err_t ble_send_produce_weight(const char *weight_data)
 esp_err_t ble_send_item_verification(const char *weight_data)
 {
     return ble_send_data(item_verification_char_handle, weight_data, "item verification");
+}
+
+esp_err_t ble_send_misc_data(const char *misc_data)
+{
+    return ble_send_data(misc_char_handle, misc_data, "misc data");
 }
 
 bool ble_is_connected(void)

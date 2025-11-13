@@ -47,5 +47,6 @@ float icm20948_compute_heading(ICM20948_t *device);
 bool icm20948_is_moving(ICM20948_t *device);
 void icm20948_start_activity_monitor(ICM20948_t *device, QueueHandle_t idle_queue);
 void icm20948_activity_task(ICM20948_t *device);
+void icm20948_monitor_task(void *arg);
 esp_err_t icm20948_select_bank(ICM20948_t *dev, uint8_t bank);
 esp_err_t icm20948_init_mag(ICM20948_t *dev);

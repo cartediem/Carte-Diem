@@ -238,6 +238,22 @@ void icm20948_activity_task(ICM20948_t *dev)
 }
 
 /* -------------------------------------------------------------------------- */
+/* IMU monitoring task (runs as dedicated RTOS task)                          */
+/* -------------------------------------------------------------------------- */
+void icm20948_monitor_task(void *arg)
+{
+    ICM20948_t *imu = (ICM20948_t *)arg;
+
+    ESP_LOGI(TAG, "IMU monitor task started");
+
+    while (1) {
+        // Call activity tracking every 1 second
+        icm20948_activity_task(imu);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+}
+
+/* -------------------------------------------------------------------------- */
 /* Accel / Gyro read                                                          */
 /* -------------------------------------------------------------------------- */
 esp_err_t icm20948_read_accel(ICM20948_t *device)

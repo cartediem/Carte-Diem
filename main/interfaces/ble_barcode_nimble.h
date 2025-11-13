@@ -58,6 +58,14 @@ esp_err_t ble_send_produce_weight(const char *weight_data);
 esp_err_t ble_send_item_verification(const char *verification_data);
 
 /**
+ * @brief Send miscellaneous data over BLE
+ *
+ * @param misc_data Null-terminated miscellaneous data string
+ * @return ESP_OK on success, ESP_ERR_INVALID_STATE if not connected, error code otherwise
+ */
+esp_err_t ble_send_misc_data(const char *misc_data);
+
+/**
  * @brief Check if a BLE client is connected
  *
  * @return true if connected, false otherwise
