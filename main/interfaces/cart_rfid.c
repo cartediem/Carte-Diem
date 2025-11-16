@@ -8,9 +8,9 @@
 
 static const char *TAG = "CART_RFID";
 
-#define SCAN_DURATION_MS 300
-#define BURST_GAP_MS 100
-#define MAX_BURST_TAGS 20
+#define SCAN_DURATION_MS 500
+#define BURST_GAP_MS 300
+#define MAX_BURST_TAGS 50
 
 /**
  * @brief RFID reader start command
@@ -125,6 +125,8 @@ static void cart_rfid_scan_internal(cart_rfid_reader_t *reader) {
     reader->unique_tag_count = 0;
     reader->collecting = false;
     reader->buffer_index = 0;
+    memset(reader->unique_tags, 0, sizeof(reader->unique_tags));
+    memset(reader->burst_tags, 0, sizeof(reader->burst_tags));
     
     // Send start command
     uart_write_bytes(reader->uart_port, (const char *)RFID_START_CMD, sizeof(RFID_START_CMD));

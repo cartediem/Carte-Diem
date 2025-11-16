@@ -29,13 +29,6 @@
 #define PAYMENT_CS_PIN   GPIO_NUM_10
 #define PAYMENT_RST_PIN  GPIO_NUM_14
 
-// #define TOP_LOAD_DATA_PIN GPIO_NUM_40
-// #define TOP_LOAD_CLK_PIN GPIO_NUM_41
-
-// // UART: Barcode scanner, Item RFID, Customer RFID
-// #define BARCODE_TX_PIN GPIO_NUM_38
-// #define BARCODE_RX_PIN GPIO_NUM_39
-
 #define TOP_LOAD_DATA_PIN GPIO_NUM_38
 #define TOP_LOAD_CLK_PIN GPIO_NUM_39
 
@@ -133,7 +126,7 @@ static void handle_ble_command(const char *data, uint16_t len)
             }
             else if(strcmp("TARE_CART_WEIGHT", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Taring cart load cell");
-                load_cell_tare(cart_load_cell);
+                // load_cell_tare(cart_load_cell);
                 break;
             }
         
@@ -148,10 +141,10 @@ static void handle_ble_command(const char *data, uint16_t len)
             }
             else if(strcmp("MEASURE_CART_WEIGHT", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Measuring cart weight");
-                float weight = load_cell_display_pounds(cart_load_cell);
-                char weight_str[32];
-                snprintf(weight_str, sizeof(weight_str), "[Cart Load Cell] Weight: %.4f", weight);
-                ble_send_misc_data(weight_str);
+                // float weight = load_cell_display_pounds(cart_load_cell);
+                // char weight_str[32];
+                // snprintf(weight_str, sizeof(weight_str), "[Cart Load Cell] Weight: %.4f", weight);
+                // ble_send_misc_data(weight_str);
                 break;
             }
 
@@ -329,7 +322,7 @@ static void payment_setup(void)
 static void produce_loadcell_setup(void)
 {
     ESP_LOGI(TAG, "Initializing load cell...");
-    produce_load_cell = load_cell_create(TOP_LOAD_CLK_PIN, TOP_LOAD_DATA_PIN, 25, true);
+    produce_load_cell = load_cell_create(TOP_LOAD_CLK_PIN, TOP_LOAD_DATA_PIN, 25, false);
     load_cell_begin(produce_load_cell);
     load_cell_tare(produce_load_cell);
     ESP_LOGI(TAG, "Load cell initialized and tared.");
