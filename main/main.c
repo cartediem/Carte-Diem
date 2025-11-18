@@ -175,8 +175,15 @@ static void handle_ble_command(const char *data, uint16_t len)
                     ESP_LOGI(TAG, "IMU reports: Cart is moving");
                     ble_send_misc_data("[IMU] MOVING");
                 } else {
-                    ESP_LOGI(TAG, "IMU reports: Cart is idle");
-                    ble_send_misc_data("[IMU] IDLE");
+                    if(imu_sensor.idle_counter_ms >= IMU_IDLE_TIME_MINUTES * 60 * 1000){
+                        ESP_LOGI(TAG, "IMU reports: Cart has been idle for 5 minutes");
+                        ble_send_misc_data("[IMU] IDLE");
+                        return;
+                    }
+                    else{
+                        ESP_LOGI(TAG, "IMU reports: Cart has been stopped");
+                        ble_send_misc_data("[IMU] STOPPED");
+                    }
                 }
             }
             else if(strcmp("IMU_IDLE_TIME", data) == 0) {
@@ -300,7 +307,7 @@ static void ble_setup(void)
 static void barcode_setup(void)
 {
     ESP_LOGI(TAG, "Initializing barcode scanner...");
-    barcode_init(&barcanner, UART_NUM_1, BARCODE_TX_PIN, BARCODE_RX_PIN, true);
+    barcode_init(&barcanner, BARCODE_UART_PORT, BARCODE_TX_PIN, BARCODE_RX_PIN, true);
     ESP_LOGI(TAG, "Barcode scanner ready in manual mode");
 }
 
