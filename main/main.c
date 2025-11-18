@@ -23,19 +23,22 @@
 
 static barcode_t barcanner;
 static ProximitySensor* proximity_sensor = NULL;
-static item_rfid_reader_t* item_reader = NULL;
-static ICM20948_t imu_sensor;
-static i2c_master_bus_handle_t i2c_bus_handle = NULL;
 static mfrc522_t paymenter;
+static ICM20948_t imu_sensor;
+static item_rfid_reader_t* item_reader = NULL;
 
 static LoadCell* produce_load_cell = NULL;
 static LoadCell* cart_load_cell = NULL;
+
+static i2c_master_bus_handle_t i2c_bus_handle = NULL;
+
+
 
 static QueueHandle_t button_evt_queue = NULL;
 static QueueHandle_t proximity_evt_queue = NULL;
 static QueueHandle_t imu_idle_evt_queue = NULL;
 
-static TaskHandle_t payment_task_handle = NULL;
+static TaskHandle_t weight_monitor_task_handle = NULL;
 
 static bool continuous_mode = false;
 static bool payment_mode = false;
@@ -43,6 +46,7 @@ static bool payment_mode = false;
 // ===== Weight Monitoring Variables =====
 static float last_cart_weight = 0.0f;
 static float weight_change_threshold = 0.5f;  
+static void weight_monitor_task(void *arg); // Forward declaration
 
 static void IRAM_ATTR button_isr(void *arg)
 {
@@ -62,9 +66,10 @@ void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
     ESP_LOGI(TAG, "Found %d items in cart", count);
 
     // Get cart weight
-    float cart_weight = load_cell_display_pounds(cart_load_cell);
+    // float cart_weight = load_cell_display_pounds(cart_load_cell);
+    float cart_weight = load_cell_display_pounds(produce_load_cell);
 
-    // Build verification string: "weight, num_tags, tag1, tag2, tag3, ..."
+    // Build verification string: "weight,num_tags,tag1,tag2,tag3,..."
     char verification_msg[512] = {0};
     int offset = snprintf(verification_msg, sizeof(verification_msg), "%.4f,%d", cart_weight, count);
 
@@ -97,64 +102,74 @@ static void handle_ble_command(const char *data, uint16_t len)
 
     switch (data[0]) {
         case 'T':  // "TARE_" commands
-            if(strcmp("TARE_PRODUCE_WEIGHT", data) == 0) {
+            if(strcmp("TARE_PROD_WEIGHT", data) == 0 || strcmp("T_PROD", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Taring produce load cell");
                 load_cell_tare(produce_load_cell);
                 break;
             }
-            else if(strcmp("TARE_CART_WEIGHT", data) == 0) {
+            else if(strcmp("TARE_CART_WEIGHT", data) == 0 || strcmp("T_CART", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Taring cart load cell");
-                // load_cell_tare(cart_load_cell);
+                load_cell_tare(cart_load_cell);
                 break;
             }
+            break;
         
         case 'M': // "MEASURE_" commands
-            if(strcmp("MEASURE_PRODUCE_WEIGHT", data) == 0) {
+            if(strcmp("MEASURE_PROD_WEIGHT", data) == 0 || strcmp("M_PROD", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Measuring produce weight");
-                float weight = load_cell_display_pounds(produce_load_cell);
+                float weight = load_cell_display_ounces(produce_load_cell);
                 char weight_str[32];
                 snprintf(weight_str, sizeof(weight_str), "%.4f", weight);
                 ble_send_produce_weight(weight_str);
                 break;
             }
-            else if(strcmp("MEASURE_CART_WEIGHT", data) == 0) {
+            else if(strcmp("MEASURE_CART_WEIGHT", data) == 0 || strcmp("M_CART", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Measuring cart weight");
                 float weight = load_cell_display_pounds(cart_load_cell);
                 char weight_str[32];
-                snprintf(weight_str, sizeof(weight_str), "[Cart Load Cell] Weight: %.4f", weight);
+                snprintf(weight_str, sizeof(weight_str), "[CART_LOAD] %.4f", weight);
                 ble_send_misc_data(weight_str);
                 break;
             }
-
-        case 'P':  // Payment module activation
-            ESP_LOGI(TAG, "BLE Command: Checking payment status - enabling payment module");
-            payment_mode = true;
-            ESP_LOGI(TAG, "Payment task: Waiting for card...");
-            break;
-        
-        case 'C': // Cart Tracking - txt file commands
-            if(strcmp("CT_START", data) == 0) {
-                ESP_LOGI(TAG, "Starting cart tracking data logging");
-                // Start cart tracking data logging
-                // start item verification task
-            }
-            else if(strcmp("CT_STOP", data) == 0) {
-                ESP_LOGI(TAG, "Exporting cart tracking data log txt file");
-                // Export the cart tracking data log
-            }
-            else if(strcmp("CT_CLEAR", data) == 0) {
-                ESP_LOGI(TAG, "Clearing cart tracking data log");
-                // Clear the cart tracking data log
-            }
-            break;
-        
-        case 'V':  // Force trigger item RFID verification 
-            ESP_LOGI(TAG, "BLE Command: Force triggering item scan");
-            item_rfid_scan(item_reader); // callback at on_item_scan_complete()
             break;
 
-        case 'I': // "IMU_" commands
-            if(strcmp("IMU_CHECK_ACTIVITY", data) == 0) {
+        case 'P':  // Payment module or Proximity sensor commands
+            if(strcmp("PAY_START", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Checking payment status - enabling payment module");
+                payment_mode = true;
+                ESP_LOGI(TAG, "Payment task: Waiting for card...");
+                break;
+            }
+            else if(strcmp("PAY_READ", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Reading payment card UID");
+                uint8_t tmp_uid[10], tmp_uid_len = 0;
+                if (mfrc522_read_uid(&paymenter, tmp_uid, &tmp_uid_len) == ESP_OK && tmp_uid_len > 0) {
+                    char uid_str[32] = {0};
+                    char *ptr = uid_str;
+                    for (int i = 0; i < tmp_uid_len; i++) {
+                        ptr += sprintf(ptr, "%02X", tmp_uid[i]);
+                    }
+                    char tmp_uid_msg[64];
+                    snprintf(tmp_uid_msg, sizeof(tmp_uid_msg), "[PAY] UID: %s", uid_str);
+                    ble_send_misc_data(tmp_uid_msg);
+                } else {
+                    ESP_LOGI(TAG, "No payment card detected");
+                    ble_send_misc_data("[PAY] NO_CARD");
+                }
+                break;
+            }
+            else if(strcmp("PROX_READ", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Reading proximity sensor value");
+                uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
+                char proximity_str[32];
+                snprintf(proximity_str, sizeof(proximity_str), "[PROX] %d", proximity_value);
+                ble_send_misc_data(proximity_str);
+                break;
+            }
+            break;
+
+        case 'I': // "IMU_" commands or "IV_" item verification commands
+            if(strcmp("IMU_CHECK_ACTIVITY", data) == 0 || strcmp("IMU_STATUS", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Checking IMU activity");
                 if(icm20948_is_moving(&imu_sensor)) {
                     ESP_LOGI(TAG, "IMU reports: Cart is moving");
@@ -164,18 +179,80 @@ static void handle_ble_command(const char *data, uint16_t len)
                     ble_send_misc_data("[IMU] IDLE");
                 }
             }
-            else if(strcmp("IMU_GET_HEADING", data) == 0) {
+            else if(strcmp("IMU_IDLE_TIME", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Getting IMU idle time");
+                uint32_t idle_time_ms = imu_sensor.idle_counter_ms;
+                char idle_time_str[64];
+                snprintf(idle_time_str, sizeof(idle_time_str), "[IMU] IDLE_TIME: %lu", idle_time_ms);
+                ble_send_misc_data(idle_time_str);
+            }
+            else if(strcmp("IMU_ACCEL", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Getting IMU acceleration");
+                icm20948_read_accel(&imu_sensor);
+                char accel_str[64];
+                snprintf(accel_str, sizeof(accel_str), "[IMU] ACCEL: X=%.2f, Y=%.2f, Z=%.2f",
+                         imu_sensor.accel.x, imu_sensor.accel.y, imu_sensor.accel.z);
+                ble_send_misc_data(accel_str);
+            }
+            else if(strcmp("IMU_HEADING", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Getting IMU heading");
                 float heading = icm20948_compute_heading(&imu_sensor);
                 char heading_str[32];
-                snprintf(heading_str, sizeof(heading_str), "[IMU] HEADING:%.2f", heading);
+                snprintf(heading_str, sizeof(heading_str), "[IMU] HEADING: %.2f", heading);
                 ble_send_misc_data(heading_str);
+            }
+            else if(strcmp("IV_TRIG", data) == 0 || strcmp("IV_SCAN", data) == 0) {
+                ESP_LOGI(TAG, "BLE Command: Force triggering item scan");
+                item_rfid_scan(item_reader); // callback at on_item_scan_complete()
+                break;
+            }
+            break;
+        
+        case 'C': // Cart Tracking - txt file commands
+            if(strcmp("CT_START", data) == 0) {
+                ESP_LOGI(TAG, "Starting cart tracking data logging");
+                // Start cart tracking data logging
+                
+                // start item verification task
+                // load_cell_tare(cart_load_cell);
+                load_cell_tare(produce_load_cell);
+
+                ESP_LOGI(TAG, "Cart load cell tared for tracking");
+                // last_cart_weight = load_cell_display_pounds(cart_load_cell);
+                last_cart_weight = load_cell_display_pounds(produce_load_cell);
+
+                item_rfid_scan(item_reader);
+
+                // Create weight monitoring task (1 second interval)
+                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
+            }
+            else if(strcmp("CT_STOP", data) == 0) {
+                ESP_LOGI(TAG, "Exporting cart tracking data log txt file");
+                // Export the cart tracking data log
+
+                if (weight_monitor_task_handle != NULL) {
+                    vTaskDelete(weight_monitor_task_handle);
+                    weight_monitor_task_handle = NULL;
+                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                }
+
+            }
+            else if(strcmp("CT_CLEAR", data) == 0) {
+                ESP_LOGI(TAG, "Clearing cart tracking data log");
+                // Clear the cart tracking data log
+
+                if (weight_monitor_task_handle != NULL) {
+                    vTaskDelete(weight_monitor_task_handle); 
+                    weight_monitor_task_handle = NULL;
+                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                }
             }
             break;
 
         default:
             ESP_LOGW(TAG, "BLE Command: Unknown command '%c' (full: %s)", data[0], data);
-            ble_send_barcode("ERR_UNKNOWN_CMD");
+            ble_send_misc_data("[ERROR] UNKNOWN_CMD");
             break;
     }
 }
@@ -268,6 +345,9 @@ static void imu_setup(void){
         return;
     }
 
+    // Connect queue to IMU sensor so it can send events
+    imu_sensor.idle_event_queue = imu_idle_evt_queue;
+
     // Try accel read (but don't exit)
     if(icm20948_read_accel(&imu_sensor) != ESP_OK){
         ESP_LOGW(TAG, "IMU WARNING: accel read failed. System will still run but IMU will be inaccurate");
@@ -345,7 +425,8 @@ static void weight_monitor_task(void *arg)
     ESP_LOGI(TAG, "Weight monitoring task started (1 second interval)");
 
     while (1) {
-        float current_weight = load_cell_display_pounds(cart_load_cell);
+        // float current_weight = load_cell_display_pounds(cart_load_cell);
+        float current_weight = load_cell_display_pounds(produce_load_cell);
 
         float weight_delta = fabs(current_weight - last_cart_weight);
 
@@ -393,10 +474,6 @@ static void setup(void)
     produce_loadcell_setup();
     // cart_loadcell_setup();
     item_rfid_setup();
-
-    // Create weight monitoring task (1 second interval)
-    xTaskCreate(weight_monitor_task, "weight_monitor", 2048, NULL, 4, NULL);
-    ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
 
     vTaskDelay(pdMS_TO_TICKS(100));
 

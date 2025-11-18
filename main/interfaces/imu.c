@@ -152,6 +152,8 @@ void icm20948_init(ICM20948_t *device, i2c_master_bus_handle_t bus_handle)
     device->idle_counter_ms  = 0;
     device->activity_timer   = NULL;
     device->idle_event_queue = NULL;
+    device->last_queue_send_ms = 0;
+    device->first_queue_send_done = false;
 
     // --- Full chip reset ---
     icm20948_write_byte(device, ICM20948_PWR_MGMT_1, 0x80);  // DEVICE_RESET
@@ -233,7 +235,7 @@ bool icm20948_is_moving(ICM20948_t *dev)
     float diff = fabsf(mag - accel_magnitude_prev);
     accel_magnitude_prev = mag;
 
-    bool moving = (diff > 0.03f); // ~30 mg threshold
+    bool moving = (diff > IMU_MOVING_THRESHOLD); // ~30 mg threshold
     dev->status = moving ? MOVING : IDLE;
     return moving;
 }
@@ -249,12 +251,36 @@ void icm20948_activity_task(ICM20948_t *dev)
 {
     if (!icm20948_is_moving(dev)) {
         dev->idle_counter_ms += 1000;
-        if (dev->idle_counter_ms >= 5 * 60 * 1000) { // 5 minutes
-            // idle event is already signaled via queue from timer callback
-            dev->idle_counter_ms = 0;
+        if (dev->idle_counter_ms >= IMU_IDLE_TIME_MINUTES * 60 * 1000) {
+            ESP_LOGI(TAG, "IMU idle threshold reached (%u ms) - sending event", dev->idle_counter_ms);
+
+            // Send idle event to queue (non-blocking from task context)
+            if (dev->idle_event_queue) {
+                uint32_t idle_event = 1;
+
+                // First queue send
+                if (!dev->first_queue_send_done) {
+                    xQueueSend(dev->idle_event_queue, &idle_event, 0);
+                    dev->first_queue_send_done = true;
+                    dev->last_queue_send_ms = xTaskGetTickCount() * portTICK_PERIOD_MS;
+                    ESP_LOGI(TAG, "First queue send completed");
+                } else {
+                    // Subsequent sends: only send every 1 minute (60000 ms)
+                    uint32_t current_ms = xTaskGetTickCount() * portTICK_PERIOD_MS;
+                    uint32_t time_since_last_send = current_ms - dev->last_queue_send_ms;
+
+                    if (time_since_last_send >= 60000) {  // 1 minute = 60000 ms
+                        xQueueSend(dev->idle_event_queue, &idle_event, 0);
+                        dev->last_queue_send_ms = current_ms;
+                        ESP_LOGI(TAG, "Queue send repeated (1 min throttle)");
+                    }
+                }
+            }
         }
     } else {
         dev->idle_counter_ms = 0;
+        dev->first_queue_send_done = false;  // Reset when movement detected
+        ESP_LOGI(TAG, "Movement detected - resetting idle counter");
     }
 }
 

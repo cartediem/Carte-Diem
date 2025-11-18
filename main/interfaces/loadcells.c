@@ -177,6 +177,28 @@ float load_cell_display_pounds(LoadCell* lc) {
 }
 
 /**
+ * @brief Get weight reading in ounces
+ */
+float load_cell_display_ounces(LoadCell* lc) {
+	int32_t raw = load_cell_average_channel(lc);
+	float net = raw - lc->tare_offset;
+
+	float scale = lc->type ? WEIGHT_VERIFICATION_SCALE_VALUE : PRODUCE_SCALE_VALUE;
+	float grams = net/scale;
+
+	if (fabs(grams) < 3.0f) {
+		grams = 0;
+	}
+	else {
+		grams = fabs(grams);
+		grams = roundf(grams*10) / 10.0f;
+	}
+	float ounces = grams * 0.035274;
+
+	return ounces;
+}
+
+/**
  * @brief Delay for specified microseconds
  */
 void load_cell_delay_us(LoadCell* lc, uint32_t us) {

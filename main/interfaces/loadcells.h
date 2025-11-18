@@ -77,6 +77,15 @@ int32_t load_cell_average_channel(LoadCell* lc);
 float load_cell_display_pounds(LoadCell* lc);
 
 /**
+ * @brief Get weight reading in ounces
+ */
+float load_cell_display_ounces(LoadCell* lc);
+
+/**
+ * @brief Delay for specified microseconds
+ */
+
+/**
  * @brief Delay for specified microseconds
  */
 void load_cell_delay_us(LoadCell* lc, uint32_t us);

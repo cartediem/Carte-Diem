@@ -6,6 +6,9 @@
 #include "freertos/timers.h"
 #include "freertos/queue.h"
 
+#define IMU_MOVING_THRESHOLD 0.1f  // ~30 mg
+#define IMU_IDLE_TIME_MINUTES 5      // 5 minutes
+
 enum IMUstatus {
     SLEEP,
     STANDBY,
@@ -33,6 +36,8 @@ typedef struct {
     uint32_t idle_counter_ms;
     TimerHandle_t activity_timer;
     QueueHandle_t idle_event_queue;  // Queue to notify main task of idle events
+    uint32_t last_queue_send_ms;     // Timestamp of last queue send (for 1-min throttling)
+    bool first_queue_send_done;      // Flag to track first queue send
 } ICM20948_t;
 
 /**
