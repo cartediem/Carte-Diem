@@ -468,19 +468,19 @@ static void setup(void)
     ESP_LOGI(TAG, "Starting system initialization...");
 
     // Initialize I2C bus first (used by proximity and IMU)
-    i2c_setup();
+    // i2c_setup();
 
     ble_setup();
-    barcode_setup();
-    button_setup();
+    // barcode_setup();
+    // button_setup();
 
-    proximity_setup();
-    proximity_interrupt_setup();
-    imu_setup();
-    payment_setup();
-    produce_loadcell_setup();
-    // cart_loadcell_setup();
-    item_rfid_setup();
+    // proximity_setup();
+    // proximity_interrupt_setup();
+    // imu_setup();
+    // payment_setup();
+    // produce_loadcell_setup();
+    // // cart_loadcell_setup();
+    // item_rfid_setup();
 
     vTaskDelay(pdMS_TO_TICKS(100));
 
@@ -502,88 +502,88 @@ void app_main(void)
 
     while (1)
     {
-        uint32_t evt;
+        // uint32_t evt;
 
         // button press
-        if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            if (!continuous_mode) {
-                ESP_LOGI(TAG, "Button press detected → triggering manual scan");
-                barcode_trigger_scan(&barcanner);
-            }
-        }
+        // if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        // {
+        //     if (!continuous_mode) {
+        //         ESP_LOGI(TAG, "Button press detected → triggering manual scan");
+        //         barcode_trigger_scan(&barcanner);
+        //     }
+        // }
 
-        // proximity interrupt
-        if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
-            ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
+        // // proximity interrupt
+        // if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        // {
+        //     uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
+        //     ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
 
-            if (proximity_value > PROXIMITY_THRESHOLD && !continuous_mode) {
-                ESP_LOGI(TAG, "Proximity threshold exceeded → switching to continuous scan mode");
-                barcode_set_continuous_mode(&barcanner);
-                continuous_mode = true;
-            }
+        //     if (proximity_value > PROXIMITY_THRESHOLD && !continuous_mode) {
+        //         ESP_LOGI(TAG, "Proximity threshold exceeded → switching to continuous scan mode");
+        //         barcode_set_continuous_mode(&barcanner);
+        //         continuous_mode = true;
+        //     }
 
-            proximity_sensor_clear_interrupt(proximity_sensor);
-        }
+        //     proximity_sensor_clear_interrupt(proximity_sensor);
+        // }
 
-        // IMU idle for 5 minutes
-        if (xQueueReceive(imu_idle_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            handle_imu_idle_event();
-        }
+        // // IMU idle for 5 minutes
+        // if (xQueueReceive(imu_idle_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        // {
+        //     handle_imu_idle_event();
+        // }
 
-        // barcode reading
-        if (barcode_read_line(&barcanner, buf, sizeof(buf)))
-        {
-            ESP_LOGI(TAG, "Scanned: %s", buf);
+        // // barcode reading
+        // if (barcode_read_line(&barcanner, buf, sizeof(buf)))
+        // {
+        //     ESP_LOGI(TAG, "Scanned: %s", buf);
 
-            // Send barcode data over BLE
-            if (ble_is_connected()) {
-                esp_err_t send_ret = ble_send_barcode(buf);
-                if (send_ret == ESP_OK) {
-                    ESP_LOGI(TAG, "✓ Barcode sent via BLE");
-                } else {
-                    ESP_LOGW(TAG, "✗ Failed to send barcode via BLE");
-                }
-            } else {
-                ESP_LOGW(TAG, "⚠ BLE not connected - barcode not sent");
-            }
+        //     // Send barcode data over BLE
+        //     if (ble_is_connected()) {
+        //         esp_err_t send_ret = ble_send_barcode(buf);
+        //         if (send_ret == ESP_OK) {
+        //             ESP_LOGI(TAG, "✓ Barcode sent via BLE");
+        //         } else {
+        //             ESP_LOGW(TAG, "✗ Failed to send barcode via BLE");
+        //         }
+        //     } else {
+        //         ESP_LOGW(TAG, "⚠ BLE not connected - barcode not sent");
+        //     }
 
-            if (continuous_mode) {
-                ESP_LOGI(TAG, "Barcode read → switching back to manual scan mode");
-                barcode_set_manual_mode(&barcanner);
-                continuous_mode = false;
-            }
-        }
+        //     if (continuous_mode) {
+        //         ESP_LOGI(TAG, "Barcode read → switching back to manual scan mode");
+        //         barcode_set_manual_mode(&barcanner);
+        //         continuous_mode = false;
+        //     }
+        // }
 
-        // Payment processing
-        if (payment_mode) {
+        // // Payment processing
+        // if (payment_mode) {
 
-            if (mfrc522_read_uid(&paymenter, uid, &uid_len) == ESP_OK && uid_len > 0) {
-                printf("[MAIN] Payment card detected: ");
-                for (int i = 0; i < uid_len; i++) {
-                    printf("%02X ", uid[i]);
-                }
-                printf("\n");
+        //     if (mfrc522_read_uid(&paymenter, uid, &uid_len) == ESP_OK && uid_len > 0) {
+        //         printf("[MAIN] Payment card detected: ");
+        //         for (int i = 0; i < uid_len; i++) {
+        //             printf("%02X ", uid[i]);
+        //         }
+        //         printf("\n");
 
-                bool match = (uid_len == 5);
-                for (int i = 0; i < 5 && match; i++) {
-                    if (uid[i] != authorized_uid[i]) match = false;
-                }
+        //         bool match = (uid_len == 5);
+        //         for (int i = 0; i < 5 && match; i++) {
+        //             if (uid[i] != authorized_uid[i]) match = false;
+        //         }
 
-                if (match) {
-                    printf("💳 Payment Successful!\n");
-                    ble_send_payment_status("1");
-                } else {
-                    printf("🚫 Payment Declined. Try another card.\n");
-                    ble_send_payment_status("0");
-                }
+        //         if (match) {
+        //             printf("💳 Payment Successful!\n");
+        //             ble_send_payment_status("1");
+        //         } else {
+        //             printf("🚫 Payment Declined. Try another card.\n");
+        //             ble_send_payment_status("0");
+        //         }
 
-                payment_mode = false;
-            }
-        }
+        //         payment_mode = false;
+        //     }
+        // }
 
         vTaskDelay(pdMS_TO_TICKS(50));
     }

@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "barcode_scanner_freertos",
-    "project_version":    "b272ced-dirty",
+    "project_version":    "e6d8549-dirty",
     "project_path":       "/Users/jinwookshin/Desktop/473/integration",
     "idf_path":           "/Users/jinwookshin/esp/esp-idf",
     "build_dir":          "/Users/jinwookshin/Desktop/473/integration/build",
