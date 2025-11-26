@@ -8,7 +8,7 @@
 #include "freertos/task.h"
 
 #define PRODUCE_SCALE_VALUE 222
-#define WEIGHT_VERIFICATION_SCALE_VALUE 30
+#define WEIGHT_VERIFICATION_SCALE_VALUE 26.2
 
 // Opaque handle for load cell instance
 typedef struct LoadCell {

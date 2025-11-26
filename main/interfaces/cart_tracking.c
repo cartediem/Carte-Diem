@@ -86,25 +86,53 @@ void startSession(void){
 }
 
 void endSession(bool sendBLE) {
-    FILE *f = fopen("/spiffs/session.log", "r");
+    FILE *f = fopen("/spiffs/session.log", "rb");
     if (f) {
         if (sendBLE) {
-            // Send log data in chunks to avoid stack overflow
-            char chunk[256];  // Smaller buffer for reading chunks
-
             if (ble_is_connected()) {
-                ESP_LOGI(TAG, "Sending cart tracking log via BLE in chunks...");
+                // Get file size
+                fseek(f, 0, SEEK_END);
+                long file_size = ftell(f);
+                fseek(f, 0, SEEK_SET);
 
-                // Read and send file line by line
-                while (fgets(chunk, sizeof(chunk), f)) {
-                    esp_err_t send_ret = ble_send_rfid(chunk);
-                    if (send_ret != ESP_OK) {
-                        ESP_LOGW(TAG, "✗ Failed to send chunk via BLE");
+                ESP_LOGI(TAG, "Sending cart tracking log via BLE (protocol: FILE_START/DATA/FILE_END)");
+
+                // Send FILE_START header
+                char header[128];
+                snprintf(header, sizeof(header), "FILE_START,session.log,%ld", file_size);
+                esp_err_t ret = ble_send_cart_tracking(header);
+                if (ret != ESP_OK) {
+                    ESP_LOGW(TAG, "✗ Failed to send FILE_START");
+                    fclose(f);
+                    return;
+                }
+                vTaskDelay(pdMS_TO_TICKS(50));
+
+                // Send file data in chunks
+                uint8_t chunk[240];  // BLE MTU typically allows ~240 bytes per packet
+                size_t bytes_read;
+                size_t total_sent = 0;
+
+                while ((bytes_read = fread(chunk, 1, sizeof(chunk), f)) > 0) {
+                    ret = ble_send_cart_tracking((const char *)chunk);
+                    if (ret != ESP_OK) {
+                        ESP_LOGW(TAG, "✗ Failed to send data chunk");
                         break;
                     }
-                    vTaskDelay(pdMS_TO_TICKS(10));  // Small delay between chunks
+                    total_sent += bytes_read;
+                    int percent = (total_sent * 100) / file_size;
+                    ESP_LOGI(TAG, "Sent %d%%", percent);
+                    vTaskDelay(pdMS_TO_TICKS(20));  // Delay between chunks
                 }
-                ESP_LOGI(TAG, "✓ Cart tracking log sent via BLE");
+
+                // Send FILE_END
+                ret = ble_send_cart_tracking("FILE_END");
+                if (ret == ESP_OK) {
+                    ESP_LOGI(TAG, "✓ Cart tracking log sent via BLE (%.1f KB)", file_size / 1024.0);
+                } else {
+                    ESP_LOGW(TAG, "✗ Failed to send FILE_END");
+                }
+                vTaskDelay(pdMS_TO_TICKS(50));
             } else {
                 ESP_LOGW(TAG, "⚠ BLE not connected - log not sent");
             }

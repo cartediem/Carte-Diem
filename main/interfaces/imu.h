@@ -1,13 +1,11 @@
 #pragma once
 #include "imu_defs.h"
+#include "cartediem_defs.h"
 #include "stdint.h"
 #include "driver/i2c_master.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/timers.h"
 #include "freertos/queue.h"
-
-#define IMU_MOVING_THRESHOLD 0.1f  // ~30 mg
-#define IMU_IDLE_TIME_MINUTES 5      // 5 minutes
 
 enum IMUstatus {
     SLEEP,

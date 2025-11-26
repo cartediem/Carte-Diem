@@ -5,7 +5,7 @@
 /* ============================================
  *   ICM20948 MAIN ADDRESS
  * ============================================ */
-#define ICM20948_I2C_ADDR 0x69     // Most breakouts use AD0 = LOW → 0x68
+#define ICM20948_I2C_ADDR 0x68     // Most breakouts use AD0 = LOW → 0x68
 
 
 /* ============================================

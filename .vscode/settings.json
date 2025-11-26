@@ -10,6 +10,10 @@
         "string_view": "c",
         "vector": "c",
         "bitset": "c",
-        "unordered_map": "c"
+        "unordered_map": "c",
+        "cart_tracking.h": "c",
+        "loadcells.h": "c",
+        "barcode.h": "c",
+        "item_rfid.h": "c"
     }
 }

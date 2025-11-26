@@ -25,8 +25,8 @@ static const ble_uuid128_t gatt_svr_chr_upc_uuid =
     BLE_UUID128_INIT(0x4f, 0xb1, 0x76, 0xb6, 0x4f, 0x79, 0x89, 0xb2,
                      0x89, 0x45, 0x7e, 0x1d, 0x81, 0x6c, 0x6b, 0xe3);
 
-// Cart tracking RFID UUID: d5eabd06-05a6-4b8d-bb15-8393c3a703de
-static const ble_uuid128_t gatt_svr_chr_rfid_uuid =
+// Cart tracking cart_tracking UUID: d5eabd06-05a6-4b8d-bb15-8393c3a703de
+static const ble_uuid128_t gatt_svr_chr_cart_tracking_uuid =
     BLE_UUID128_INIT(0xde, 0x03, 0xa7, 0xc3, 0x93, 0x83, 0x15, 0xbb,
                      0x8d, 0x4b, 0xa6, 0x05, 0x06, 0xbd, 0xea, 0xd5);
 
@@ -60,7 +60,7 @@ static const ble_uuid128_t gatt_svr_chr_rx_uuid =
 static bool ble_connected = false;
 static uint16_t ble_conn_handle = 0;
 static uint16_t upc_char_handle;
-static uint16_t rfid_char_handle;
+static uint16_t cart_tracking_char_handle;
 static uint16_t payment_char_handle;
 static uint16_t produce_weight_char_handle;
 static uint16_t item_verification_char_handle;
@@ -69,7 +69,7 @@ static uint16_t rx_char_handle;
 static char device_name[32] = "ESP32_Barcode";
 
 // Subscription tracking
-static bool rfid_notify_enabled = false;
+static bool cart_tracking_notify_enabled = false;
 static bool upc_notify_enabled = false;
 static bool payment_notify_enabled = false;
 static bool produce_weight_notify_enabled = false;
@@ -100,11 +100,11 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
                 .val_handle = &upc_char_handle,
             },
             {
-                // Cart tracking RFID Characteristic
-                .uuid = &gatt_svr_chr_rfid_uuid.u,
+                // Cart tracking cart_tracking Characteristic
+                .uuid = &gatt_svr_chr_cart_tracking_uuid.u,
                 .access_cb = gatt_svr_chr_access_barcode,
                 .flags = BLE_GATT_CHR_F_NOTIFY,
-                .val_handle = &rfid_char_handle,
+                .val_handle = &cart_tracking_char_handle,
             },
             {
                 // Payment status Characteristic
@@ -262,9 +262,9 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             if (event->subscribe.attr_handle == upc_char_handle) {
                 upc_notify_enabled = event->subscribe.cur_notify;
                 ESP_LOGI(TAG, "UPC characteristic notify: %s", event->subscribe.cur_notify ? "enabled" : "disabled");
-            } else if (event->subscribe.attr_handle == rfid_char_handle) {
-                rfid_notify_enabled = event->subscribe.cur_notify;
-                ESP_LOGI(TAG, "RFID characteristic notify: %s", event->subscribe.cur_notify ? "enabled" : "disabled");
+            } else if (event->subscribe.attr_handle == cart_tracking_char_handle) {
+                cart_tracking_notify_enabled = event->subscribe.cur_notify;
+                ESP_LOGI(TAG, "Cart Tracking characteristic notify: %s", event->subscribe.cur_notify ? "enabled" : "disabled");
             } else if (event->subscribe.attr_handle == payment_char_handle) {
                 payment_notify_enabled = event->subscribe.cur_notify;
                 ESP_LOGI(TAG, "Payment characteristic notify: %s", event->subscribe.cur_notify ? "enabled" : "disabled");
@@ -494,9 +494,9 @@ esp_err_t ble_send_barcode(const char *barcode_data)
     return ble_send_data(upc_char_handle, barcode_data, "barcode", upc_notify_enabled);
 }
 
-esp_err_t ble_send_rfid(const char *rfid_data)
+esp_err_t ble_send_cart_tracking(const char *cart_tracking_data)
 {
-    return ble_send_data(rfid_char_handle, rfid_data, "RFID", rfid_notify_enabled);
+    return ble_send_data(cart_tracking_char_handle, cart_tracking_data, "cart_tracking", cart_tracking_notify_enabled);
 }
 
 esp_err_t ble_send_payment_status(const char *payment_status)

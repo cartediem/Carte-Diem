@@ -1,27 +1,8 @@
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "driver/gpio.h"
-#include "esp_log.h"
-#include "esp_timer.h"
-#include <string.h>
-#include <math.h>
-
-#include "interfaces/barcode.h"
-#include "interfaces/proximity_sensor.h"
-#include "interfaces/mfrc522.h"
-#include "interfaces/ble_barcode_nimble.h"
-#include "interfaces/loadcells.h"
-#include "interfaces/item_rfid.h"
-#include "interfaces/imu.h"
-#include "interfaces/cart_tracking.h"
-#include "driver/i2c_master.h"
-
-// ===== Pin Definitions =====
+// ===== defs =====
 #include "cartediem_defs.h"
 
 #define TAG "MAIN"
-
+// ===== Variables =====
 static barcode_t barcanner;
 static ProximitySensor* proximity_sensor = NULL;
 static mfrc522_t paymenter;
@@ -32,8 +13,6 @@ static LoadCell* produce_load_cell = NULL;
 static LoadCell* cart_load_cell = NULL;
 
 static i2c_master_bus_handle_t i2c_bus_handle = NULL;
-
-
 
 static QueueHandle_t button_evt_queue = NULL;
 static QueueHandle_t proximity_evt_queue = NULL;
@@ -48,54 +27,211 @@ static bool cart_tracking_active = false;
 
 // ===== Weight Monitoring Variables =====
 static float last_cart_weight = 0.0f;
-static float weight_change_threshold = 0.5f;
-static void weight_monitor_task(void *arg); // Forward declaration
+static float weight_change_threshold = WEIGHT_CHANGE_THRESHOLD_LBS;
 
 // ===== Cart Tracking Variables =====
 static uint32_t last_cart_tracking_time_ms = 0;
-#define CART_TRACKING_INTERVAL_MS 10000  // 10 seconds
 
-static void IRAM_ATTR button_isr(void *arg)
+// ===== Forward Declarations =====
+static void ble_setup(void);
+
+static void i2c_setup(void);
+static void imu_setup(void);
+static void proximity_setup(void);
+static void proximity_interrupt_setup(void);
+
+static void barcode_setup(void);
+static void button_setup(void);
+
+static void payment_setup(void);
+
+static void produce_loadcell_setup(void);
+static void cart_loadcell_setup(void);
+
+static void item_rfid_setup(void);
+static void cart_tracking_setup(void);
+
+static void IRAM_ATTR button_isr(void *arg);
+static void IRAM_ATTR proximity_isr(void *arg);
+void on_item_scan_complete(const item_rfid_tag_t *tags, int count);
+static void handle_imu_idle_event(void);
+static void handle_imu_motion_after_idle_event(void);
+static void handle_ble_command(const char *data, uint16_t len);
+
+static void weight_monitor_task(void *arg);
+
+void debug_led();
+
+// ===== Main Setup Function =====
+static void setup(void)
 {
-    uint32_t evt = 1;
-    xQueueSendFromISR(button_evt_queue, &evt, NULL);
-    ESP_EARLY_LOGI(TAG, "Button interrupt triggered");
+    ESP_LOGI(TAG, "[[Carte Diem]]");
+    ESP_LOGI(TAG, "Starting system initialization...");
+
+    i2c_setup();
+
+    ble_setup();
+    barcode_setup();
+    button_setup();
+
+    proximity_setup();
+    proximity_interrupt_setup();
+
+    imu_setup(); 
+
+    payment_setup();
+    produce_loadcell_setup();
+    cart_loadcell_setup();
+
+    #if ENABLE_ITEM_VERIFICATION
+    item_rfid_setup();
+    #endif
+
+    #if ENABLE_CART_TRACKING
+    cart_tracking_setup();
+    #endif
+
+    #if ENABLE_LED_DEBUG_STARTUP
+    debug_led();
+    #endif
+
+    ESP_LOGI(TAG, "");
+    ESP_LOGI(TAG, "|==================================|");
+    ESP_LOGI(TAG, "|  System initialization complete  |");
+    ESP_LOGI(TAG, "|==================================|");
+
+    #if !ENABLE_ITEM_VERIFICATION
+    ESP_LOGI(TAG, "Item Verification DISABLED");
+    #endif
+    #if !ENABLE_CART_TRACKING
+    ESP_LOGI(TAG, "Cart Tracking DISABLED");
+    #endif
+
+    ESP_LOGI(TAG, "BLE Status: %s", ble_is_connected() ? "Connected" : "Waiting for connection...");
 }
 
-static void IRAM_ATTR proximity_isr(void *arg)
+void app_main(void)
 {
-    uint32_t evt = 1;
-    xQueueSendFromISR(proximity_evt_queue, &evt, NULL);
-    ESP_EARLY_LOGI(TAG, "Proximity interrupt triggered");
+    setup();
+
+    // --- Main task loop ---
+    uint8_t uid[10], uid_len = 0;
+    char buf[128];
+    float produce_weight = 0;
+    char *produce_weight_str = buf;
+    uint8_t authorized_uid[] = {0x1A, 0x83, 0x26, 0x03, 0xBC};
+
+    while (1)
+    {
+        uint32_t evt;
+
+        // button press
+        if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        {
+            if (!continuous_mode) {
+                ESP_LOGI(TAG, "Button press detected → triggering manual scan");
+                barcode_trigger_scan(&barcanner);
+            }
+        }
+
+        // proximity interrupt
+        if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        {
+            uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
+            ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
+
+            if (proximity_value > PROXIMITY_THRESHOLD && !continuous_mode) {
+                ESP_LOGI(TAG, "Proximity threshold exceeded → switching to continuous scan mode");
+                barcode_set_continuous_mode(&barcanner);
+                continuous_mode = true;
+            }
+
+            proximity_sensor_clear_interrupt(proximity_sensor);
+        }
+
+        // IMU idle for 5 minutes
+        if (xQueueReceive(imu_idle_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        {
+            handle_imu_idle_event();
+        }
+
+        // IMU motion detected after 5+ minute idle
+        if (xQueueReceive(imu_motion_after_idle_queue, &evt, pdMS_TO_TICKS(10)))
+        {
+            handle_imu_motion_after_idle_event();
+        }
+
+        // barcode reading
+        if (barcode_read_line(&barcanner, buf, sizeof(buf)))
+        {
+            ESP_LOGI(TAG, "Scanned: %s", buf);
+
+            // Send barcode data over BLE
+            if (ble_is_connected()) {
+                esp_err_t send_ret = ble_send_barcode(buf);
+                if (send_ret == ESP_OK) {
+                    ESP_LOGI(TAG, "✓ Barcode sent via BLE");
+                } else {
+                    ESP_LOGW(TAG, "✗ Failed to send barcode via BLE");
+                }
+            } else {
+                ESP_LOGW(TAG, "⚠ BLE not connected - barcode not sent");
+            }
+
+            if (continuous_mode) {
+                ESP_LOGI(TAG, "Barcode read → switching back to manual scan mode");
+                barcode_set_manual_mode(&barcanner);
+                continuous_mode = false;
+            }
+        }
+
+        #if ENABLE_CART_TRACKING
+            // Cart tracking RFID burst read (every 10 seconds, only when IMU is moving)
+            // Modify burst period with "CART_TRACKING_INTERVAL_MS" in cartediem_defs.h
+        if (cart_tracking_active) { 
+            uint32_t current_time_ms = xTaskGetTickCount() * portTICK_PERIOD_MS;
+            uint32_t time_since_last_tracking = current_time_ms - last_cart_tracking_time_ms;
+
+            if (time_since_last_tracking >= CART_TRACKING_INTERVAL_MS) {
+                BurstRead_CartTracking();
+                last_cart_tracking_time_ms = current_time_ms;
+            }
+        }
+        #endif
+
+        // Payment processing
+        if (payment_mode) {
+
+            if (mfrc522_read_uid(&paymenter, uid, &uid_len) == ESP_OK && uid_len > 0) {
+                printf("[MAIN] Payment card detected: ");
+                for (int i = 0; i < uid_len; i++) {
+                    printf("%02X ", uid[i]);
+                }
+                printf("\n");
+
+                bool match = (uid_len == 5);
+                for (int i = 0; i < 5 && match; i++) {
+                    if (uid[i] != authorized_uid[i]) match = false;
+                }
+
+                if (match) {
+                    printf("💳 Payment Successful!\n");
+                    ble_send_payment_status("1");
+                } else {
+                    printf("🚫 Payment Declined. Try another card.\n");
+                    ble_send_payment_status("0");
+                }
+
+                payment_mode = false;
+            }
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(50));
+    }
 }
 
-void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
-    ESP_LOGI(TAG, "Found %d items in cart", count);
 
-    // Get cart weight
-    float cart_weight = load_cell_display_pounds(cart_load_cell);
-    // float cart_weight = load_cell_display_pounds(produce_load_cell);
-
-    // Build verification string: "weight,num_tags,tag1,tag2,tag3,..."
-    char verification_msg[512] = {0};
-    int offset = snprintf(verification_msg, sizeof(verification_msg), "%.4f,%d", cart_weight, count);
-
-    // Add each tag to the message
-    for (int i = 0; i < count && offset < (int)sizeof(verification_msg) - 1; i++) {
-        offset += snprintf(verification_msg + offset,
-                          sizeof(verification_msg) - offset,
-                          ",%s",
-                          tags[i].tag);
-    }
-
-    // Send via BLE
-    esp_err_t send_ret = ble_send_item_verification(verification_msg);
-    if (send_ret == ESP_OK) {
-        ESP_LOGI(TAG, "✓ Cart verification sent via BLE: %s", verification_msg);
-    } else {
-        ESP_LOGW(TAG, "✗ Failed to send cart verification via BLE");
-    }
-}
+// Functions...
 
 // ===== BLE Receive Handler =====
 
@@ -217,34 +353,60 @@ static void handle_ble_command(const char *data, uint16_t len)
             }
             else if(strcmp("IV_TRIG", data) == 0 || strcmp("IV_SCAN", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Force triggering item scan");
-                // item_rfid_scan(item_reader); // callback at on_item_scan_complete()
+
+                #if ENABLE_ITEM_VERIFICATION
+                item_rfid_scan(item_reader); // callback at on_item_scan_complete()
+                #else
+                ESP_LOGI(TAG, "Item Verification is DISABLED - cannot perform item scan");
+                ble_send_misc_data("[ERROR] IV_DISABLED");
+                #endif
+
                 break;
             }
             break;
         
         case 'C': // Cart Tracking - txt file commands
             if(strcmp("CT_START", data) == 0) {
-                ESP_LOGI(TAG, "Starting cart tracking data logging");
+                
 
-                // Start cart tracking session
+                #if ENABLE_CART_TRACKING
+                ESP_LOGI(TAG, "Starting cart tracking data logging");
                 startSession();
 
-                // Tare produce load cell
                 load_cell_tare(cart_load_cell);
                 ESP_LOGI(TAG, "Load cell tared for tracking");
                 last_cart_weight = load_cell_display_pounds(cart_load_cell);
-
-                // Perform initial item scan
-                // item_rfid_scan(item_reader);
+                
+                #if ENABLE_ITEM_VERIFICATION
+                item_rfid_scan(item_reader);
+                ESP_LOGI(TAG, "Initial item scan performed for tracking session");
+                #else
+                ESP_LOGI(TAG, "Item Verification is DISABLED - skipping initial item scan for tracking session");
+                #endif
 
                 // Create weight monitoring task (1 second interval)
-                // xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
                 ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
 
-                // Enable cart tracking
                 cart_tracking_active = true;
+                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
+                ESP_LOGI(TAG, "Starting weight monitoring without cart tracking RFID");
+                
+                load_cell_tare(cart_load_cell);
+                ESP_LOGI(TAG, "Load cell tared for weight monitoring");
+                last_cart_weight = load_cell_display_pounds(cart_load_cell);
+
+                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)",weight_change_threshold);
+                #else
+                ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot start tracking session");
+                ble_send_misc_data("[ERROR] CT_DISABLED");
+                #endif
             }
             else if(strcmp("CT_STOP", data) == 0) {
+
+                #if ENABLE_CART_TRACKING
+                ESP_LOGI(TAG, "Stopping cart tracking data logging");
                 ESP_LOGI(TAG, "Exporting cart tracking data log via BLE");
 
                 // Disable cart tracking
@@ -259,8 +421,21 @@ static void handle_ble_command(const char *data, uint16_t len)
 
                 // End session and send log via BLE
                 endSession(true);
+                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
+                ESP_LOGI(TAG, "Stopping weight monitoring without cart tracking RFID");
+                if (weight_monitor_task_handle != NULL) {
+                    vTaskDelete(weight_monitor_task_handle);
+                    weight_monitor_task_handle = NULL;
+                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                }
+                #else
+                ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot stop tracking session");
+                ble_send_misc_data("[ERROR] CT_DISABLED");
+                #endif
             }
             else if(strcmp("CT_CLEAR", data) == 0) {
+
+                #if ENABLE_CART_TRACKING
                 ESP_LOGI(TAG, "Clearing cart tracking data log");
 
                 // Disable cart tracking
@@ -275,6 +450,17 @@ static void handle_ble_command(const char *data, uint16_t len)
 
                 // End session and remove file without sending
                 endSession(false);
+                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
+                ESP_LOGI(TAG, "Stopping weight monitoring without cart tracking RFID");
+                if (weight_monitor_task_handle != NULL) {
+                    vTaskDelete(weight_monitor_task_handle);
+                    weight_monitor_task_handle = NULL;
+                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                }
+                #else
+                ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot clear tracking session");
+                ble_send_misc_data("[ERROR] CT_DISABLED");
+                #endif
             }
             break;
 
@@ -285,41 +471,7 @@ static void handle_ble_command(const char *data, uint16_t len)
     }
 }
 
-// ===== IMU Idle Event Handler (called from main loop, not from timer context) =====
-
-static void handle_imu_idle_event(void)
-{
-    ESP_LOGI(TAG, "⏱ IMU: Cart idle for 5 minutes - no motion detected");
-    ble_send_misc_data("[IMU] IDLE");
-}
-
-// ===== IMU Motion After Idle Event Handler =====
-
-static void handle_imu_motion_after_idle_event(void)
-{
-    ESP_LOGI(TAG, "🚀 IMU: Motion detected after 5+ minute idle");
-    ble_send_misc_data("[IMU] Moving");
-}
-
 // ===== Individual Setup Functions =====
-
-static void i2c_setup(void)
-{
-    ESP_LOGI(TAG, "Initializing I2C bus...");
-    i2c_master_bus_config_t i2c_bus_cfg = {
-        .clk_source = I2C_CLK_SRC_DEFAULT,
-        .glitch_ignore_cnt = 7,
-        .intr_priority = 0,
-        .trans_queue_depth = 0,
-        .flags = {
-            .enable_internal_pullup = true,
-        },
-        .sda_io_num = SDA_PIN,
-        .scl_io_num = SCL_PIN,
-    };
-    ESP_ERROR_CHECK(i2c_new_master_bus(&i2c_bus_cfg, &i2c_bus_handle));
-    ESP_LOGI(TAG, "I2C master bus initialized");
-}
 
 static void ble_setup(void)
 {
@@ -333,41 +485,22 @@ static void ble_setup(void)
     }
 }
 
-static void barcode_setup(void)
+static void i2c_setup(void)
 {
-    ESP_LOGI(TAG, "Initializing barcode scanner...");
-    barcode_init(&barcanner, BARCODE_UART_PORT, BARCODE_TX_PIN, BARCODE_RX_PIN, true);
-    ESP_LOGI(TAG, "Barcode scanner ready in manual mode");
-}
-
-static void button_setup(void)
-{
-    ESP_LOGI(TAG, "Initializing button...");
-    gpio_config_t io_conf = {
-        .pin_bit_mask = 1ULL << BUTTON_PIN,
-        .mode = GPIO_MODE_INPUT,
-        .pull_up_en = GPIO_PULLUP_ENABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_NEGEDGE,
+    ESP_LOGI(TAG, "Initializing I2C bus...");
+    i2c_master_bus_config_t i2c_bus_cfg = {
+        .clk_source = I2C_CLK_SRC_DEFAULT,
+        .glitch_ignore_cnt = 7,
+        .intr_priority = 0,
+        .trans_queue_depth = 0,
+        .flags = {
+            .enable_internal_pullup = true,  // Use internal pull-ups as fallback
+        },
+        .sda_io_num = SDA_PIN,
+        .scl_io_num = SCL_PIN,
     };
-    gpio_config(&io_conf);
-
-    button_evt_queue = xQueueCreate(4, sizeof(uint32_t));
-    gpio_install_isr_service(0);
-    gpio_isr_handler_add(BUTTON_PIN, button_isr, NULL);
-    ESP_LOGI(TAG, "Button ready on GPIO %d", BUTTON_PIN);
-}
-
-static void proximity_setup(void)
-{
-    ESP_LOGI(TAG, "Initializing proximity sensor...");
-    proximity_sensor = proximity_sensor_create(PROXIMITY_INT_PIN, PROXIMITY_THRESHOLD, false);
-    if (proximity_sensor == NULL || !proximity_sensor_begin(proximity_sensor, i2c_bus_handle)) {
-        ESP_LOGE(TAG, "Failed to initialize proximity sensor");
-        return;
-    }
-    proximity_sensor_enable_interrupt(proximity_sensor);
-    ESP_LOGI(TAG, "Proximity sensor ready with threshold %d", PROXIMITY_THRESHOLD);
+    ESP_ERROR_CHECK(i2c_new_master_bus(&i2c_bus_cfg, &i2c_bus_handle));
+    ESP_LOGI(TAG, "I2C master bus initialized");
 }
 
 static void imu_setup(void){
@@ -399,10 +532,21 @@ static void imu_setup(void){
     }
 
     // Create dedicated IMU monitoring task (1 second interval)
-    xTaskCreate(icm20948_monitor_task, "imu_monitor", 2048, &imu_sensor, 5, NULL);
+    xTaskCreate(icm20948_monitor_task, "imu_monitor", 4096, &imu_sensor, 5, NULL);
     ESP_LOGI(TAG, "IMU monitoring task created (5-minute idle timeout)");
 }
 
+static void proximity_setup(void)
+{
+    ESP_LOGI(TAG, "Initializing proximity sensor...");
+    proximity_sensor = proximity_sensor_create(PROXIMITY_INT_PIN, PROXIMITY_THRESHOLD, false);
+    if (proximity_sensor == NULL || !proximity_sensor_begin(proximity_sensor, i2c_bus_handle)) {
+        ESP_LOGE(TAG, "Failed to initialize proximity sensor");
+        return;
+    }
+    proximity_sensor_enable_interrupt(proximity_sensor);
+    ESP_LOGI(TAG, "Proximity sensor ready with threshold %d", PROXIMITY_THRESHOLD);
+}
 
 static void proximity_interrupt_setup(void)
 {
@@ -419,6 +563,31 @@ static void proximity_interrupt_setup(void)
     proximity_evt_queue = xQueueCreate(4, sizeof(uint32_t));
     gpio_isr_handler_add(PROXIMITY_INT_PIN, proximity_isr, NULL);
     ESP_LOGI(TAG, "Proximity interrupt ready on GPIO %d", PROXIMITY_INT_PIN);
+}
+
+static void barcode_setup(void)
+{
+    ESP_LOGI(TAG, "Initializing barcode scanner...");
+    barcode_init(&barcanner, BARCODE_UART_PORT, BARCODE_TX_PIN, BARCODE_RX_PIN, true);
+    ESP_LOGI(TAG, "Barcode scanner ready in manual mode");
+}
+
+static void button_setup(void)
+{
+    ESP_LOGI(TAG, "Initializing button...");
+    gpio_config_t io_conf = {
+        .pin_bit_mask = 1ULL << BUTTON_PIN,
+        .mode = GPIO_MODE_INPUT,
+        .pull_up_en = GPIO_PULLUP_ENABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_NEGEDGE,
+    };
+    gpio_config(&io_conf);
+
+    button_evt_queue = xQueueCreate(4, sizeof(uint32_t));
+    gpio_install_isr_service(0);
+    gpio_isr_handler_add(BUTTON_PIN, button_isr, NULL);
+    ESP_LOGI(TAG, "Button ready on GPIO %d", BUTTON_PIN);
 }
 
 static void payment_setup(void)
@@ -471,6 +640,60 @@ static void cart_tracking_setup(void) {
     ESP_LOGI(TAG, "Cart tracking setup complete.");
 }
 
+// ===== ISRs =====
+static void IRAM_ATTR button_isr(void *arg)
+{
+    uint32_t evt = 1;
+    xQueueSendFromISR(button_evt_queue, &evt, NULL);
+    ESP_EARLY_LOGI(TAG, "Button interrupt triggered");
+}
+
+static void IRAM_ATTR proximity_isr(void *arg)
+{
+    uint32_t evt = 1;
+    xQueueSendFromISR(proximity_evt_queue, &evt, NULL);
+    ESP_EARLY_LOGI(TAG, "Proximity interrupt triggered");
+}
+
+void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
+    ESP_LOGI(TAG, "Found %d items in cart", count);
+
+    // Get cart weight
+    float cart_weight = load_cell_display_pounds(cart_load_cell);
+
+    // Build verification string: "weight,num_tags,tag1,tag2,tag3,..."
+    char verification_msg[512] = {0};
+    int offset = snprintf(verification_msg, sizeof(verification_msg), "%.4f,%d", cart_weight, count);
+
+    // Add each tag to the message
+    for (int i = 0; i < count && offset < (int)sizeof(verification_msg) - 1; i++) {
+        offset += snprintf(verification_msg + offset,
+                          sizeof(verification_msg) - offset,
+                          ",%s",
+                          tags[i].tag);
+    }
+
+    // Send via BLE
+    esp_err_t send_ret = ble_send_item_verification(verification_msg);
+    if (send_ret == ESP_OK) {
+        ESP_LOGI(TAG, "✓ Cart verification sent via BLE: %s", verification_msg);
+    } else {
+        ESP_LOGW(TAG, "✗ Failed to send cart verification via BLE");
+    }
+}
+
+static void handle_imu_idle_event(void)
+{
+    ESP_LOGI(TAG, "⏱ IMU: Cart idle for 5 minutes - no motion detected");
+    ble_send_misc_data("[IMU] IDLE");
+}
+
+static void handle_imu_motion_after_idle_event(void)
+{
+    ESP_LOGI(TAG, "🚀 IMU: Motion detected after 5+ minute idle");
+    ble_send_misc_data("[IMU] Moving");
+}
+
 // ===== Weight Monitoring Task =====
 static void weight_monitor_task(void *arg)
 {
@@ -478,18 +701,17 @@ static void weight_monitor_task(void *arg)
 
     while (1) {
         float current_weight = load_cell_display_pounds(cart_load_cell);
-        // float current_weight = load_cell_display_pounds(produce_load_cell);
 
         float weight_delta = fabs(current_weight - last_cart_weight);
 
-        ESP_LOGD(TAG, "[Weight Monitor] Current: %.4f lbs, Last: %.4f lbs, Delta: %.4f lbs, Threshold: %.4f lbs",
-                 current_weight, last_cart_weight, weight_delta, weight_change_threshold);
+        // ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs, Last: %.4f lbs, Delta: %.4f lbs, Threshold: %.4f lbs", current_weight, last_cart_weight, weight_delta, weight_change_threshold);
 
         if (weight_delta > weight_change_threshold) {
             ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (threshold: %.4f lbs)",
                  weight_delta, weight_change_threshold);
             ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
-
+            
+            #if ENABLE_ITEM_VERIFICATION
             if (!item_rfid_is_scanning(item_reader)) {
                 esp_err_t scan_ret = item_rfid_scan(item_reader);
                 if (scan_ret == ESP_OK) {
@@ -500,6 +722,9 @@ static void weight_monitor_task(void *arg)
             } else {
                 ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
             }
+            #else
+            ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
+            #endif
         }
 
         last_cart_weight = current_weight;
@@ -508,148 +733,43 @@ static void weight_monitor_task(void *arg)
     }
 }
 
-static void setup(void)
-{
-    ESP_LOGI(TAG, "Starting system initialization...");
+// ===== Debug LED Blink =====
+void debug_led(){
 
-    // Initialize I2C bus first (used by proximity and IMU)
-    i2c_setup();
+    ESP_LOGI(TAG, "Initializing debug LED on GPIO 21...");
+    gpio_config_t debug_led_conf = {
+        .pin_bit_mask = 1ULL << DEBUG_LED_PIN,
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
 
-    ble_setup();
-    barcode_setup();
-    button_setup();
+    gpio_config(&debug_led_conf);
+    
+    gpio_set_level(DEBUG_LED_PIN, 0); 
+    ESP_LOGI(TAG, "Debug LED initialized");
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 1);
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 0);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 1);
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 0);
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 1);
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    ESP_LOGI(TAG, "Testing GPIO 21 output...");
+    gpio_set_level(DEBUG_LED_PIN, 0);
+    vTaskDelay(pdMS_TO_TICKS(1000));
 
-    proximity_setup();
-    proximity_interrupt_setup();
-    imu_setup();
-    payment_setup();
-    produce_loadcell_setup();
-    cart_loadcell_setup();
-    // item_rfid_setup();
-
-    cart_tracking_setup();
-
-    vTaskDelay(pdMS_TO_TICKS(100));
-
-    ESP_LOGI(TAG, "System initialization complete");
-    ESP_LOGI(TAG, "Ready: press button on GPIO %d to trigger scan or approach proximity sensor.", BUTTON_PIN);
-    ESP_LOGI(TAG, "BLE Status: %s", ble_is_connected() ? "Connected" : "Waiting for connection...");
-}
-
-void app_main(void)
-{
-    setup();
-
-    // --- Main task loop ---
-    uint8_t uid[10], uid_len = 0;
-    char buf[128];
-    float produce_weight = 0;
-    char *produce_weight_str = buf;
-    uint8_t authorized_uid[] = {0x1A, 0x83, 0x26, 0x03, 0xBC};
-
-
-    while (1)
-    {
-        uint32_t evt;
-
-        // button press
-        if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            if (!continuous_mode) {
-                ESP_LOGI(TAG, "Button press detected → triggering manual scan");
-                barcode_trigger_scan(&barcanner);
-            }
-        }
-
-        // proximity interrupt
-        if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
-            ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
-
-            if (proximity_value > PROXIMITY_THRESHOLD && !continuous_mode) {
-                ESP_LOGI(TAG, "Proximity threshold exceeded → switching to continuous scan mode");
-                barcode_set_continuous_mode(&barcanner);
-                continuous_mode = true;
-            }
-
-            proximity_sensor_clear_interrupt(proximity_sensor);
-        }
-
-        // IMU idle for 5 minutes
-        if (xQueueReceive(imu_idle_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            handle_imu_idle_event();
-        }
-
-        // IMU motion detected after 5+ minute idle
-        if (xQueueReceive(imu_motion_after_idle_queue, &evt, pdMS_TO_TICKS(10)))
-        {
-            handle_imu_motion_after_idle_event();
-        }
-
-        // barcode reading
-        if (barcode_read_line(&barcanner, buf, sizeof(buf)))
-        {
-            ESP_LOGI(TAG, "Scanned: %s", buf);
-
-            // Send barcode data over BLE
-            if (ble_is_connected()) {
-                esp_err_t send_ret = ble_send_barcode(buf);
-                if (send_ret == ESP_OK) {
-                    ESP_LOGI(TAG, "✓ Barcode sent via BLE");
-                } else {
-                    ESP_LOGW(TAG, "✗ Failed to send barcode via BLE");
-                }
-            } else {
-                ESP_LOGW(TAG, "⚠ BLE not connected - barcode not sent");
-            }
-
-            if (continuous_mode) {
-                ESP_LOGI(TAG, "Barcode read → switching back to manual scan mode");
-                barcode_set_manual_mode(&barcanner);
-                continuous_mode = false;
-            }
-        }
-
-        // Cart tracking RFID burst read (every 10 seconds, only when IMU is moving)
-        if (cart_tracking_active) { // 
-            uint32_t current_time_ms = xTaskGetTickCount() * portTICK_PERIOD_MS;
-            uint32_t time_since_last_tracking = current_time_ms - last_cart_tracking_time_ms;
-
-            if (time_since_last_tracking >= CART_TRACKING_INTERVAL_MS) {
-                BurstRead_CartTracking();
-                last_cart_tracking_time_ms = current_time_ms;
-            }
-        }
-
-        // Payment processing
-        if (payment_mode) {
-
-            if (mfrc522_read_uid(&paymenter, uid, &uid_len) == ESP_OK && uid_len > 0) {
-                printf("[MAIN] Payment card detected: ");
-                for (int i = 0; i < uid_len; i++) {
-                    printf("%02X ", uid[i]);
-                }
-                printf("\n");
-
-                bool match = (uid_len == 5);
-                for (int i = 0; i < 5 && match; i++) {
-                    if (uid[i] != authorized_uid[i]) match = false;
-                }
-
-                if (match) {
-                    printf("💳 Payment Successful!\n");
-                    ble_send_payment_status("1");
-                } else {
-                    printf("🚫 Payment Declined. Try another card.\n");
-                    ble_send_payment_status("0");
-                }
-
-                payment_mode = false;
-            }
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(50));
-    }
+    return;
 }

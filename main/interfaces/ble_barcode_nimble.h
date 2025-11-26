@@ -26,12 +26,12 @@ esp_err_t ble_init(const char *device_name);
 esp_err_t ble_send_barcode(const char *barcode_data);
 
 /**
- * @brief Send RFID cart tracking data over BLE
+ * @brief Send cart_tracking cart tracking data over BLE
  *
- * @param rfid_data Null-terminated RFID data string
+ * @param cart_tracking_data Null-terminated cart_tracking data string
  * @return ESP_OK on success, ESP_ERR_INVALID_STATE if not connected, error code otherwise
  */
-esp_err_t ble_send_rfid(const char *rfid_data);
+esp_err_t ble_send_cart_tracking(const char *cart_tracking_data);
 
 /**
  * @brief Send payment status (success or failure) over BLE
