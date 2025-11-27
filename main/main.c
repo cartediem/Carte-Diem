@@ -701,35 +701,37 @@ static void weight_monitor_task(void *arg)
 
     while (1) {
         
-        float current_weight = load_cell_display_pounds(cart_load_cell);
-        float weight_delta = fabs(current_weight - last_cart_weight);
+        if(!icm20948_is_fast_moving(&imu_sensor)){
+            float current_weight = load_cell_display_pounds(cart_load_cell);
+            float weight_delta = fabs(current_weight - last_cart_weight);
 
-        // ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs, Last: %.4f lbs, Delta: %.4f lbs, Threshold: %.4f lbs", current_weight, last_cart_weight, weight_delta, weight_change_threshold);
+            // ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs, Last: %.4f lbs, Delta: %.4f lbs, Threshold: %.4f lbs", current_weight, last_cart_weight, weight_delta, weight_change_threshold);
 
-        if (weight_delta > weight_change_threshold) {
-            ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (threshold: %.4f lbs)",
-                 weight_delta, weight_change_threshold);
-            ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
-            
-            #if ENABLE_ITEM_VERIFICATION
-            if(!icm20948_is_fast_moving(&imu_sensor)){
-                if (!item_rfid_is_scanning(item_reader)) {
-                    esp_err_t scan_ret = item_rfid_scan(item_reader);
-                    if (scan_ret == ESP_OK) {
-                        ESP_LOGI(TAG, "✓ RFID scan triggered successfully");
+            if (weight_delta > weight_change_threshold) {
+                ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (threshold: %.4f lbs)",
+                    weight_delta, weight_change_threshold);
+                ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
+                
+                #if ENABLE_ITEM_VERIFICATION
+                
+                    if (!item_rfid_is_scanning(item_reader)) {
+                        esp_err_t scan_ret = item_rfid_scan(item_reader);
+                        if (scan_ret == ESP_OK) {
+                            ESP_LOGI(TAG, "✓ RFID scan triggered successfully");
+                        } else {
+                            ESP_LOGW(TAG, "✗ Failed to trigger RFID scan (error: %d)", scan_ret);
+                        }
                     } else {
-                        ESP_LOGW(TAG, "✗ Failed to trigger RFID scan (error: %d)", scan_ret);
+                        ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
                     }
-                } else {
-                    ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
-                }
+                
+                #else
+                    ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
+                #endif
             }
-            #else
-                ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
-            #endif
+            
+            last_cart_weight = current_weight;
         }
-
-        last_cart_weight = current_weight;
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
