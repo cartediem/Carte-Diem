@@ -99,7 +99,7 @@ void endSession(bool sendBLE) {
 
                 // Send FILE_START header
                 char header[128];
-                snprintf(header, sizeof(header), "FILE_START,session.log,%ld", file_size);
+                snprintf(header, sizeof(header), "FILE_START");
                 esp_err_t ret = ble_send_cart_tracking(header);
                 if (ret != ESP_OK) {
                     ESP_LOGW(TAG, "✗ Failed to send FILE_START");

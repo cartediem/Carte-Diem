@@ -73,12 +73,13 @@ static void setup(void)
 {
     ESP_LOGI(TAG, "[[Carte Diem]]");
     ESP_LOGI(TAG, "Starting system initialization...");
-
-    i2c_setup();
-
+    
     ble_setup();
+
     barcode_setup();
     button_setup();
+
+    i2c_setup();
 
     proximity_setup();
     proximity_interrupt_setup();
@@ -86,8 +87,8 @@ static void setup(void)
     imu_setup(); 
 
     payment_setup();
-    produce_loadcell_setup();
-    cart_loadcell_setup();
+    // produce_loadcell_setup();
+    // cart_loadcell_setup();
 
     #if ENABLE_ITEM_VERIFICATION
     item_rfid_setup();
@@ -134,10 +135,10 @@ void app_main(void)
         // button press
         if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
         {
-            if (!continuous_mode) {
+            // if (!continuous_mode) {
                 ESP_LOGI(TAG, "Button press detected → triggering manual scan");
                 barcode_trigger_scan(&barcanner);
-            }
+            // }
         }
 
         // proximity interrupt
@@ -149,6 +150,7 @@ void app_main(void)
             if (proximity_value > PROXIMITY_THRESHOLD && !continuous_mode) {
                 ESP_LOGI(TAG, "Proximity threshold exceeded → switching to continuous scan mode");
                 barcode_set_continuous_mode(&barcanner);
+                // barcode_trigger_scan(&barcanner);
                 continuous_mode = true;
             }
 
@@ -391,9 +393,9 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "Starting cart tracking data logging");
                 startSession();
 
-                load_cell_tare(cart_load_cell);
+                // load_cell_tare(cart_load_cell);
                 ESP_LOGI(TAG, "Load cell tared for tracking");
-                last_cart_weight = load_cell_display_pounds(cart_load_cell);
+                // last_cart_weight = load_cell_display_pounds(cart_load_cell);
                 
                 #if ENABLE_ITEM_VERIFICATION
                 item_rfid_scan(item_reader);
@@ -403,8 +405,8 @@ static void handle_ble_command(const char *data, uint16_t len)
                 #endif
 
                 // Create weight monitoring task (1 second interval)
-                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
-                ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
+                // xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                // ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
 
                 cart_tracking_active = true;
                 #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
@@ -587,6 +589,7 @@ static void proximity_interrupt_setup(void)
     gpio_config(&prox_io_conf);
 
     proximity_evt_queue = xQueueCreate(4, sizeof(uint32_t));
+    gpio_install_isr_service(0);
     gpio_isr_handler_add(PROXIMITY_INT_PIN, proximity_isr, NULL);
     ESP_LOGI(TAG, "Proximity interrupt ready on GPIO %d", PROXIMITY_INT_PIN);
 }
@@ -667,11 +670,20 @@ static void cart_tracking_setup(void) {
 }
 
 // ===== ISRs =====
+static uint32_t last_button_isr_time_ms = 0;
+
 static void IRAM_ATTR button_isr(void *arg)
 {
-    uint32_t evt = 1;
-    xQueueSendFromISR(button_evt_queue, &evt, NULL);
-    ESP_EARLY_LOGI(TAG, "Button interrupt triggered");
+    uint32_t now_ms = esp_timer_get_time() / 1000;
+    uint32_t time_since_last = now_ms - last_button_isr_time_ms;
+
+    if (time_since_last >= BUTTON_COOLDOWN_MS) {
+        last_button_isr_time_ms = now_ms;
+        uint32_t evt = 1;
+        // continuous_mode = false;
+        xQueueSendFromISR(button_evt_queue, &evt, NULL);
+        ESP_EARLY_LOGI(TAG, "Button interrupt triggered");
+    }
 }
 
 static void IRAM_ATTR proximity_isr(void *arg)
@@ -685,7 +697,8 @@ void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
     ESP_LOGI(TAG, "Found %d items in cart", count);
 
     // Get cart weight
-    float cart_weight = load_cell_display_pounds(cart_load_cell);
+    // float cart_weight = load_cell_display_pounds(cart_load_cell);
+    float cart_weight = 5.0f; // Placeholder for testing
 
     // Build verification string: "weight,num_tags,tag1,tag2,tag3,..."
     char verification_msg[512] = {0};
@@ -759,7 +772,7 @@ static void weight_monitor_task(void *arg)
             last_cart_weight = current_weight;
         }
 
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(IV_WEIGHT_MONITOR_INTERVAL_MS));
     }
 }
 
@@ -884,13 +897,13 @@ void debug_led(){
     gpio_config(&debug_led_conf);
     gpio_set_level(DEBUG_LED_PIN, 0); 
     
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 4; i++){
         ESP_LOGI(TAG, "Testing GPIO 21 output... blink #%d", i);
 
         gpio_set_level(DEBUG_LED_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(500));
         gpio_set_level(DEBUG_LED_PIN, 0); 
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(500));
 
     }
 
