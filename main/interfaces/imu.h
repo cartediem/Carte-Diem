@@ -36,7 +36,7 @@ typedef struct {
     QueueHandle_t idle_event_queue;  // Queue to notify main task of idle events
     uint32_t last_queue_send_ms;     // Timestamp of last queue send (for 1-min throttling)
     bool first_queue_send_done;      // Flag to track first queue send
-    bool was_idle_5min;              // Flag to track if IMU was idle for 5+ minutes
+    bool was_idle_long;              // Flag to track if IMU was idle for 5+ minutes
     QueueHandle_t motion_after_idle_queue;  // Queue to notify main task when motion resumes after idle
 } ICM20948_t;
 
@@ -89,11 +89,6 @@ bool icm20948_is_fast_moving(ICM20948_t *dev);
  * @brief Track activity and detect idle state
  */
 void icm20948_activity_task(ICM20948_t *device);
-
-/**
- * @brief IMU monitoring task (runs as RTOS task)
- */
-void icm20948_monitor_task(void *arg);
 
 /**
  * @brief Select register bank on ICM20948

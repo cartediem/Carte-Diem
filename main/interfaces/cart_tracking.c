@@ -77,7 +77,6 @@ void startSession(void){
     remove("/spiffs/session.log");  // ensure old file is gone
     FILE *f = fopen("/spiffs/session.log", "w");
     if (f) {
-        fprintf(f, "==== Session Start ====\n");
         fclose(f);
         ESP_LOGI("SESSION", "Session started, new log created.");
     } else {

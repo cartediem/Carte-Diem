@@ -154,7 +154,7 @@ void icm20948_init(ICM20948_t *device, i2c_master_bus_handle_t bus_handle)
     device->idle_event_queue = NULL;
     device->last_queue_send_ms = 0;
     device->first_queue_send_done = false;
-    device->was_idle_5min = false;
+    device->was_idle_long = false;
     device->motion_after_idle_queue = NULL;
 
     // --- Full chip reset ---
@@ -269,9 +269,9 @@ bool icm20948_is_fast_moving(ICM20948_t *dev)
 void icm20948_activity_task(ICM20948_t *dev)
 {
     if (!icm20948_is_moving(dev)) {
-        dev->idle_counter_ms += 1000;
+        dev->idle_counter_ms += IMU_MONITOR_INTERVAL_MS;
         if (dev->idle_counter_ms >= IMU_IDLE_TIME_MINUTES * 60 * 1000) {
-            dev->was_idle_5min = true;  // Mark that we've been idle for 5+ minutes
+            dev->was_idle_long = true;  // Mark that we've been idle for 5+ minutes
 
             // Send idle event to queue (non-blocking from task context)
             if (dev->idle_event_queue) {
@@ -300,39 +300,19 @@ void icm20948_activity_task(ICM20948_t *dev)
         }
     } else {
         // Motion detected
-        if (dev->was_idle_5min) {
-            // IMU was idle for 5+ minutes and motion just resumed
-            ESP_LOGI(TAG, "Motion detected after 5+ minute idle - sending motion event");
+        if (dev->was_idle_long) {
+            // IMU was idle for 5+ minutes and motion just resumed (IMU_MONITOR_INTERVAL_MS)
+            ESP_LOGI(TAG, "Motion detected after %u minute idle - sending motion event", IMU_MONITOR_INTERVAL_MS);
             if (dev->motion_after_idle_queue) {
                 uint32_t motion_event = 1;
                 xQueueSend(dev->motion_after_idle_queue, &motion_event, 0);
             }
-            dev->was_idle_5min = false;  // Reset the flag
+            dev->was_idle_long = false;  // Reset the flag
         }
 
         dev->idle_counter_ms = 0;
         dev->first_queue_send_done = false;  // Reset when movement detected
         ESP_LOGI(TAG, "Movement detected - resetting idle counter");
-    }
-}
-
-/* -------------------------------------------------------------------------- */
-/* IMU monitoring task (runs as dedicated RTOS task)                          */
-/* -------------------------------------------------------------------------- */
-
-/**
- * @brief IMU monitoring task (runs as RTOS task)
- */
-void icm20948_monitor_task(void *arg)
-{
-    ICM20948_t *imu = (ICM20948_t *)arg;
-
-    ESP_LOGI(TAG, "IMU monitor task started");
-
-    while (1) {
-        // Call activity tracking every 1 second
-        icm20948_activity_task(imu);
-        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 

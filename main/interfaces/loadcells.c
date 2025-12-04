@@ -3,6 +3,15 @@
 #include <time.h>
 #include "esp_rom_sys.h"
 
+void tare_task(void* arg) {
+    LoadCell* lc = (LoadCell*)arg;
+    printf("Taring...\n");
+    load_cell_tare(lc);
+    printf("Tare done. Offset = %.2f\n", lc->tare_offset);
+
+    vTaskDelete(NULL); // Done
+}
+
 /**
  * @brief Create and initialize a load cell handle
  */
@@ -103,11 +112,10 @@ int32_t load_cell_read_channel_raw(LoadCell* lc) {
     uint32_t val = 0;
     for (int i = 0; i < 24; i++) { // read 24 bits
     	load_cell_clk_high(lc);
-    	load_cell_delay_us(lc, 10);
-
+    	load_cell_delay_us(lc, 1);
     	val = (val << 1) | gpio_get_level(lc->data_pin);
     	load_cell_clk_low(lc);
-    	load_cell_delay_us(lc, 10);
+    	load_cell_delay_us(lc, 1);
     }
 
     // set gain for next run

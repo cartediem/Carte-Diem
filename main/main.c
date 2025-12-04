@@ -21,6 +21,7 @@ static QueueHandle_t imu_motion_after_idle_queue = NULL;
 
 static TaskHandle_t weight_monitor_task_handle = NULL;
 static TaskHandle_t imu_monitor_task_handle = NULL;
+static TaskHandle_t cart_tracking_task_handle = NULL;
 
 static bool payment_mode = false;
 static bool cart_tracking_active = false;
@@ -61,6 +62,9 @@ static void handle_imu_motion_after_idle_event(void);
 static void handle_ble_command(const char *data, uint16_t len);
 
 static void weight_monitor_task(void *arg);
+static void cart_tracking_task(void *arg);
+
+static void icm20948_monitor_task(void *arg);
 
 static void outdoor_setting();
 static void indoor_setting();
@@ -81,13 +85,13 @@ static void setup(void)
 
     i2c_setup();
 
-    // proximity_setup();
-    // proximity_interrupt_setup();
+    proximity_setup();
+    proximity_interrupt_setup();
 
     imu_setup(); 
 
     payment_setup();
-    // produce_loadcell_setup();
+    produce_loadcell_setup();
     cart_loadcell_setup();
 
     #if ENABLE_ITEM_VERIFICATION
@@ -140,18 +144,18 @@ void app_main(void)
         }
 
         // proximity interrupt
-        // if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        // {
-        //     uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
-        //     ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
+        if (xQueueReceive(proximity_evt_queue, &evt, pdMS_TO_TICKS(10)))
+        {
+            uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
+            ESP_LOGI(TAG, "Proximity interrupt → value: %d", proximity_value);
 
-        //     if (proximity_value > PROXIMITY_THRESHOLD) {
-        //         ESP_LOGI(TAG, "Proximity threshold exceeded → triggering barcode scan");
-        //         barcode_trigger_scan(&barcanner);
-        //     }
+            if (proximity_value > PROXIMITY_THRESHOLD) {
+                ESP_LOGI(TAG, "Proximity threshold exceeded → triggering barcode scan");
+                barcode_trigger_scan(&barcanner);
+            }
 
-        //     proximity_sensor_clear_interrupt(proximity_sensor);
-        // }
+            proximity_sensor_clear_interrupt(proximity_sensor);
+        }
 
         // IMU idle for 5 minutes
         if (xQueueReceive(imu_idle_evt_queue, &evt, pdMS_TO_TICKS(10)))
@@ -182,21 +186,6 @@ void app_main(void)
                 ESP_LOGW(TAG, "⚠ BLE not connected - barcode not sent");
             }
         }
-
-        
-        #if ENABLE_CART_TRACKING
-            // Cart tracking RFID burst read (every 10 seconds, only when IMU is moving)
-            // Modify burst period with "CART_TRACKING_INTERVAL_MS" in cartediem_defs.h
-        if (cart_tracking_active) { 
-            uint32_t current_time_ms = xTaskGetTickCount() * portTICK_PERIOD_MS;
-            uint32_t time_since_last_tracking = current_time_ms - last_cart_tracking_time_ms;
-
-            if (time_since_last_tracking >= CART_TRACKING_INTERVAL_MS) {
-                BurstRead_CartTracking();
-                last_cart_tracking_time_ms = current_time_ms;
-            }
-        }
-        #endif
 
         // Payment processing
         if (payment_mode) {
@@ -258,15 +247,14 @@ static void handle_ble_command(const char *data, uint16_t len)
         case 'T':  // "TARE_" commands
             if(strcmp("TARE_PRODUCE_WEIGHT", data) == 0 || strcmp("TARE_PROD_WEIGHT", data) == 0 || strcmp("T_PROD", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Taring produce load cell");
-                // load_cell_tare(produce_load_cell);
-                load_cell_tare(cart_load_cell);
-                ESP_LOGI(TAG, "taring done");
+                load_cell_tare(produce_load_cell);
+                ESP_LOGI(TAG, "produce taring done");
                 break;
             }
             else if(strcmp("TARE_CART_WEIGHT", data) == 0 || strcmp("T_CART", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Taring cart load cell");
                 load_cell_tare(cart_load_cell);
-                ESP_LOGI(TAG, "taring done");
+                ESP_LOGI(TAG, "cart taring done");
                 break;
             }
             break;
@@ -274,8 +262,7 @@ static void handle_ble_command(const char *data, uint16_t len)
         case 'M': // "MEASURE_" commands
             if(strcmp("MEASURE_PRODUCE_WEIGHT", data) == 0 || strcmp("MEASURE_PROD_WEIGHT", data) == 0 || strcmp("M_PROD", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Measuring produce weight");
-                // float weight = load_cell_display_ounces(produce_load_cell);
-                float weight = load_cell_display_ounces(cart_load_cell);
+                float weight = load_cell_display_ounces(produce_load_cell);
                 char weight_str[32];
                 snprintf(weight_str, sizeof(weight_str), "%.4f", weight);
                 ble_send_produce_weight(weight_str);
@@ -387,8 +374,9 @@ static void handle_ble_command(const char *data, uint16_t len)
                 #if ENABLE_CART_TRACKING
                 ESP_LOGI(TAG, "Starting cart tracking data logging");
                 startSession();
-
+                
                 load_cell_tare(cart_load_cell);
+
                 ESP_LOGI(TAG, "Load cell tared for tracking");
                 last_cart_weight = load_cell_display_pounds(cart_load_cell);
                 
@@ -400,10 +388,14 @@ static void handle_ble_command(const char *data, uint16_t len)
                 #endif
 
                 // Create weight monitoring task (1 second interval)
-                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, IV_TASK_PRIORITY, &weight_monitor_task_handle);
                 ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", weight_change_threshold);
 
+                // Create cart tracking task
                 cart_tracking_active = true;
+                xTaskCreate(cart_tracking_task, "cart_tracking", 8192, NULL, CT_TASK_PRIORITY, &cart_tracking_task_handle);
+                ESP_LOGI(TAG, "Cart tracking task created");
+
                 #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
                 ESP_LOGI(TAG, "Starting weight monitoring without cart tracking RFID");
                 
@@ -411,7 +403,7 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "Load cell tared for weight monitoring");
                 last_cart_weight = load_cell_display_pounds(cart_load_cell);
 
-                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, 4, &weight_monitor_task_handle);
+                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, IV_TASK_PRIORITY, &weight_monitor_task_handle);
                 ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)",weight_change_threshold);
                 #else
                 ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot start tracking session");
@@ -426,6 +418,11 @@ static void handle_ble_command(const char *data, uint16_t len)
 
                 // Disable cart tracking
                 cart_tracking_active = false;
+                if(cart_tracking_task_handle != NULL){
+                    vTaskDelete(cart_tracking_task_handle);
+                    cart_tracking_task_handle = NULL;
+                    ESP_LOGI(TAG, "Cart tracking task stopped");
+                }
 
                 // Stop weight monitoring
                 if (weight_monitor_task_handle != NULL) {
@@ -455,6 +452,11 @@ static void handle_ble_command(const char *data, uint16_t len)
 
                 // Disable cart tracking
                 cart_tracking_active = false;
+                if(cart_tracking_task_handle != NULL){
+                    vTaskDelete(cart_tracking_task_handle);
+                    cart_tracking_task_handle = NULL;
+                    ESP_LOGI(TAG, "Cart tracking task stopped");
+                }
 
                 // Stop weight monitoring
                 if (weight_monitor_task_handle != NULL) {
@@ -555,7 +557,7 @@ static void imu_setup(void){
     }
 
     // Create dedicated IMU monitoring task (1 second interval)
-    xTaskCreate(icm20948_monitor_task, "imu_monitor", 4096, &imu_sensor, 5, &imu_monitor_task_handle);
+    xTaskCreate(icm20948_monitor_task, "imu_monitor", 4096, &imu_sensor, IMU_TASK_PRIORITY, &imu_monitor_task_handle);
     ESP_LOGI(TAG, "IMU monitoring task created (5-minute idle timeout)");
 }
 
@@ -695,6 +697,78 @@ static void IRAM_ATTR proximity_isr(void *arg)
     }  
 }
 
+// RTOS Tasks...
+static void icm20948_monitor_task(void *arg)
+{
+    ICM20948_t *imu = (ICM20948_t *)arg;
+
+    ESP_LOGI(TAG, "IMU monitor task started");
+
+    while (1) {
+        icm20948_activity_task(imu);
+
+        vTaskDelay(pdMS_TO_TICKS(IMU_MONITOR_INTERVAL_MS));
+    }
+}
+
+static void weight_monitor_task(void *arg)
+{
+    ESP_LOGI(TAG, "Weight monitoring task started (1 second interval)");
+
+    while (1) {
+        
+        if(!icm20948_is_fast_moving(&imu_sensor)){
+            float current_weight = load_cell_display_pounds(cart_load_cell);
+            float weight_delta = fabs(current_weight - last_cart_weight);
+
+            ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs", current_weight);
+
+            if (weight_delta > weight_change_threshold) {
+                ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (current: %.4f lbs)",
+                    weight_delta, current_weight);
+                ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
+                
+                #if ENABLE_ITEM_VERIFICATION
+                
+                    if (!item_rfid_is_scanning(item_reader)) {
+                        esp_err_t scan_ret = item_rfid_scan(item_reader);
+                        if (scan_ret == ESP_OK) {
+                            ESP_LOGI(TAG, "✓ RFID scan triggered successfully");
+                        } else {
+                            ESP_LOGW(TAG, "✗ Failed to trigger RFID scan (error: %d)", scan_ret);
+                        }
+                    } else {
+                        ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
+                    }
+                
+                #else
+                    ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
+                #endif
+            }
+
+            last_cart_weight = current_weight;
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(IV_WEIGHT_MONITOR_INTERVAL_MS));
+    }
+}
+
+static void cart_tracking_task(void *arg)
+{
+    ESP_LOGI(TAG, "Cart tracking task started (%.1f second interval)", CART_TRACKING_INTERVAL_MS / 1000.0f);
+
+    while (1) {
+        if (cart_tracking_active) {
+            BurstRead_CartTracking();
+            ESP_LOGI(TAG, "Cart tracking burst read completed");
+        }
+
+        // Delay by the configured interval
+        vTaskDelay(pdMS_TO_TICKS(CART_TRACKING_INTERVAL_MS));
+    }
+}
+
+// Other callback functions...
 void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
     ESP_LOGI(TAG, "Found %d items in cart", count);
 
@@ -734,49 +808,6 @@ static void handle_imu_motion_after_idle_event(void)
     ble_send_misc_data("[IMU] Moving");
 }
 
-// ===== Weight Monitoring Task =====
-static void weight_monitor_task(void *arg)
-{
-    ESP_LOGI(TAG, "Weight monitoring task started (1 second interval)");
-
-    while (1) {
-        
-        if(!icm20948_is_fast_moving(&imu_sensor)){
-            float current_weight = load_cell_display_pounds(cart_load_cell);
-            float weight_delta = fabs(current_weight - last_cart_weight);
-
-            // ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs, Last: %.4f lbs, Delta: %.4f lbs, Threshold: %.4f lbs", current_weight, last_cart_weight, weight_delta, weight_change_threshold);
-
-            if (weight_delta > weight_change_threshold) {
-                ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (threshold: %.4f lbs)",
-                    weight_delta, weight_change_threshold);
-                ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
-                
-                #if ENABLE_ITEM_VERIFICATION
-                
-                    if (!item_rfid_is_scanning(item_reader)) {
-                        esp_err_t scan_ret = item_rfid_scan(item_reader);
-                        if (scan_ret == ESP_OK) {
-                            ESP_LOGI(TAG, "✓ RFID scan triggered successfully");
-                        } else {
-                            ESP_LOGW(TAG, "✗ Failed to trigger RFID scan (error: %d)", scan_ret);
-                        }
-                    } else {
-                        ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
-                    }
-                
-                #else
-                    ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
-                #endif
-            }
-
-            last_cart_weight = current_weight;
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(IV_WEIGHT_MONITOR_INTERVAL_MS));
-    }
-}
-
 // ===== Cart Outside =====
 static void outdoor_setting(){
     ESP_LOGI(TAG, "Setting cart for outdoor use...");
@@ -799,6 +830,12 @@ static void outdoor_setting(){
     // Stop cart tracking
     #if ENABLE_CART_TRACKING
     cart_tracking_active = false;
+    if(cart_tracking_task_handle != NULL){
+        vTaskDelete(cart_tracking_task_handle);
+        cart_tracking_task_handle = NULL;
+        ESP_LOGI(TAG, "Cart tracking task stopped");
+    }
+
     ESP_LOGI(TAG, "Cart tracking disabled");
     #endif
 
@@ -843,7 +880,7 @@ static void indoor_setting(){
 
     // Re-enable IMU monitoring task
     if (imu_monitor_task_handle == NULL) {
-        xTaskCreate(icm20948_monitor_task, "imu_monitor", 4096, &imu_sensor, 5, &imu_monitor_task_handle);
+        xTaskCreate(icm20948_monitor_task, "imu_monitor", 4096, &imu_sensor, IMU_TASK_PRIORITY, &imu_monitor_task_handle);
         ESP_LOGI(TAG, "IMU monitoring task re-enabled");
     }
 

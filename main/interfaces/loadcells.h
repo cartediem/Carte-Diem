@@ -21,6 +21,8 @@ typedef struct LoadCell {
 
 // Function declarations
 
+void tare_task(void* arg);
+
 /**
  * @brief Create and initialize a load cell handle
  */
