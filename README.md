@@ -5,7 +5,7 @@
 ### Custom PCB
 Use the following custom PCB to flash this repository code:
 
-![Custom PCB](images/custom-pcb.png)
+<img src="images/custom-pcb.png" alt="Custom PCB" width="400">
 
 ## Build and Configuration
 
@@ -76,7 +76,7 @@ Select your hardware platform by setting `USING_DEVKIT` accordingly.
 
 Refer to the [Carte Diem BLE Commands PDF](docs/Carte%20Diem%20BLE%20Commands.pdf) for detailed documentation on all available BLE commands and protocol specifications.
 
-![BLE Commands Manual](images/ble-manual.png)
+<img src="images/ble-manual.png" alt="BLE Commands Manual" width="400">
 
 ### Quick Testing with BLE Apps
 For rapid testing and debugging of BLE functionality, you can use:
