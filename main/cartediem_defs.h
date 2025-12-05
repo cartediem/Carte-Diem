@@ -7,37 +7,30 @@
 #define ENABLE_ITEM_VERIFICATION 1
 #define ENABLE_CART_TRACKING 1
 #define ENABLE_WEIGHT_MONITORING 1
+#define ENABLE_PROXIMITY_SENSOR 0
 
 // 2. ADJUSTABLE PARAMETERS
 #define BUTTON_COOLDOWN_MS 1000             // Button press cooldown time
-
+#define PROX_COOLDOWN_MS 1000               // Proximity interrupt cooldown time
 #define PROXIMITY_THRESHOLD 30              // Proximity sensor threshold value
-#define IMU_IDLE_TIME_MINUTES 5             // 1 minutes
-#define IMU_MOVING_THRESHOLD 0.03f           // Threshold (in g) to consider IMU as moving
 
-#define IMU_MONITOR_INTERVAL_MS 5000        // 5 seconds
-#define IMU_TASK_PRIORITY 7
-
-#define CART_TRACKING_INTERVAL_MS 10000     // 10 seconds
-#define CT_TASK_PRIORITY 5
-
-#define IV_WEIGHT_MONITOR_INTERVAL_MS 5000   // Interval to monitor weight changes for Item Verification
+// 2.1. RTOS PERIODIC TASK PARAMETERS
 #define IV_TASK_PRIORITY 8
-
+#define IV_WEIGHT_MONITOR_INTERVAL_MS 5000  // Interval to monitor weight changes for Item Verification
 #define IV_MAX_MOVING_THRESHOLD 0.2f        // Maximum IMU moving threshold to trigger item verification in response to weight change
-#define WEIGHT_CHANGE_THRESHOLD_LBS 0.01f    // Weight change threshold to trigger Item Verification
+#define WEIGHT_CHANGE_THRESHOLD_LBS 0.01f   // Threshold (in lbs) to trigger Item Verification
 
-// BLE Cart Tracking Transfer Configuration
-#define BLE_CT_CHUNK_SIZE           160  // Reduced from 240 for safety
-#define BLE_CT_INITIAL_DELAY_MS     10   // First few chunks: fast start
-#define BLE_CT_INITIAL_CHUNK_COUNT  5    // Number of chunks at initial delay
-#define BLE_CT_BULK_DELAY_MS        80   // Main data transfer delay
-#define BLE_CT_FINAL_DELAY_MS       150  // Last chunks before FILE_END
-#define BLE_CT_FILE_END_RETRY_MAX   3    // Maximum FILE_END retry attempts
-#define BLE_CT_FILE_END_RETRY_DELAY 200  // Delay between FILE_END retries (ms)
+#define IMU_TASK_PRIORITY 7
+#define IMU_MONITOR_INTERVAL_MS 5000        // 5 seconds
+#define IMU_IDLE_TIME_MINUTES 5             // 1 minutes
+#define IMU_MOVING_THRESHOLD 0.03f          // Threshold (in g) to consider IMU as moving
 
-// loadcell tare task priority
-#define TARE_TASK_PRIORITY 10
+#define CT_TASK_PRIORITY 5
+#define CART_TRACKING_INTERVAL_MS 10000     // 10 seconds
+
+// 2.2. PAYMENT PARAMETERS
+#define AUTHORIZED_UID {0x1A, 0x83, 0x26, 0x03, 0xBC}
+#define AUTHORIZED_UID_LEN 5
 
 // 3. PIN DEFINITIONS
 #define USING_DEVKIT 0  // 0 = Custom PCB, 1 = ESP Devkit

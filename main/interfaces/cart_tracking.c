@@ -17,6 +17,15 @@
 #include "ble_barcode_nimble.h"
 #include "cart_tracking.h"
 
+// BLE Cart Tracking Transfer Configuration
+#define BLE_CT_CHUNK_SIZE           160  // Reduced from 240 for safety
+#define BLE_CT_INITIAL_DELAY_MS     10   // First few chunks: fast start
+#define BLE_CT_INITIAL_CHUNK_COUNT  5    // Number of chunks at initial delay
+#define BLE_CT_BULK_DELAY_MS        80   // Main data transfer delay
+#define BLE_CT_FINAL_DELAY_MS       150  // Last chunks before FILE_END
+#define BLE_CT_FILE_END_RETRY_MAX   3    // Maximum FILE_END retry attempts
+#define BLE_CT_FILE_END_RETRY_DELAY 200  // Delay between FILE_END retries (ms)
+
 #define UART_PORT   CART_TRACKING_UART_PORT
 #define TX_PIN      CART_TRACKING_TX_PIN
 #define RX_PIN      CART_TRACKING_RX_PIN
