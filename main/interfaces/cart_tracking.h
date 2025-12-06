@@ -39,6 +39,13 @@ void endSession(bool sendBLE);
  */
 void BurstRead_CartTracking(void);
 
+/**
+ * @brief Check if a cart tracking BLE transfer is currently in progress
+ * Other BLE operations should avoid transmitting during this time
+ * @return true if transfer is active, false otherwise
+ */
+bool is_cart_tracking_transfer_active(void);
+
 #ifdef __cplusplus
 }
 #endif

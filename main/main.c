@@ -22,7 +22,7 @@ static QueueHandle_t proximity_evt_queue = NULL;
 static QueueHandle_t imu_idle_evt_queue = NULL;
 static QueueHandle_t imu_motion_after_idle_queue = NULL;
 
-static TaskHandle_t weight_monitor_task_handle = NULL;
+static TaskHandle_t item_verification_task_handle = NULL;
 static TaskHandle_t imu_monitor_task_handle = NULL;
 static TaskHandle_t cart_tracking_task_handle = NULL;
 
@@ -32,7 +32,6 @@ static bool mode_payment = false;
 static bool mode_cart_tracking = false;
 static bool mode_outdoor = false;
 
-static float last_cart_weight = 0.0f;
 
 static uint32_t last_button_isr_time_ms = 0;
 static uint32_t last_proximity_isr_time_ms = 0;
@@ -57,8 +56,9 @@ static void handle_ble_command(const char *data, uint16_t len);
 static void handle_imu_idle_event(void);
 static void handle_imu_motion_after_idle_event(void);
 void on_item_scan_complete(const item_rfid_tag_t *tags, int count);
+static void safe_ble_send_misc_data(const char *data);
 
-static void weight_monitor_task(void *arg);
+static void item_verification_task(void *arg);
 static void cart_tracking_task(void *arg);
 static void icm20948_monitor_task(void *arg);
 
@@ -131,16 +131,9 @@ void app_main(void)
 
         // button press
         if (xQueueReceive(button_evt_queue, &evt, pdMS_TO_TICKS(10)))
-        {   
-            #if ENABLE_PROXIMITY_SENSOR
-            if (!mode_continuous) {
-                ESP_LOGI(TAG, "Button press detected → triggering manual scan");
-                barcode_trigger_scan(&barcanner);
-            }
-            #else
+        {       
             ESP_LOGI(TAG, "Button press detected → triggering manual scan");
             barcode_trigger_scan(&barcanner);
-            #endif
         }
 
         // proximity interrupt
@@ -160,6 +153,13 @@ void app_main(void)
             proximity_sensor_clear_interrupt(proximity_sensor);
 
             barcode_trigger_scan(&barcanner);
+        }
+       
+        if (gpio_get_level(PROXIMITY_INT_PIN) == 0) {
+            uint8_t current_prox = proximity_sensor_read(proximity_sensor);
+            if (current_prox < PROXIMITY_THRESHOLD) {
+                proximity_sensor_clear_interrupt(proximity_sensor);
+            }
         }
         #endif
 
@@ -231,7 +231,7 @@ static void handle_ble_command(const char *data, uint16_t len)
         if(strcmp("INDOOR_MODE_ON", data) == 0){
             ESP_LOGI(TAG, "BLE Command: Switching to INDOOR mode");
             indoor_setting();
-            ble_send_misc_data("[MODE] INDOOR MODE ON");
+            safe_ble_send_misc_data("[MODE] INDOOR MODE ON");
             mode_outdoor = false;
             return;
         }
@@ -269,14 +269,12 @@ static void handle_ble_command(const char *data, uint16_t len)
                 float weight = load_cell_display_pounds(cart_load_cell);
                 char weight_str[32];
                 snprintf(weight_str, sizeof(weight_str), "[CART_LOAD] %.4f", weight);
-                ble_send_misc_data(weight_str);
+                safe_ble_send_misc_data(weight_str);
                 break;
             }
             break;
 
         case 'P':  // Payment module or Proximity sensor commands
-            ble_send_misc_data("[IMU] Moving");
-
             if(strcmp("PAY_START", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Checking payment status - enabling payment module");
                 mode_payment = true;
@@ -294,10 +292,10 @@ static void handle_ble_command(const char *data, uint16_t len)
                     }
                     char tmp_uid_msg[64];
                     snprintf(tmp_uid_msg, sizeof(tmp_uid_msg), "[PAY] UID: %s", uid_str);
-                    ble_send_misc_data(tmp_uid_msg);
+                    safe_ble_send_misc_data(tmp_uid_msg);
                 } else {
                     ESP_LOGI(TAG, "No payment card detected");
-                    ble_send_misc_data("[PAY] NO_CARD");
+                    safe_ble_send_misc_data("[PAY] NO_CARD");
                 }
                 break;
             }
@@ -307,10 +305,10 @@ static void handle_ble_command(const char *data, uint16_t len)
                 uint8_t proximity_value = proximity_sensor_read(proximity_sensor);
                 char proximity_str[32];
                 snprintf(proximity_str, sizeof(proximity_str), "[PROX] %d", proximity_value);
-                ble_send_misc_data(proximity_str);
+                safe_ble_send_misc_data(proximity_str);
                 #else
                 ESP_LOGI(TAG, "Proximity Sensor is DISABLED - cannot read value");
-                ble_send_misc_data("[ERROR] PROX_DISABLED");
+                safe_ble_send_misc_data("[ERROR] PROX_DISABLED");
                 #endif
                 break;
             }
@@ -321,16 +319,16 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "BLE Command: Checking IMU activity");
                 if(icm20948_is_moving(&imu_sensor)) {
                     ESP_LOGI(TAG, "IMU reports: Cart is moving");
-                    ble_send_misc_data("[IMU] MOVING");
+                    safe_ble_send_misc_data("[IMU] MOVING");
                 } else {
                     if(imu_sensor.idle_counter_ms >= IMU_IDLE_TIME_MINUTES * 60 * 1000){
-                        ESP_LOGI(TAG, "IMU reports: Cart has been idle for 5 minutes");
-                        ble_send_misc_data("[IMU] IDLE");
+                        ESP_LOGI(TAG, "IMU reports: Cart has been idle for %d minutes", IMU_IDLE_TIME_MINUTES);
+                        safe_ble_send_misc_data("[IMU] IDLE");
                         return;
                     }
                     else{
                         ESP_LOGI(TAG, "IMU reports: Cart has been stopped");
-                        ble_send_misc_data("[IMU] STOPPED");
+                        safe_ble_send_misc_data("[IMU] STOPPED");
                     }
                 }
             }
@@ -339,7 +337,7 @@ static void handle_ble_command(const char *data, uint16_t len)
                 uint32_t idle_time_ms = imu_sensor.idle_counter_ms;
                 char idle_time_str[64];
                 snprintf(idle_time_str, sizeof(idle_time_str), "[IMU] IDLE_TIME: %lu", idle_time_ms);
-                ble_send_misc_data(idle_time_str);
+                safe_ble_send_misc_data(idle_time_str);
             }
             else if(strcmp("IMU_ACCEL", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Getting IMU acceleration");
@@ -347,14 +345,14 @@ static void handle_ble_command(const char *data, uint16_t len)
                 char accel_str[64];
                 snprintf(accel_str, sizeof(accel_str), "[IMU] ACCEL: X=%.2f, Y=%.2f, Z=%.2f",
                          imu_sensor.accel.x, imu_sensor.accel.y, imu_sensor.accel.z);
-                ble_send_misc_data(accel_str);
+                safe_ble_send_misc_data(accel_str);
             }
             else if(strcmp("IMU_HEADING", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Getting IMU heading");
                 float heading = icm20948_compute_heading(&imu_sensor);
                 char heading_str[32];
                 snprintf(heading_str, sizeof(heading_str), "[IMU] HEADING: %.2f", heading);
-                ble_send_misc_data(heading_str);
+                safe_ble_send_misc_data(heading_str);
             }
             else if(strcmp("IV_TRIG", data) == 0 || strcmp("IV_SCAN", data) == 0) {
                 ESP_LOGI(TAG, "BLE Command: Force triggering item scan");
@@ -363,7 +361,7 @@ static void handle_ble_command(const char *data, uint16_t len)
                 item_rfid_scan(item_reader); // callback at on_item_scan_complete()
                 #else
                 ESP_LOGI(TAG, "Item Verification is DISABLED - cannot perform item scan");
-                ble_send_misc_data("[ERROR] IV_DISABLED");
+                safe_ble_send_misc_data("[ERROR] IV_DISABLED");
                 #endif
 
                 break;
@@ -371,18 +369,16 @@ static void handle_ble_command(const char *data, uint16_t len)
             break;
         
         case 'C': // Cart Tracking - txt file commands
-            ble_send_misc_data("[IMU] Moving");
+            safe_ble_send_misc_data("[IMU] Moving");
 
             if(strcmp("CT_START", data) == 0) {
+                load_cell_tare(cart_load_cell);
+                ESP_LOGI(TAG, "Load cell tared for tracking");
+                
                 #if ENABLE_CART_TRACKING
                 ESP_LOGI(TAG, "Starting cart tracking data logging");
                 startSession();
-                
-                load_cell_tare(cart_load_cell);
 
-                ESP_LOGI(TAG, "Load cell tared for tracking");
-                last_cart_weight = load_cell_display_pounds(cart_load_cell);
-                
                 #if ENABLE_ITEM_VERIFICATION
                 item_rfid_scan(item_reader);
                 ESP_LOGI(TAG, "Initial item scan performed for tracking session");
@@ -390,27 +386,16 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "Item Verification is DISABLED - skipping initial item scan for tracking session");
                 #endif
 
-                // Create weight monitoring task
-                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, IV_TASK_PRIORITY, &weight_monitor_task_handle);
-                ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)", WEIGHT_CHANGE_THRESHOLD_LBS);
+                xTaskCreate(item_verification_task, "item_verification", 8192, NULL, IV_TASK_PRIORITY, &item_verification_task_handle);
+                ESP_LOGI(TAG, "Item verification task created (interval: %d ms)", ITEM_VERIFICATION_INTERVAL_MS);
 
-                // Create cart tracking task
                 mode_cart_tracking = true;
                 xTaskCreate(cart_tracking_task, "cart_tracking", 8192, NULL, CT_TASK_PRIORITY, &cart_tracking_task_handle);
                 ESP_LOGI(TAG, "Cart tracking task created");
 
-                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
-                ESP_LOGI(TAG, "Starting weight monitoring without cart tracking RFID");
-                
-                load_cell_tare(cart_load_cell);
-                ESP_LOGI(TAG, "Load cell tared for weight monitoring");
-                last_cart_weight = load_cell_display_pounds(cart_load_cell);
-
-                xTaskCreate(weight_monitor_task, "weight_monitor", 8192, NULL, IV_TASK_PRIORITY, &weight_monitor_task_handle);
-                ESP_LOGI(TAG, "Weight monitoring task created (threshold: %.4f lbs)",WEIGHT_CHANGE_THRESHOLD_LBS);
                 #else
                 ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot start tracking session");
-                ble_send_misc_data("[ERROR] CT_DISABLED");
+                safe_ble_send_misc_data("[ERROR] CT_DISABLED");
                 #endif
             }
             else if(strcmp("CT_STOP", data) == 0) {
@@ -419,7 +404,6 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "Stopping cart tracking data logging");
                 ESP_LOGI(TAG, "Exporting cart tracking data log via BLE");
 
-                // Disable cart tracking
                 mode_cart_tracking = false;
                 if(cart_tracking_task_handle != NULL){
                     vTaskDelete(cart_tracking_task_handle);
@@ -427,25 +411,16 @@ static void handle_ble_command(const char *data, uint16_t len)
                     ESP_LOGI(TAG, "Cart tracking task stopped");
                 }
 
-                // Stop weight monitoring
-                if (weight_monitor_task_handle != NULL) {
-                    vTaskDelete(weight_monitor_task_handle);
-                    weight_monitor_task_handle = NULL;
-                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                if (item_verification_task_handle != NULL) {
+                    vTaskDelete(item_verification_task_handle);
+                    item_verification_task_handle = NULL;
+                    ESP_LOGI(TAG, "Item verification task stopped");
                 }
 
-                // End session and send log via BLE
                 endSession(true);
-                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
-                ESP_LOGI(TAG, "Stopping weight monitoring without cart tracking RFID");
-                if (weight_monitor_task_handle != NULL) {
-                    vTaskDelete(weight_monitor_task_handle);
-                    weight_monitor_task_handle = NULL;
-                    ESP_LOGI(TAG, "Weight monitoring task stopped");
-                }
                 #else
                 ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot stop tracking session");
-                ble_send_misc_data("[ERROR] CT_DISABLED");
+                safe_ble_send_misc_data("[ERROR] CT_DISABLED");
                 #endif
             }
             else if(strcmp("CT_CLEAR", data) == 0) {
@@ -461,25 +436,18 @@ static void handle_ble_command(const char *data, uint16_t len)
                     ESP_LOGI(TAG, "Cart tracking task stopped");
                 }
 
-                // Stop weight monitoring
-                if (weight_monitor_task_handle != NULL) {
-                    vTaskDelete(weight_monitor_task_handle);
-                    weight_monitor_task_handle = NULL;
-                    ESP_LOGI(TAG, "Weight monitoring task stopped");
+                // Stop item verification
+                if (item_verification_task_handle != NULL) {
+                    vTaskDelete(item_verification_task_handle);
+                    item_verification_task_handle = NULL;
+                    ESP_LOGI(TAG, "Item verification task stopped");
                 }
 
                 // End session and remove file without sending
                 endSession(false);
-                #elif (!ENABLE_CART_TRACKING && ENABLE_WEIGHT_MONITORING)
-                ESP_LOGI(TAG, "Stopping weight monitoring without cart tracking RFID");
-                if (weight_monitor_task_handle != NULL) {
-                    vTaskDelete(weight_monitor_task_handle);
-                    weight_monitor_task_handle = NULL;
-                    ESP_LOGI(TAG, "Weight monitoring task stopped");
-                }
                 #else
                 ESP_LOGI(TAG, "Cart Tracking is DISABLED - cannot clear tracking session");
-                ble_send_misc_data("[ERROR] CT_DISABLED");
+                safe_ble_send_misc_data("[ERROR] CT_DISABLED");
                 #endif
             }
             break;
@@ -488,13 +456,13 @@ static void handle_ble_command(const char *data, uint16_t len)
                 ESP_LOGI(TAG, "BLE Command: Switching to OUTDOOR mode");
                 outdoor_setting();
                 mode_outdoor = true;
-                ble_send_misc_data("[MODE] OUTDOOR MODE ON");
+                safe_ble_send_misc_data("[MODE] OUTDOOR MODE ON");
                 return;
             }
             break;
         default:
             ESP_LOGW(TAG, "BLE Command: Unknown command '%c' (full: %s)", data[0], data);
-            ble_send_misc_data("[ERROR] UNKNOWN_CMD");
+            safe_ble_send_misc_data("[ERROR] UNKNOWN_CMD");
             break;
     }
 }
@@ -589,7 +557,7 @@ static void proximity_interrupt_setup(void)
     gpio_config(&prox_io_conf);
 
     proximity_evt_queue = xQueueCreate(4, sizeof(uint32_t));
-    // gpio_install_isr_service(0);
+    gpio_install_isr_service(0);
     gpio_isr_handler_add(PROXIMITY_INT_PIN, proximity_isr, NULL);
     ESP_LOGI(TAG, "Proximity interrupt ready on GPIO %d", PROXIMITY_INT_PIN);
 }
@@ -712,45 +680,27 @@ static void icm20948_monitor_task(void *arg)
     }
 }
 
-static void weight_monitor_task(void *arg)
+static void item_verification_task(void *arg)
 {
-    ESP_LOGI(TAG, "Weight monitoring task started (1 second interval)");
+    ESP_LOGI(TAG, "Item verification task started (periodic RFID scan every %d ms)", ITEM_VERIFICATION_INTERVAL_MS);
 
     while (1) {
-        
-        if(!icm20948_is_fast_moving(&imu_sensor)){
-            float current_weight = load_cell_display_pounds(cart_load_cell);
-            float weight_delta = fabs(current_weight - last_cart_weight);
-
-            ESP_LOGI(TAG, "[Weight Monitor] Current: %.4f lbs", current_weight);
-
-            if (weight_delta > WEIGHT_CHANGE_THRESHOLD_LBS) {
-                ESP_LOGI(TAG, "Weight change detected! Diff.: %.4f lbs (current: %.4f lbs)",
-                    weight_delta, current_weight);
-                ESP_LOGI(TAG, "Triggering automatic item RFID scan...");
-                
-                #if ENABLE_ITEM_VERIFICATION
-                
-                    if (!item_rfid_is_scanning(item_reader)) {
-                        esp_err_t scan_ret = item_rfid_scan(item_reader);
-                        if (scan_ret == ESP_OK) {
-                            ESP_LOGI(TAG, "✓ RFID scan triggered successfully");
-                        } else {
-                            ESP_LOGW(TAG, "✗ Failed to trigger RFID scan (error: %d)", scan_ret);
-                        }
-                    } else {
-                        ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
-                    }
-                
-                #else
-                    ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
-                #endif
+        #if ENABLE_ITEM_VERIFICATION
+        if (!item_rfid_is_scanning(item_reader)) {
+            esp_err_t scan_ret = item_rfid_scan(item_reader);
+            if (scan_ret == ESP_OK) {
+                ESP_LOGI(TAG, "✓ Periodic RFID scan triggered successfully");
+            } else {
+                ESP_LOGW(TAG, "✗ Failed to trigger periodic RFID scan (error: %d)", scan_ret);
             }
-
-            last_cart_weight = current_weight;
+        } else {
+            ESP_LOGD(TAG, "RFID scan already in progress, skipping trigger");
         }
+        #else
+        ESP_LOGI(TAG, "Item Verification is DISABLED - skipping item scan");
+        #endif
 
-        vTaskDelay(pdMS_TO_TICKS(IV_WEIGHT_MONITOR_INTERVAL_MS));
+        vTaskDelay(pdMS_TO_TICKS(ITEM_VERIFICATION_INTERVAL_MS));
     }
 }
 
@@ -773,14 +723,11 @@ static void cart_tracking_task(void *arg)
 void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
     ESP_LOGI(TAG, "Found %d items in cart", count);
 
-    // Get cart weight
     float cart_weight = load_cell_display_pounds(cart_load_cell);
 
-    // Build verification string: "weight,num_tags,tag1,tag2,tag3,..."
     char verification_msg[512] = {0};
     int offset = snprintf(verification_msg, sizeof(verification_msg), "%.4f,%d", cart_weight, count);
 
-    // Add each tag to the message
     for (int i = 0; i < count && offset < (int)sizeof(verification_msg) - 1; i++) {
         offset += snprintf(verification_msg + offset,
                           sizeof(verification_msg) - offset,
@@ -788,7 +735,6 @@ void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
                           tags[i].tag);
     }
 
-    // Send via BLE
     esp_err_t send_ret = ble_send_item_verification(verification_msg);
     if (send_ret == ESP_OK) {
         ESP_LOGI(TAG, "✓ Cart verification sent via BLE: %s", verification_msg);
@@ -800,13 +746,24 @@ void on_item_scan_complete(const item_rfid_tag_t *tags, int count) {
 static void handle_imu_idle_event(void)
 {
     ESP_LOGI(TAG, "⏱ IMU: Cart idle for 5 minutes - no motion detected");
-    ble_send_misc_data("[IMU] IDLE");
+    safe_ble_send_misc_data("[IMU] IDLE");
 }
 
 static void handle_imu_motion_after_idle_event(void)
 {
     ESP_LOGI(TAG, "🚀 IMU: Motion detected after 5+ minute idle");
-    ble_send_misc_data("[IMU] Moving");
+    safe_ble_send_misc_data("[IMU] Moving");
+}
+
+// Helper function to safely send misc data, checking if cart tracking transfer is active
+static void safe_ble_send_misc_data(const char *data)
+{
+    if (!is_cart_tracking_transfer_active()) {
+        ble_send_misc_data(data);
+    } else {
+        // Silently skip - transfer in progress
+        // ESP_LOGD(TAG, "Skipping misc data send - cart tracking transfer active");
+    }
 }
 
 // ===== Cart Outside =====
@@ -814,11 +771,11 @@ static void outdoor_setting(){
     ESP_LOGI(TAG, "Setting cart for outdoor use...");
     ESP_LOGI(TAG, "Disabling all components except BLE...");
 
-    // Stop weight monitoring task if running
-    if (weight_monitor_task_handle != NULL) {
-        vTaskDelete(weight_monitor_task_handle);
-        weight_monitor_task_handle = NULL;
-        ESP_LOGI(TAG, "Weight monitoring task stopped");
+    // Stop item verification task if running
+    if (item_verification_task_handle != NULL) {
+        vTaskDelete(item_verification_task_handle);
+        item_verification_task_handle = NULL;
+        ESP_LOGI(TAG, "Item verification task stopped");
     }
 
     // Stop IMU monitoring task
@@ -958,9 +915,9 @@ static void debug_led(){
         ESP_LOGI(TAG, "Testing GPIO 21 output... blink #%d", i);
 
         gpio_set_level(DEBUG_LED_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(200));
         gpio_set_level(DEBUG_LED_PIN, 0); 
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(200));
 
     }
 

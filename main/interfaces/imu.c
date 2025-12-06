@@ -242,23 +242,6 @@ bool icm20948_is_moving(ICM20948_t *dev)
     return moving;
 }
 
-/**
- * @brief Check if device is moving based on acceleration
- */
-bool icm20948_is_fast_moving(ICM20948_t *dev)
-{
-    icm20948_read_accel(dev);
-    float mag = sqrtf(dev->accel.x * dev->accel.x +
-                      dev->accel.y * dev->accel.y +
-                      dev->accel.z * dev->accel.z);
-    float diff = fabsf(mag - accel_magnitude_prev);
-    accel_magnitude_prev = mag;
-
-    bool moving = (diff > IV_MAX_MOVING_THRESHOLD); // ~30 mg threshold
-    dev->status = moving ? MOVING : IDLE;
-    return moving;
-}
-
 /* -------------------------------------------------------------------------- */
 /* Activity monitor                                                           */
 /* -------------------------------------------------------------------------- */

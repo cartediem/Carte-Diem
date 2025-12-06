@@ -6,8 +6,7 @@
 #define ENABLE_LED_DEBUG_STARTUP 1
 #define ENABLE_ITEM_VERIFICATION 1
 #define ENABLE_CART_TRACKING 1
-#define ENABLE_WEIGHT_MONITORING 1
-#define ENABLE_PROXIMITY_SENSOR 0
+#define ENABLE_PROXIMITY_SENSOR 1
 
 // 2. ADJUSTABLE PARAMETERS
 #define BUTTON_COOLDOWN_MS 1000             // Button press cooldown time
@@ -15,18 +14,16 @@
 #define PROXIMITY_THRESHOLD 30              // Proximity sensor threshold value
 
 // 2.1. RTOS PERIODIC TASK PARAMETERS
-#define IV_TASK_PRIORITY 8
-#define IV_WEIGHT_MONITOR_INTERVAL_MS 5000  // Interval to monitor weight changes for Item Verification
-#define IV_MAX_MOVING_THRESHOLD 0.2f        // Maximum IMU moving threshold to trigger item verification in response to weight change
-#define WEIGHT_CHANGE_THRESHOLD_LBS 0.01f   // Threshold (in lbs) to trigger Item Verification
+#define IV_TASK_PRIORITY 9
+#define ITEM_VERIFICATION_INTERVAL_MS 10000  // Interval for periodic RFID scan for Item Verification
 
 #define IMU_TASK_PRIORITY 7
-#define IMU_MONITOR_INTERVAL_MS 5000        // 5 seconds
+#define IMU_MONITOR_INTERVAL_MS 15000        // 15 seconds
 #define IMU_IDLE_TIME_MINUTES 5             // 1 minutes
-#define IMU_MOVING_THRESHOLD 0.03f          // Threshold (in g) to consider IMU as moving
+#define IMU_MOVING_THRESHOLD 0.1f          // Threshold (in g) to consider IMU as moving
 
-#define CT_TASK_PRIORITY 5
-#define CART_TRACKING_INTERVAL_MS 10000     // 10 seconds
+#define CT_TASK_PRIORITY 8
+#define CART_TRACKING_INTERVAL_MS 5000     // 5 seconds
 
 // 2.2. PAYMENT PARAMETERS
 #define AUTHORIZED_UID {0x1A, 0x83, 0x26, 0x03, 0xBC}
